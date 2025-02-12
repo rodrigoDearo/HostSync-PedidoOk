@@ -2,15 +2,15 @@ const { app, BrowserWindow } = require('electron')
 
 const createWindow = () => {
   const win = new BrowserWindow({
-    width: 800,
-    height: 500,
+    width: 650,
+    height: 400,
     movable: false,
     resizable: false,
     autoHideMenuBar: true,
     frame: false
   })
 
-  win.loadFile('../renderer/login.html')
+  win.loadFile('../renderer/index.html')
 }
 
 app.whenReady().then(() => {

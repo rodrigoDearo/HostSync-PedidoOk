@@ -1,7 +1,7 @@
 {
   "name": "hostsync-pedidook",
   "version": "1.0.0",
-  "main": "./src/main/main.js",wwsa
+  "main": "./src/main/main.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "electron ./src/main/main.js"
