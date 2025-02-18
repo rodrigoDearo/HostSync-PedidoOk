@@ -4,7 +4,9 @@ const WINDOW_API = {
     closeApp: () => ipcRenderer.send('close'),
     minimizeApp: () => ipcRenderer.send('minimize'),
     saveHost: (pathdb) => ipcRenderer.send('saveInfoHost', pathdb),
-    savePedidoOk: (idpartner) => ipcRenderer.send('saveInfoPedidoOk', idpartner)
+    savePedidoOk: (idpartner) => ipcRenderer.send('saveInfoPedidoOk', idpartner),
+
+    getInfoUser: (field) => ipcRenderer.invoke('getInfoUser', field)
 }
 
 contextBridge.exposeInMainWorld('api', WINDOW_API)

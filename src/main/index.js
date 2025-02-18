@@ -1,5 +1,5 @@
 const { app, BrowserWindow, ipcMain, Tray, Menu } = require('electron')
-const { saveInfos, returnInfos, returnValueFromJson } = require('./utils/manageInfoUser.js')
+const { saveInfos, returnValueFromJson } = require('./utils/manageInfoUser.js')
 const path = require('node:path')
 
 var win;
@@ -44,6 +44,8 @@ app.whenReady().then(() => {
   tray.setToolTip('Hostsync')
 })
 
+
+
 // IPC
 
 ipcMain.on('close', (events) => {
@@ -64,4 +66,10 @@ ipcMain.on('saveInfoHost', (events, args) => {
 ipcMain.on('saveInfoPedidoOk', (events, args) => {
   events.preventDefault();
   saveInfos('pedidoOk', args)
+})
+
+
+ipcMain.handle('getInfoUser', async (events, args) => {
+  const valueField = await returnValueFromJson(args)
+  return valueField
 })

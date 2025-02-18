@@ -1,3 +1,9 @@
+
+async function getInfoUserFromJSON(fieldRequire){
+    let fieldValue = await window.api.getInfoUser(fieldRequire);
+    return fieldValue
+}
+
 function buttonCloseApp(){
     window.api.closeApp()
 }

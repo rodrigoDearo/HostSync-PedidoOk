@@ -33,24 +33,6 @@ async function saveInfos(systemSave, infos) {
 }
 
 
-function returnInfos() {
-  return new Promise((resolve, reject) => {
-    fs.readFile('./config/configApp.json', 'utf-8', (err, data) => {
-      if (err) {
-        reject(err);
-      } else {
-        let dados = JSON.parse(data);
-        var dadosRetorno = {
-          "pathdbhost": dados.host.pathdb,
-          "idpartnerpedidook": dados.pedidoOk.idpartner
-        };
-        resolve(dadosRetorno);
-      }
-    });
-  });
-}
-
-
 async function returnValueFromJson(campo){
   return new Promise((resolve, reject) => {
     fs.readFile('./config/configApp.json', 'utf-8', (err, data) => {
@@ -75,6 +57,5 @@ async function returnValueFromJson(campo){
 
 module.exports = { 
     saveInfos,
-    returnInfos,
     returnValueFromJson
 }
