@@ -17,7 +17,7 @@ async function saveInfos(systemSave, infos) {
           break;
 
         case 'pedidoOk':
-          dadosApp.pedidoOk.idpartner = infos;
+          dadosApp.pedidoOk.token = infos;
           break;
       }
 
@@ -45,8 +45,8 @@ async function returnValueFromJson(campo){
             resolve(dados.host.pathdb);
             break;
           
-          case 'idpartnerpedidook':
-            resolve(dados.pedidoOk.idpartner);
+          case 'tokenpedidook':
+            resolve(dados.pedidoOk.token);
             break;
         }
       }

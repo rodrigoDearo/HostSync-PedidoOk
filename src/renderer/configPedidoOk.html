@@ -9,9 +9,9 @@
     <link rel="stylesheet" type="text/css" href="./styles/style.css">
     <script src="./assets/renderer.js"></script>
     <script>
-        getInfoUserFromJSON('idpartnerpedidook')
+        getInfoUserFromJSON('tokenpedidook')
         .then(async (fieldValue) => {
-            document.getElementById('idpartner-input').value = fieldValue;
+            document.getElementById('token-input').value = fieldValue;
         })
     </script>
 </head>
@@ -52,7 +52,7 @@
     <form class="container-fluid col-8" id="formularioFull">
         <div class="mb-5">
           <label class="form-label">ID Parceiro</label>
-          <input type="text" id="idpartner-input" class="form-control input-text" required>
+          <input type="text" id="token-input" class="form-control input-text" required>
         </div>
 
         <button type="submit" onclick="saveInfoPedidoOk()" class="btn btn-primary container botao-save">Salvar</button>

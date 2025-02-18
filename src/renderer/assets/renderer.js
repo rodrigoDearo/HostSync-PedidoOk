@@ -18,6 +18,6 @@ function saveInfoHost(){
 }
 
 function saveInfoPedidoOk(){
-    let idpartner = document.getElementById('idpartner-input').value;
-    window.api.savePedidoOk(idpartner)
+    let token = document.getElementById('token-input').value;
+    window.api.savePedidoOk(token)
 }
