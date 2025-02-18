@@ -1,7 +1,12 @@
 const { contextBridge, ipcRenderer } = require('electron/renderer')
 
 const WINDOW_API = {
-    greet: (message) => ipcRenderer.send('greet', message)
+    closeApp: () => ipcRenderer.send('close'),
+    minimizeApp: () => ipcRenderer.send('minimize'),
+    saveHost: (pathdb) => ipcRenderer.send('saveInfoHost', pathdb),
+    savePedidoOk: (idpartner) => ipcRenderer.send('saveInfoPedidoOk', idpartner),
+
+    getInfoUser: (field) => ipcRenderer.invoke('getInfoUser', field)
 }
 
 contextBridge.exposeInMainWorld('api', WINDOW_API)
