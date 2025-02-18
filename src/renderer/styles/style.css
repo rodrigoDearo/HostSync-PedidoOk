@@ -42,7 +42,7 @@ body{
 /* STYLE PARA TODOS FORMS */
 
 #formularioFull{
-  margin-top: 35px;
+  margin-top: 15vh;
 }
 
 
@@ -58,6 +58,7 @@ body{
 #last-input{
   padding-bottom: 25px;
 }
+
 
 .botao-save{
   background-color: #58AD61;
