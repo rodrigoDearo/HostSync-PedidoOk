@@ -1,6 +1,8 @@
 const { app, BrowserWindow, ipcMain, Tray, Menu } = require('electron')
-const { saveInfos, returnValueFromJson } = require('./utils/manageInfoUser.js')
 const path = require('node:path')
+
+const { saveInfos, returnValueFromJson } = require('./utils/manageInfoUser.js')
+
 
 var win;
 
@@ -73,3 +75,4 @@ ipcMain.handle('getInfoUser', async (events, args) => {
   const valueField = await returnValueFromJson(args)
   return valueField
 })
+
