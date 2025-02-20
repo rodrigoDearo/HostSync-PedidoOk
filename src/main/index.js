@@ -2,7 +2,7 @@ const { app, BrowserWindow, ipcMain, Tray, Menu } = require('electron')
 const path = require('node:path')
 
 const { saveInfos, returnValueFromJson } = require('./utils/manageInfoUser.js')
-const { createDependencies } = require('./utils/dependenciesFDB.js')
+const { createDependencies, limparTabela } = require('./utils/dependenciesFDB.js')
 const { returnConfigToAccessDB, gravarLog } = require('./utils/auxFunctions.js')
 
 
@@ -84,7 +84,6 @@ ipcMain.handle('startProgram', async () => {
 
   await mainProcess()
   .then((response) => {
-    console.log(response)
     return response
   })
 })
@@ -94,12 +93,56 @@ async function mainProcess(){
     await returnConfigToAccessDB()
     .then(async (config) => {
       let mensageReturn = await createDependencies(config)
-      gravarLog(mensageReturn)
+      if(mensageReturn.code == 500){
+        reject(mensageReturn)
+      }
+      return config
     })
-    .then(response => {
-      resolve(response)
+    .then(async (config) => {
+      let mensageReturn = await limparTabela(config)
+      if(mensageReturn.code == 500){
+        reject(mensageReturn)
+      }
     })
+    .then()
   })
 }
 
 
+/*
+
+LAST_IDPARCEIRO
+LAST_REQUEST 
+
+LIGA GERADOR:
+
+LIMPA TABELA NOTIFICAÇÃO
+
+PEGA TABELA PRODUTOS:
+PRODUTO EXISTE?
+ATUALIZA
+PRODUTO NÃO EXISTE?
+CADASTRA
+
+PEGA TABELA CLIENTE
+CLIENTE EXISTE?
+ATUALIZA
+CLIENTE NÃO EXISTE?
+CADASTRA
+
+REQUISITA VENDAS A PARTIR DO ULTIMA LAST_REQUEST
+LE TODAS AS VENDAS <============================ )
+VENDA EXISTE?					||
+ATUALIZA					||
+VENDA NÃO EXISTE? 			      	||
+CADASTRA				      	||
+TEM MAIS PAG?				      	||
+REQUISITA VENDAS A PARTIR DA NOVA PROXIMA PAG _	||
+NÃO TEM MAIS VENDAS?
+ATUALIZA LAST_REQUEST
+
+AGUARDA 5 MINUTOS PARA INICIAR LEITURA DA TABELA NOTIFICAÇÕES
+DEPOIS DE LER TABELA NOTIFICAÇÕES E CADASTRAR
+AGUARDA 10 MINUTOS PARA INICIAR LEITURA DAS NOVAS VENDAS
+
+*/ 

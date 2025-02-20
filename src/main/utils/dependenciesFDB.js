@@ -304,13 +304,14 @@ async function criarTabela(config){
   
           db.query(codigoSQL, function (err, result){
             if (err)
-              throw err;
+              resolve({code: 500, msg:'ERRO AO LIMPAR TABELA, CONTATAR SUPORTE TECNICO'});
   
             console.log('FOI LIMPADO A TABELA NOTIFICACOES_HOSTSYNC PARA QUE POSSO COMECAR A LEITURA');
-            resolve();
           });
           
           db.detach();
+
+          resolve({code: 200, msg:'LIMPADO A TABELA NOTIFICACOES_HOSTSYNC'});
         });
   
       } catch (error) {
@@ -340,10 +341,10 @@ async function createDependencies(config) {
       await criarTriggerUpdateCliente(config);
     })
     .catch(() => {
-      resolve("Erro ao criar/verificar as dependencias SQL necessarias no banco FDB. Consultar o desenvolvedor do sistema com URGENCIA");
+      resolve({code:500, msg:"Erro ao criar/verificar as dependencias SQL necessarias no banco FDB. Consultar o desenvolvedor do sistema com URGENCIA"});
     })
     .finally(() => {
-      resolve("Dependencias FDB corretamente configuradas!")
+      resolve({code:200, msg:"Dependencias FDB corretamente configuradas!"})
     })
   })
 }
@@ -356,5 +357,6 @@ async function createDependencies(config) {
 
 
   module.exports = {
-    createDependencies
+    createDependencies,
+    limparTabela
   };
