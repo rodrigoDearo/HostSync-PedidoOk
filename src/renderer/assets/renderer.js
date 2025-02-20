@@ -27,6 +27,7 @@ async function startSync(){
     await loadingPage(true)
     await window.api.start()
     .then(async (message) => {
+        alert(message)
         await loadingPage(false)
     })
 }

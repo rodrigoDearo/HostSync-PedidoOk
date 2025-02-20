@@ -2,6 +2,8 @@ const { app, BrowserWindow, ipcMain, Tray, Menu } = require('electron')
 const path = require('node:path')
 
 const { saveInfos, returnValueFromJson } = require('./utils/manageInfoUser.js')
+const { createDependencies } = require('./utils/dependenciesFDB.js')
+const { returnConfigToAccessDB } = require('./utils/auxFunctios.js')
 
 
 var win;
@@ -79,15 +81,21 @@ ipcMain.handle('getInfoUser', async (events, args) => {
 
 ipcMain.handle('startProgram', async () => {
   await mainProcess()
-  .then(() => {
-    return
+  .then((message) => {
+    return message
   })
 })
 
 async function mainProcess(){
-  return new Promise((resolve, reject) => {
-    setInterval(() => {
-      resolve()
-    }, 5000);
+  return new Promise(async (resolve, reject) => {
+    await returnConfigToAccessDB()
+    .then(async (config) => {
+      await createDependencies(config)
+      .then(response => {
+        resolve(response)
+      })
+    })
   })
 }
+
+

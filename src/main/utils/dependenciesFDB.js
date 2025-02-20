@@ -88,7 +88,6 @@ async function criarTabela(config){
   
           db.query(codigo, function (err, result){
             if (err)
-              gravarLogErro(err);
   
             console.log('TABELA NOTIFICACOES_HOSTSYNC FOI CRIADA EM CASO DE AUSÊNCIA');
             resolve();
@@ -97,7 +96,6 @@ async function criarTabela(config){
           db.detach();
         })
       } catch (error) {
-        gravarLogErro(err)
         console.log(error);
       }
     })
@@ -323,7 +321,31 @@ async function criarTabela(config){
 
 
 
-
+async function createDependencies(config) {
+  await criarTabela(config) 
+  .then(async () => {
+    await criarGeneratorID(config);
+  })
+  .then(async () => {
+    await criarTriggerInsertProduto(config);
+  })
+  .then(async () => {
+    await criarTriggerUpdateProduto(config);
+  })
+  .then(async () => {
+    await criarTriggerInsertCliente(config);
+  })
+  .then(async () => {
+    await criarTriggerUpdateCliente(config);
+  })
+  .catch(() => {
+    return 'Erro ao criar/verificar as dependências SQL necessárias no banco FDB. Consultar o desenvolvedor do sistema com URGÊNCIA';
+  })
+  .finally(() => {
+    return('Depências FDB correamente configuradas!')
+  })
+}
+  
 
 
 
@@ -332,11 +354,5 @@ async function criarTabela(config){
 
 
   module.exports = {
-    criarTabela,
-    criarGeneratorID,
-    criarTriggerInsertProduto,
-    criarTriggerUpdateProduto,
-    criarTriggerInsertCliente,
-    criarTriggerUpdateCliente,
-    limparTabela
+    createDependencies
   };
