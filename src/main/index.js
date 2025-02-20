@@ -3,7 +3,7 @@ const path = require('node:path')
 
 const { saveInfos, returnValueFromJson } = require('./utils/manageInfoUser.js')
 const { createDependencies } = require('./utils/dependenciesFDB.js')
-const { returnConfigToAccessDB } = require('./utils/auxFunctios.js')
+const { returnConfigToAccessDB } = require('./utils/auxFunctions.js')
 
 
 var win;
@@ -81,8 +81,8 @@ ipcMain.handle('getInfoUser', async (events, args) => {
 
 ipcMain.handle('startProgram', async () => {
   await mainProcess()
-  .then((message) => {
-    return message
+  .then((response) => {
+    return response
   })
 })
 

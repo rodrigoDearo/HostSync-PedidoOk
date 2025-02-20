@@ -322,27 +322,29 @@ async function criarTabela(config){
 
 
 async function createDependencies(config) {
-  await criarTabela(config) 
-  .then(async () => {
-    await criarGeneratorID(config);
-  })
-  .then(async () => {
-    await criarTriggerInsertProduto(config);
-  })
-  .then(async () => {
-    await criarTriggerUpdateProduto(config);
-  })
-  .then(async () => {
-    await criarTriggerInsertCliente(config);
-  })
-  .then(async () => {
-    await criarTriggerUpdateCliente(config);
-  })
-  .catch(() => {
-    return 'Erro ao criar/verificar as dependências SQL necessárias no banco FDB. Consultar o desenvolvedor do sistema com URGÊNCIA';
-  })
-  .finally(() => {
-    return('Depências FDB correamente configuradas!')
+  return new Promise(async (resolve, reject) => {
+    await criarTabela(config) 
+    .then(async () => {
+      await criarGeneratorID(config);
+    })
+    .then(async () => {
+      await criarTriggerInsertProduto(config);
+    })
+    .then(async () => {
+      await criarTriggerUpdateProduto(config);
+    })
+    .then(async () => {
+      await criarTriggerInsertCliente(config);
+    })
+    .then(async () => {
+      await criarTriggerUpdateCliente(config);
+    })
+    .catch(() => {
+      resolve("Erro ao criar/verificar as dependencias SQL necessarias no banco FDB. Consultar o desenvolvedor do sistema com URGENCIA");
+    })
+    .finally(() => {
+      resolve("Dependencias FDB correamente configuradas!")
+    })
   })
 }
   
