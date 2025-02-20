@@ -76,3 +76,18 @@ ipcMain.handle('getInfoUser', async (events, args) => {
   return valueField
 })
 
+
+ipcMain.handle('startProgram', async () => {
+  await mainProcess()
+  .then(() => {
+    return
+  })
+})
+
+async function mainProcess(){
+  return new Promise((resolve, reject) => {
+    setInterval(() => {
+      resolve()
+    }, 5000);
+  })
+}

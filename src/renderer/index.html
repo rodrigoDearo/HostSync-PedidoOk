@@ -10,6 +10,7 @@
     <script src="./assets/renderer.js"></script>
 </head>
 <body>
+    <div id="background-loading"></div>
     <img src="" id="gif-loading" type="gif"> 
 
     <nav class="navbar" id="navbar_menu">
@@ -47,7 +48,7 @@
         <img src="./assets/icon.jpg" class="container col-5 imagemInicial">
             
         <form class="container col-6" id="formularioFull">
-            <button type="button" id="botaoSincCont" onclick="Hello()" class="btn btn-primary sync container botao-save mb-3">Iniciar Sincronização</button>
+            <button type="button" id="botaoSincCont" onclick="startSync()" class="btn btn-primary sync container botao-save mb-3">Iniciar Sincronização</button>
         </form>
     </div>
 
