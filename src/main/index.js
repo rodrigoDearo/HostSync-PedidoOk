@@ -3,7 +3,7 @@ const path = require('node:path')
 
 const { saveInfos, returnValueFromJson } = require('./utils/manageInfoUser.js')
 const { createDependencies } = require('./utils/dependenciesFDB.js')
-const { returnConfigToAccessDB } = require('./utils/auxFunctions.js')
+const { returnConfigToAccessDB, gravarLog } = require('./utils/auxFunctions.js')
 
 
 var win;
@@ -80,8 +80,11 @@ ipcMain.handle('getInfoUser', async (events, args) => {
 
 
 ipcMain.handle('startProgram', async () => {
+  gravarLog(' . . . Starting HostSync  . . .')
+
   await mainProcess()
   .then((response) => {
+    console.log(response)
     return response
   })
 })
@@ -90,10 +93,11 @@ async function mainProcess(){
   return new Promise(async (resolve, reject) => {
     await returnConfigToAccessDB()
     .then(async (config) => {
-      await createDependencies(config)
-      .then(response => {
-        resolve(response)
-      })
+      let mensageReturn = await createDependencies(config)
+      gravarLog(mensageReturn)
+    })
+    .then(response => {
+      resolve(response)
     })
   })
 }

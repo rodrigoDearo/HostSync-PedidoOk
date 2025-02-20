@@ -24,9 +24,11 @@ function saveInfoPedidoOk(){
 
 async function startSync(){
     await loadingPage(true)
-    let mensage = await window.api.start()
-    alert(mensage)
-    await loadingPage(false)
+    await window.api.start()
+    .then(async () => {
+        await loadingPage(false)
+    })
+  //  alert(mensage)
 }
 
 

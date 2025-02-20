@@ -1,3 +1,6 @@
+const fs = require('fs')
+const path = require('node:path')
+
 const { returnInfo } = require('../envManager');
 const { returnValueFromJson } = require('./manageInfoUser');
 
@@ -13,13 +16,11 @@ async function returnConfigToAccessDB(){
             }
         })
         .then(async () => {
-            //let envInfo = await returnInfo('user_database')
-            let envInfo = 'SYSDBA'
+            let envInfo = await returnInfo('user_database')
             config.user = `${envInfo}`;
         })
         .then(async () => {
-            //let envInfo = await returnInfo('password_database')
-            let envInfo = 'masterkey'
+            let envInfo = await returnInfo('password_database')
             config.password = `${envInfo}`;
         })
         .finally(() => {
@@ -28,6 +29,31 @@ async function returnConfigToAccessDB(){
     })
 }
 
+
+
+function gravarLog(mensagem) {
+    if (!fs.existsSync('../logs')) {
+      fs.mkdirSync('../logs');
+    }
+    const data = new Date();
+    data.setHours(data.getHours() - 3);
+    const dataFormatada = `${data.getFullYear()}-${data.getMonth() + 1}-${data.getDate()}`;
+    const logMessage = `[${data.toISOString()}]: ${mensagem}\n`;
+    const logFileName = `../../../logs/log_${dataFormatada}.txt`;
+    const logFilePath = path.join(__dirname, logFileName);
+    fs.appendFile(logFilePath, logMessage, (err) => {
+      if (err) {
+        console.error('Erro ao gravar o log:', err);
+      } else {
+        console.log('Log gravado com sucesso!');
+      }
+    });
+  }
+  
+
+
+
 module.exports = {
-    returnConfigToAccessDB
+    returnConfigToAccessDB,
+    gravarLog
 }

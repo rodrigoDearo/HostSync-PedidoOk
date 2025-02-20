@@ -343,7 +343,7 @@ async function createDependencies(config) {
       resolve("Erro ao criar/verificar as dependencias SQL necessarias no banco FDB. Consultar o desenvolvedor do sistema com URGENCIA");
     })
     .finally(() => {
-      resolve("Dependencias FDB correamente configuradas!")
+      resolve("Dependencias FDB corretamente configuradas!")
     })
   })
 }
