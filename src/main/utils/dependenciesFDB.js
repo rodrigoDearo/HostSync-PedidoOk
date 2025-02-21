@@ -2,8 +2,6 @@ process.stdin.setEncoding('utf-8');
 
 /* ---------------------- IMPORTAÇÃO DE MÓDULOS ----------------------*/
 const conexao = require('node-firebird');
-const fs = require('fs');
-const path = require('path');
 
 
 
@@ -276,7 +274,7 @@ async function criarTabela(config){
               if (err)
                 throw err;
       
-              console.log('TRIGGER UPDATE_CLIENTE_HOSTSYNC FOI CRIADO EM CASO DE AUSÊNCIA');
+              console.log('TRIGGER UPDATE_CLIENTE_HOSTSYNC FOI CRIADO EM CASO DE AUSENCIA');
               resolve();
             });
       

@@ -4,7 +4,8 @@ const path = require('node:path')
 const { saveInfos, returnValueFromJson } = require('./utils/manageInfoUser.js')
 const { createDependencies, limparTabela } = require('./utils/dependenciesFDB.js')
 const { returnConfigToAccessDB, gravarLog } = require('./utils/auxFunctions.js')
-
+const { requireAllProducts } = require('./utils/managerProducts.js')
+const { requireAllCustomers } = require('./utils/managerCustomers.js')
 
 var win;
 
@@ -103,8 +104,18 @@ async function mainProcess(){
       if(mensageReturn.code == 500){
         reject(mensageReturn)
       }
+      return config
     })
-    .then()
+    .then(async (config) => {
+      let mensageReturn = await requireAllProducts(config)
+      if(mensageReturn.code == 500){
+        reject(mensageReturn)
+      }
+      return config
+    })
+    .then(async (config) => {
+      let mensageReturn = await requireAllCustomers(config)
+    }) 
   })
 }
 
@@ -132,11 +143,11 @@ CADASTRA
 
 REQUISITA VENDAS A PARTIR DO ULTIMA LAST_REQUEST
 LE TODAS AS VENDAS <============================ )
-VENDA EXISTE?					||
-ATUALIZA					||
-VENDA NÃO EXISTE? 			      	||
-CADASTRA				      	||
-TEM MAIS PAG?				      	||
+VENDA EXISTE?				                          	||
+ATUALIZA			                              		||
+VENDA NÃO EXISTE? 			                       	||
+CADASTRA				      	                        ||
+TEM MAIS PAG?				      	                    ||
 REQUISITA VENDAS A PARTIR DA NOVA PROXIMA PAG _	||
 NÃO TEM MAIS VENDAS?
 ATUALIZA LAST_REQUEST
