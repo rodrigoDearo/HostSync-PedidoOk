@@ -39,7 +39,28 @@ async function registerOrUpdateProduct(product){
             if(productAlreadyRegister){ return productsDB[`${product.id_produto}`].status }else{return null}
         } 
         
-        
+        if(!productAlreadyRegister&&productIsActiveOnHost){
+
+        }else
+        if(!productAlreadyRegister&&(!productIsActiveOnHost)){
+
+        }else
+        if(productAlreadyRegister&&productIsActiveOnHost){
+            if(productIsActiveOnPedidoOK){
+
+            }
+            else{
+
+            }
+        }else
+        if(productAlreadyRegister&&(!productIsActiveOnHost)){
+            if(productIsActiveOnPedidoOK){
+
+            }
+            else{
+                
+            }
+        }
         
     })
 }
