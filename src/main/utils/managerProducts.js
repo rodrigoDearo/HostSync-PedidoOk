@@ -27,6 +27,43 @@ async function requireAllProducts(config){
     })
 }
 
+
+
+async function registerOrUpdateProduct(product){
+    return new Promise(async (resaolve, reject) => {
+        let productsDB = JSON.parse(fs.readFileSync('../../../config/products.json'))
+
+        var productAlreadyRegister = productsDB[`${product.id_produto}`] ? true : false;
+        var productIsActiveOnHost = product.status == 'ATIVO' ? true : false;
+        var productIsActiveOnPedidoOK = () => {
+            if(productAlreadyRegister){ return productsDB[`${product.id_produto}`].status }else{return null}
+        } 
+        
+        
+        
+    })
+}
+
+
+/*ESCOPO DE CADASTRO-DELETE-UPDATE 
+
+IF PRODUTO NAO CADASTRADO E ATIVO NO HOST = CADASTRAR
+
+IF PRODUTO NAO CADASTRADO E INATIVO NO HOST = NADA
+
+IF PRODUTO CADASTRADO E ATIVO NO HOST = { 
+    SE ESTIVER ATIVO NO PEDIDOOK = ATUALIZAR
+    SE ESTIVER INATIVO NO PEDIDO OK = UNDELETE
+}
+
+IF PRODUTO CADASTRADO E INATIVO NO HOST { 
+    SE ESTIVER ATIVO NO PEDIDO OK = DELETE
+    SE ESTIVER INATIVO NO PEDIDO OK = NADA
+}
+
+*/
+
+
 module.exports = {
     requireAllProducts
 }

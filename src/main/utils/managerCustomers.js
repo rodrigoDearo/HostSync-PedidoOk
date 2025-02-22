@@ -1,5 +1,7 @@
 const conexao = require('node-firebird');
-const fs = requrie ('fs')
+const fs = require ('fs')
+
+const { postCustomer, putCustomer, deleteCustomer, undeleteCustomer } = require('./requestsPedidoOk')
 
 async function requireAllCustomers(config){
     return new Promise(async(resolve, reject) => {
@@ -8,13 +10,13 @@ async function requireAllCustomers(config){
             if (err)
                 throw err;
   
-            let codigoSQL = `SELECT id_cliente, cliente FROM CLIENTES`;
+            let codigoSQL = `SELECT id_cliente, cliente, status FROM CLIENTES`;
   
             db.query(codigoSQL, function (err, result){
                 if (err)
                     resolve({code: 500, msg:'ERRO AO CONSULTAR TABELA CLIENTES, CONTATAR SUPORTE TECNICO'});
   
-                resolve(result);
+                console.log(result);
             });
           
             db.detach();
@@ -30,9 +32,38 @@ async function requireAllCustomers(config){
 
 
 async function registerOrUpdateCustomer(customer){
-    
+    return new Promise(async (resaolve, reject) => {
+        let customersDB = JSON.parse(fs.readFileSync('../../../config/customers.json'))
+
+        var customerAlreadyRegister = customersDB[`${customer.id_cliente}`] ? true : false;
+        var customerIsActiveOnHost = customer.status == 'ATIVO' ? true : false;
+        var customerIsActiveOnPedidoOK = () => {
+            if(customerAlreadyRegister){ return customersDB[`${customer.id_cliente}`].status }else{return null}
+        } 
+        
+        
+        
+    })
 }
 
+
+/*ESCOPO DE CADASTRO-DELETE-UPDATE 
+
+IF CLIENTE NAO CADASTRADO E ATIVO NO HOST = CADASTRAR
+
+IF CLIENTE NAO CADASTRADO E INATIVO NO HOST = NADA
+
+IF CLIENTE CADASTRADO E ATIVO NO HOST = { 
+    SE ESTIVER ATIVO NO PEDIDOOK = ATUALIZAR
+    SE ESTIVER INATIVO NO PEDIDO OK = UNDELETE
+}
+
+IF CLIENTE CADASTRADO E INATIVO NO HOST { 
+    SE ESTIVER ATIVO NO PEDIDO OK = DELETE
+    SE ESTIVER INATIVO NO PEDIDO OK = NADA
+}
+
+*/
 
 
 module.exports = {
