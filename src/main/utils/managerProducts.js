@@ -1,4 +1,7 @@
 const conexao = require('node-firebird');
+const fs = require ('fs')
+
+const { postCustomer, putCustomer, deleteCustomer, undeleteCustomer } = require('./requestsPedidoOk')
 
 async function requireAllProducts(config){
     return new Promise(async(resolve, reject) => {
@@ -26,7 +29,6 @@ async function requireAllProducts(config){
       }
     })
 }
-
 
 
 async function registerOrUpdateProduct(product){

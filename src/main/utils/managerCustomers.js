@@ -33,7 +33,7 @@ async function requireAllCustomers(config){
 
 async function registerOrUpdateCustomer(customer){
     return new Promise(async (resaolve, reject) => {
-        let customersDB = JSON.parse(fs.readFileSync('../../../config/customers.json'))
+        let customersDB = JSON.parse(fs.readFileSync('../../../config/customer.json'))
 
         var customerAlreadyRegister = customersDB[`${customer.id_cliente}`] ? true : false;
         var customerIsActiveOnHost = customer.status == 'ATIVO' ? true : false;
@@ -41,7 +41,28 @@ async function registerOrUpdateCustomer(customer){
             if(customerAlreadyRegister){ return customersDB[`${customer.id_cliente}`].status }else{return null}
         } 
         
-        
+        if(!customerAlreadyRegister&&customerIsActiveOnHost){
+
+        }else
+        if(!customerAlreadyRegister&&(!customerIsActiveOnHost)){
+
+        }else
+        if(customerAlreadyRegister&&customerIsActiveOnHost){
+            if(customerIsActiveOnPedidoOK){
+
+            }
+            else{
+
+            }
+        }else
+        if(customerAlreadyRegister&&(!customerIsActiveOnHost)){
+            if(customerIsActiveOnPedidoOK){
+
+            }
+            else{
+                
+            }
+        }
         
     })
 }
