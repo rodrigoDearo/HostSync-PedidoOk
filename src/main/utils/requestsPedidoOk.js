@@ -1,17 +1,16 @@
-const { axios } = require('axios');
-
+const axios = require('axios');
 
 function postProduct(body, header){
     return new Promise(async (resolve, reject) => {
         await axios.post('https://api.pedidook.com.br/v1/produtos/', body, header)
         .then((response) => {
-
+            console.log(response)
         })
         .catch((error) => {
-
+            console.log(error)
         })
         .finally(() => {
-
+            console.log('deu isso ai')
         })    
     })
 }

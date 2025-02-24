@@ -1,7 +1,7 @@
 const conexao = require('node-firebird');
 const fs = require ('fs')
 
-const { postCustomer, putCustomer, deleteCustomer, undeleteCustomer } = require('./requestsPedidoOk')
+const { preparingPostProduct } = require('./preparingRequest.js')
 
 async function requireAllProducts(config){
     return new Promise(async(resolve, reject) => {
@@ -10,13 +10,29 @@ async function requireAllProducts(config){
             if (err)
                 throw err;
   
-            let codigoSQL = `SELECT id_produto, produto FROM PRODUTOS`;
+            let codigoSQL = `SELECT id_produto, obs, barras, PRODUTOS_GRUPO.grupo, produto, estoque, PRODUTOS_MARCA.marca, valor_venda, custo FROM PRODUTOS LEFT JOIN PRODUTOS_GRUPO on PRODUTOS.grupo = PRODUTOS_GRUPO.id LEFT JOIN PRODUTOS_MARCA on PRODUTOS.marca = PRODUTOS_MARCA.id`;
   
-            db.query(codigoSQL, function (err, result){
+            db.query(codigoSQL, async function (err, result){
                 if (err)
                     resolve({code: 500, msg:'ERRO AO CONSULTAR TABELA PRODUTOS, CONTATAR SUPORTE TECNICO'});
-  
-                console.log(result);
+                
+                for (const record of result) {
+                    let product = {
+                        "codigo": record.ID_PRODUTO,
+                        "observacao": record.OBS,
+                        "codigo_barra": record.BARRAS,
+                        "categoria": record.GRUPO,
+                        "nome": record.PRODUTO,
+                        "estoque": record.ESTOQUE,
+                        "marca": record.MARCA,
+                        "venda": record.VALOR_VENDA,
+                        "custo": record.CUSTO,
+                        "embalagem": null
+                    }
+
+                    await preparingPostProduct(product)
+                }
+                
             });
           
             db.detach();

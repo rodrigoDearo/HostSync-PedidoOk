@@ -15,7 +15,7 @@ function returnInfo(infoRequired){
 
             case 'token_partner':
                 //resolve(process.env.TOKEN_PARTNER) 
-                resolve(process.env.TOKEN_PARTNER) 
+                resolve('c4feeb6f-a967-4315-abe7-453269b24dfb') 
                 break;
         }
     })

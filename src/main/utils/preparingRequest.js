@@ -9,62 +9,65 @@ async function preparingPostProduct(product){
         await returnHeader()
         .then(async (response) => {
             header = response;
-            let i  = await returnBody(product);
-            return i
+            product.id_parceiro  = await returnValueFromJson('idparceiro');
+            return product
         })
         .then(async (response) => {
             body = response
             await postProduct(body, header)
         }) 
+        .then(() => {
+            resolve()
+        })
 
         
     })  
 }
 
 
-async function preparingPutProduct(){
+async function preparingPutProduct(product, idproduct){
     return new Promise(async (resolve, reject) => {
         
     })
 }
 
 
-async function preparingDeleteProduct(){
+async function preparingDeleteProduct(idproduct){
     return new Promise(async (resolve, reject) => {
         
     })
 }
 
 
-async function preparingUndeleteProduct(){
+async function preparingUndeleteProduct(idproduct){
     return new Promise(async (resolve, reject) => {
         
     })
 }
 
 
-async function preparingPostCustomer(){
+async function preparingPostCustomer(customer){
     return new Promise(async (resolve, reject) => {
 
     })
 }
 
 
-async function preparingPutCustomer(){
-    return new Promise(async (resolve, reject) => {
-        
-    })
-}
-
-
-async function preparingDeleteCustomer(){
+async function preparingPutCustomer(customer, idcustomer){
     return new Promise(async (resolve, reject) => {
         
     })
 }
 
 
-async function preparingUndeleteCustomer(){
+async function preparingDeleteCustomer(idcustomer){
+    return new Promise(async (resolve, reject) => {
+        
+    })
+}
+
+
+async function preparingUndeleteCustomer(idcustomer){
     return new Promise(async (resolve, reject) => {
         
     })
@@ -96,10 +99,13 @@ async function returnHeader(){
 }
 
 
-async function returnBody(productHost){
-    return new Promise(async (resolve, reject) => {
-        let productToPediodoOk = {
-
-        }
-    })
+module.exports = {
+    preparingPostProduct,
+    preparingPutProduct,
+    preparingDeleteProduct,
+    preparingUndeleteProduct,
+    preparingPostCustomer,
+    preparingPutCustomer,
+    preparingDeleteCustomer,
+    preparingUndeleteCustomer,
 }

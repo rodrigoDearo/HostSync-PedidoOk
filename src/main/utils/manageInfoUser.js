@@ -48,6 +48,10 @@ async function returnValueFromJson(campo){
           case 'tokenpedidook':
             resolve(dados.pedidoOk.token);
             break;
+
+          case 'idparceiro':
+            resolve(dados.pedidoOk.idparceiro);
+            break;
         }
       }
     });

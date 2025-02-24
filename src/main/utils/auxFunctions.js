@@ -12,7 +12,8 @@ async function returnConfigToAccessDB(){
                 host: 'localhost',
                 port: 3050,
                 database: `${response}/HOST.FDB`,
-                charset: 'UTF8'
+                charset: 'UTF8',
+                encoding: 'UTF8'
             }
         })
         .then(async () => {
@@ -27,6 +28,18 @@ async function returnConfigToAccessDB(){
             resolve(config)
         })
     })
+}
+
+
+
+async function incrementIdParceiro(){
+  return new Promise(async (resolve, reject) => {
+    const configApp = JSON.parse(fs.readFileSync('./config/configApp.json', 'utf-8'));
+    configApp.pedidoOk.idparceiro++;
+    fs.writeFileSync('./config/configApp.json', JSON.stringify(configApp))
+
+    resolve()
+  })
 }
 
 
@@ -55,5 +68,6 @@ function gravarLog(mensagem) {
 
 module.exports = {
     returnConfigToAccessDB,
+    incrementIdParceiro,
     gravarLog
 }
