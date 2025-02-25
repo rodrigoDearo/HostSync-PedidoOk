@@ -52,7 +52,7 @@ function gravarLog(mensagem) {
   
 
 
-async function incrementidRequestPost(){
+async function incrementIdRequestPost(){
   return new Promise(async (resolve, reject) => {
     const configApp = JSON.parse(fs.readFileSync('./config/configApp.json', 'utf-8'));
     configApp.pedidoOk.idparceiro++;
@@ -69,7 +69,7 @@ async function errorHandling(){
 
 
 async function succesHandling(){
-// considerar colocar função incrementiRequestPost aqw tmb com switch case
+
 }
 
 module.exports = {
