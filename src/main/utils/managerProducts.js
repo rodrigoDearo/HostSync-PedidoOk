@@ -1,7 +1,8 @@
 const conexao = require('node-firebird');
 const fs = require ('fs')
 
-const { preparingPostProduct } = require('./preparingRequest.js')
+const { preparingPostProduct , preparingPatchProduct, preparingDeleteProduct, preparingUndeleteProduct} = require('./preparingRequest.js');
+const { undeleteProduct } = require('./requestsPedidoOk.js');
 
 async function requireAllProducts(config){
     return new Promise(async(resolve, reject) => {
@@ -17,6 +18,7 @@ async function requireAllProducts(config){
                     resolve({code: 500, msg:'ERRO AO CONSULTAR TABELA PRODUTOS, CONTATAR SUPORTE TECNICO'});
                 
                 for (const record of result) {
+                    
                     let product = {
                         "codigo": record.ID_PRODUTO,
                         "observacao": record.OBS,
@@ -27,17 +29,16 @@ async function requireAllProducts(config){
                         "marca": record.MARCA,
                         "venda": record.VALOR_VENDA,
                         "custo": record.CUSTO,
-                        "embalagem": null
+                        "embalagem": 0
                     }
 
-                    await preparingPostProduct(product)
+                    await registerOrUpdateProduct(product)
                 }
                 
             });
           
             db.detach();
 
-            resolve({code: 200, msg:'PRODUTOS CONSULTADOS COM SUCESSO'});
         });
   
       } catch (error) {
@@ -48,7 +49,7 @@ async function requireAllProducts(config){
 
 
 async function registerOrUpdateProduct(product){
-    return new Promise(async (resaolve, reject) => {
+    return new Promise(async (resolve, reject) => {
         let productsDB = JSON.parse(fs.readFileSync('../../../config/products.json'))
 
         var productAlreadyRegister = productsDB[`${product.id_produto}`] ? true : false;
@@ -56,27 +57,30 @@ async function registerOrUpdateProduct(product){
         var productIsActiveOnPedidoOK = () => {
             if(productAlreadyRegister){ return productsDB[`${product.id_produto}`].status }else{return null}
         } 
+        var idProductOnPedidoOk = () => {
+            if(productAlreadyRegister){ return productsDB[`${product.id_produto}`].idPedidoOk }else{return null}
+        }
         
         if(!productAlreadyRegister&&productIsActiveOnHost){
-
+            await preparingPostProduct(product)
         }else
         if(!productAlreadyRegister&&(!productIsActiveOnHost)){
-
+            resolve()
         }else
         if(productAlreadyRegister&&productIsActiveOnHost){
             if(productIsActiveOnPedidoOK){
-
+                await preparingPatchProduct(product, idProductOnPedidoOk)
             }
             else{
-
+                await preparingUndeleteProduct(idProductOnPedidoOk)
             }
         }else
         if(productAlreadyRegister&&(!productIsActiveOnHost)){
             if(productIsActiveOnPedidoOK){
-
+                await preparingDeleteProduct(idProductOnPedidoOk)
             }
             else{
-                
+                resolve()
             }
         }
         
@@ -99,6 +103,7 @@ IF PRODUTO CADASTRADO E INATIVO NO HOST {
     SE ESTIVER ATIVO NO PEDIDO OK = DELETE
     SE ESTIVER INATIVO NO PEDIDO OK = NADA
 }
+
 
 */
 

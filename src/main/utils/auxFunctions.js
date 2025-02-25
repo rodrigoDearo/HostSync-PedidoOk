@@ -31,19 +31,6 @@ async function returnConfigToAccessDB(){
 }
 
 
-
-async function incrementIdParceiro(){
-  return new Promise(async (resolve, reject) => {
-    const configApp = JSON.parse(fs.readFileSync('./config/configApp.json', 'utf-8'));
-    configApp.pedidoOk.idparceiro++;
-    fs.writeFileSync('./config/configApp.json', JSON.stringify(configApp))
-
-    resolve()
-  })
-}
-
-
-
 function gravarLog(mensagem) {
     if (!fs.existsSync('../logs')) {
       fs.mkdirSync('../logs');
@@ -65,6 +52,25 @@ function gravarLog(mensagem) {
   
 
 
+async function incrementidRequestPost(){
+  return new Promise(async (resolve, reject) => {
+    const configApp = JSON.parse(fs.readFileSync('./config/configApp.json', 'utf-8'));
+    configApp.pedidoOk.idparceiro++;
+    fs.writeFileSync('./config/configApp.json', JSON.stringify(configApp))
+
+    resolve()
+  })
+}
+
+
+async function errorHandling(){
+
+}
+
+
+async function succesHandling(){
+// considerar colocar função incrementiRequestPost aqw tmb com switch case
+}
 
 module.exports = {
     returnConfigToAccessDB,

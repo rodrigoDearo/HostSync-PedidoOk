@@ -15,8 +15,7 @@ async function requireAllCustomers(config){
             db.query(codigoSQL, function (err, result){
                 if (err)
                     resolve({code: 500, msg:'ERRO AO CONSULTAR TABELA CLIENTES, CONTATAR SUPORTE TECNICO'});
-  
-                console.log(result);
+
             });
           
             db.detach();
