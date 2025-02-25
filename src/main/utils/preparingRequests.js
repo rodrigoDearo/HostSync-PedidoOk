@@ -25,7 +25,7 @@ async function preparingPostProduct(product){
 }
 
 
-async function preparingPatchProduct(product, idproduct){
+async function preparingUpdateProduct(product, idproduct){
     return new Promise(async (resolve, reject) => {
         let body, header;
 
@@ -83,7 +83,7 @@ async function preparingPostCustomer(customer){
 }
 
 
-async function preparingPutCustomer(customer, idcustomer){
+async function preparingUpdateCustomer(customer, idcustomer){
     return new Promise(async (resolve, reject) => {
         
     })
@@ -134,11 +134,11 @@ async function returnHeader(){
 
 module.exports = {
     preparingPostProduct,
-    preparingPatchProduct,
+    preparingUpdateProduct,
     preparingDeleteProduct,
     preparingUndeleteProduct,
     preparingPostCustomer,
-    preparingPutCustomer,
+    preparingUpdateCustomer,
     preparingDeleteCustomer,
     preparingUndeleteCustomer,
 }

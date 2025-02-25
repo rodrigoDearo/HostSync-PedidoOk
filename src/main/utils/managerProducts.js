@@ -1,8 +1,7 @@
 const conexao = require('node-firebird');
 const fs = require ('fs')
 
-const { preparingPostProduct , preparingPatchProduct, preparingDeleteProduct, preparingUndeleteProduct} = require('./preparingRequest.js');
-const { undeleteProduct } = require('./requestsPedidoOk.js');
+const { preparingPostProduct , preparingUpdateProduct, preparingDeleteProduct, preparingUndeleteProduct } = require('./preparingRequests.js');
 
 async function requireAllProducts(config){
     return new Promise(async(resolve, reject) => {
@@ -54,12 +53,12 @@ async function registerOrUpdateProduct(product){
 
         var productAlreadyRegister = productsDB[`${product.id_produto}`] ? true : false;
         var productIsActiveOnHost = product.status == 'ATIVO' ? true : false;
-        var productIsActiveOnPedidoOK = () => {
-            if(productAlreadyRegister){ return productsDB[`${product.id_produto}`].status }else{return null}
-        } 
-        var idProductOnPedidoOk = () => {
-            if(productAlreadyRegister){ return productsDB[`${product.id_produto}`].idPedidoOk }else{return null}
-        }
+
+        const functionReturnStatusOnPedOk = () => {if(productAlreadyRegister){ return productsDB[`${product.id_produto}`].status }else{return null}}
+        const functionReturnIdProductOnPedOk = () => {if(productAlreadyRegister){ return productsDB[`${product.id_produto}`].idPedidoOk }else{return null}}
+
+        var productIsActiveOnPedidoOK =  functionReturnStatusOnPedOk()
+        var idProductOnPedidoOk = functionReturnIdProductOnPedOk()
         
         if(!productAlreadyRegister&&productIsActiveOnHost){
             await preparingPostProduct(product)
@@ -69,7 +68,7 @@ async function registerOrUpdateProduct(product){
         }else
         if(productAlreadyRegister&&productIsActiveOnHost){
             if(productIsActiveOnPedidoOK){
-                await preparingPatchProduct(product, idProductOnPedidoOk)
+                await preparingUpdateProduct(product, idProductOnPedidoOk)
             }
             else{
                 await preparingUndeleteProduct(idProductOnPedidoOk)
