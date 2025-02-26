@@ -134,7 +134,9 @@ async function succesHandlingRequests(destiny, resource, idHost, idPedOk){
 
 
 async function errorHandlingRequest(){
-
+  return new Promise(async (resolve, reject) => {
+    
+  })
 }
 
 
