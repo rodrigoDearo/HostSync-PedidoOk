@@ -105,16 +105,19 @@ async function mainProcess(){
         reject(mensageReturn)
       }
       return config
-    })
+    })/*
     .then(async (config) => {
       let mensageReturn = await requireAllProducts(config)
       if(mensageReturn.code == 500){
         reject(mensageReturn)
       }
       return config
-    })
+    })*/
     .then(async (config) => {
       let mensageReturn = await requireAllCustomers(config)
+      if(mensageReturn.code == 500){
+        reject(mensageReturn)
+      }
     }) 
   })
 }

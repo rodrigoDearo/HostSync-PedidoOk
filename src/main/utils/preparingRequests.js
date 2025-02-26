@@ -1,4 +1,4 @@
-const { postProduct, patchProduct, deleteProduct, undeleteProduct, postCustomer, putCustomer, deleteCustomer, undeleteCustomer, getSales } = require('./requestsPedidoOk');
+const { postProduct, patchProduct, deleteProduct, undeleteProduct, postCustomer, patchCustomer, deleteCustomer, undeleteCustomer, getSales } = require('./requestsPedidoOk');
 const { returnValueFromJson } = require('./manageInfoUser');
 const { returnInfo } = require('../envManager');
 
@@ -10,6 +10,8 @@ async function preparingPostProduct(product){
         .then(async (response) => {
             header = response;
             product.id_parceiro  = await returnValueFromJson('idparceiro');
+
+            delete product.status
             return product
         })
         .then(async (response) => {
@@ -17,10 +19,9 @@ async function preparingPostProduct(product){
             await postProduct(body, header)
         }) 
         .then(() => {
-            resolve()
+        
         })
 
-        
     })  
 }
 
@@ -35,13 +36,16 @@ async function preparingUpdateProduct(product, idproduct){
 
             delete product.embalagem
             delete product.codigo
+            delete product.status
             return product
         })
         .then(async (response) => {
             body = response
             await patchProduct(body, header, idproduct);
         })
-        .then()
+        .then(() => {
+        
+        })
     })
 }
 
@@ -56,6 +60,9 @@ async function preparingDeleteProduct(idproduct){
         })
         .then(async () => {
             await deleteProduct(header, idproduct)
+        })
+        .then(() => {
+        
         })
     })
 }
@@ -72,34 +79,92 @@ async function preparingUndeleteProduct(idproduct){
         .then(async () => {
             await undeleteProduct(header, idproduct)
         })
+        .then(() => {
+        
+        })
     })
 }
 
 
 async function preparingPostCustomer(customer){
     return new Promise(async (resolve, reject) => {
+        let body, header
 
-    })
+        await returnHeader()
+        .then(async (response) => {
+            header = response;
+            customer.id_parceiro  = await returnValueFromJson('idparceiro');
+
+            delete customer.status
+            return customer
+        })
+        .then(async (response) => {
+            body = response
+            await postCustomer(body, header)
+        }) 
+        .then(() => {
+     
+        })
+
+    })  
 }
 
 
 async function preparingUpdateCustomer(customer, idcustomer){
     return new Promise(async (resolve, reject) => {
+        let body, header;
+
+        await returnHeader()
+        .then(async (response) => {
+            header = response;
+
+            delete customer.codigo
+            delete customer.status
+            return customer
+        })
+        .then(async (response) => {
+            body = response
+            await patchCustomer(body, header, idcustomer);
+        })
+        .then(() => {
         
+        })
     })
 }
 
 
 async function preparingDeleteCustomer(idcustomer){
     return new Promise(async (resolve, reject) => {
+        let header;
+
+        await returnHeader()
+        .then(async (response) => {
+            header = response
+        })
+        .then(async () => {
+            await deleteCustomer(header, idcustomer)
+        })
+        .then(() => {
         
+        })
     })
 }
 
 
 async function preparingUndeleteCustomer(idcustomer){
     return new Promise(async (resolve, reject) => {
+        let header;
+
+        await returnHeader()
+        .then(async (response) => {
+            header = response
+        })
+        .then(async () => {
+            await undeleteProduct(header, idcustomer)
+        })
+        .then(() => {
         
+        })
     })
 }
 

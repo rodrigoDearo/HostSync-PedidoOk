@@ -11,17 +11,41 @@ async function requireAllCustomers(config){
             if (err)
                 throw err;
   
-            let codigoSQL = `SELECT id_cliente, cliente, status FROM CLIENTES`;
+            let codigoSQL = `SELECT id_cliente, fone, obs, uf, municipio, complemento, numero, logradouro, bairro, cep, cliente, raz_social, cpf_cnpj, status FROM CLIENTES`;
   
-            db.query(codigoSQL, function (err, result){
+            db.query(codigoSQL, async function (err, result){
                 if (err)
                     resolve({code: 500, msg:'ERRO AO CONSULTAR TABELA CLIENTES, CONTATAR SUPORTE TECNICO'});
 
-            });
-          
-            db.detach();
+                for (const record of result) {
+                    
+                    let customer = {
+                        "codigo": record.ID_CLIENTE,
+                        "telefone": record.FONE,
+                        "observacao": record.OBS,
+                        "endereco": {
+                                "uf": record.UF,
+                                "cidade": record.MUNICIPIO,
+                                "complemento": record.COMPLEMENTO,
+                                "numero": record.NUMERO,
+                                "logradouro": record.LOGRADOURO,
+                                "bairro": record.BAIRRO,
+                                "cep": record.CEP
+                        },
+                        "fantasia": record.CLIENTE,
+                        "razao_social": record.RAZ_SOCIAL,
+                        "cnpj_cpf": record.CPF_CNPJ,
+                        "status": record.STATUS
+                    }
 
-            resolve({code: 200, msg:'CLIENTES CONSULTADOS COM SUCESSO'});
+                    console.log(customer)
+                }
+
+            });
+        
+        // FIX IT! JUST RUN THAT CODE WHEN ALL RECORD HAD BE READ
+        //db.detach();
+        //resolve({code: 200, msg:'CLIENTES CONSULTADOS COM SUCESSO'});
         });
   
       } catch (error) {

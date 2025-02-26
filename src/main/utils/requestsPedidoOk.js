@@ -1,4 +1,5 @@
 const axios = require('axios');
+const { succesHandlingRequests, errorHandlingRequest, } = require('./auxFunctions')
 
 function postProduct(body, header){
     return new Promise(async (resolve, reject) => {
@@ -84,7 +85,7 @@ function postCustomer(body, header){
 }
 
 
-function putCustomer(body, header, idcustomer){
+function patchCustomer(body, header, idcustomer){
     return new Promise(async (resolve, reject) => {
         await axios.put(`https://api.pedidook.com.br/v1/clientes/${idcustomer}`, body, header)
         .then((response) => {
@@ -158,7 +159,7 @@ module.exports = {
     deleteProduct,
     undeleteProduct,
     postCustomer,
-    putCustomer,
+    patchCustomer,
     deleteCustomer,
     undeleteCustomer,
     getSales

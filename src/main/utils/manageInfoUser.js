@@ -52,6 +52,10 @@ async function returnValueFromJson(campo){
           case 'idparceiro':
             resolve(dados.pedidoOk.idparceiro);
             break;
+
+          case 'lastrequest':
+            resolve(dados.pedidoOk.last_request);
+            break;
         }
       }
     });

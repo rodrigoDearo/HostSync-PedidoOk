@@ -61,10 +61,6 @@ async function incrementIdRequestPost(){
 }
 
 
-async function errorHandlingRequest(){
-
-}
-
 
 async function succesHandlingRequests(destiny, resource, idHost, idPedOk){
   return new Promise(async (resolve, reject) => {
@@ -127,7 +123,7 @@ async function succesHandlingRequests(destiny, resource, idHost, idPedOk){
     }else
     if(destiny=="sales"){
       let configDB = JSON.parse(fs.readFileSync('../../../config/configApp.json'))
-      
+      // ATUALIZAR DATA REQUEST
 
       fs.writeFileSync('../../../config/configApp.json', JSON.stringify(configDB), 'utf-8')
     }
@@ -135,8 +131,18 @@ async function succesHandlingRequests(destiny, resource, idHost, idPedOk){
   })
 }
 
+
+
+async function errorHandlingRequest(){
+
+}
+
+
+
 module.exports = {
     returnConfigToAccessDB,
     incrementIdRequestPost,
+    succesHandlingRequests,
+    errorHandlingRequest,
     gravarLog
 }

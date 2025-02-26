@@ -10,7 +10,7 @@ async function requireAllProducts(config){
             if (err)
                 throw err;
   
-            let codigoSQL = `SELECT id_produto, obs, barras, PRODUTOS_GRUPO.grupo, produto, estoque, PRODUTOS_MARCA.marca, valor_venda, custo FROM PRODUTOS LEFT JOIN PRODUTOS_GRUPO on PRODUTOS.grupo = PRODUTOS_GRUPO.id LEFT JOIN PRODUTOS_MARCA on PRODUTOS.marca = PRODUTOS_MARCA.id`;
+            let codigoSQL = `SELECT id_produto, obs, barras, PRODUTOS_GRUPO.grupo, produto, estoque, PRODUTOS_MARCA.marca, valor_venda, custo, status FROM PRODUTOS LEFT JOIN PRODUTOS_GRUPO on PRODUTOS.grupo = PRODUTOS_GRUPO.id LEFT JOIN PRODUTOS_MARCA on PRODUTOS.marca = PRODUTOS_MARCA.id`;
   
             db.query(codigoSQL, async function (err, result){
                 if (err)
@@ -28,7 +28,8 @@ async function requireAllProducts(config){
                         "marca": record.MARCA,
                         "venda": record.VALOR_VENDA,
                         "custo": record.CUSTO,
-                        "embalagem": 0
+                        "embalagem": 0,
+                        "status": record.STATUS
                     }
 
                     await registerOrUpdateProduct(product)
@@ -36,8 +37,9 @@ async function requireAllProducts(config){
                 
             });
           
-            db.detach();
-
+        // FIX IT! JUST RUN THAT CODE WHEN ALL RECORD HAD BE READ
+        //  db.detach();
+        //  resolve({code: 200, msg:'PRODUTOS CONSULTADOS COM SUCESSO'});
         });
   
       } catch (error) {
