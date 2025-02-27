@@ -16,24 +16,11 @@ async function requireAllProducts(config){
                 if (err)
                     resolve({code: 500, msg:'ERRO AO CONSULTAR TABELA PRODUTOS, CONTATAR SUPORTE TECNICO'});
                 
-                for (const record of result) {
-                    
-                    let product = {
-                        "codigo": record.ID_PRODUTO,
-                        "observacao": record.OBS,
-                        "codigo_barra": record.BARRAS,
-                        "categoria": record.GRUPO,
-                        "nome": record.PRODUTO,
-                        "estoque": record.ESTOQUE,
-                        "marca": record.MARCA,
-                        "venda": record.VALOR_VENDA,
-                        "custo": record.CUSTO,
-                        "embalagem": 0,
-                        "status": record.STATUS
-                    }
-
-                    await registerOrUpdateProduct(product)
-                }
+                await readingRecords(result)
+                .then(() => {
+                    db.detach();
+                    resolve({code: 200, msg:'PRODUTOS CONSULTADOS COM SUCESSO'});
+                })
                 
             });
           
@@ -45,6 +32,32 @@ async function requireAllProducts(config){
       } catch (error) {
         reject(error);
       }
+    })
+}
+
+
+async function readingRecords(result){
+    return new Promise(async (resolve, reject) => {
+        for (const record of result) {
+                    
+            let product = {
+                "codigo": record.ID_PRODUTO,
+                "observacao": record.OBS,
+                "codigo_barra": record.BARRAS,
+                "categoria": record.GRUPO,
+                "nome": record.PRODUTO,
+                "estoque": record.ESTOQUE,
+                "marca": record.MARCA,
+                "venda": record.VALOR_VENDA,
+                "custo": record.CUSTO,
+                "embalagem": 0,
+                "status": record.STATUS
+            }
+
+            await registerOrUpdateProduct(product)
+        }
+
+        resolve()
     })
 }
 
