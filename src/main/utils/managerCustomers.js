@@ -17,40 +17,75 @@ async function requireAllCustomers(config){
                 if (err)
                     resolve({code: 500, msg:'ERRO AO CONSULTAR TABELA CLIENTES, CONTATAR SUPORTE TECNICO'});
 
-                for (const record of result) {
-                    
-                    let customer = {
-                        "codigo": record.ID_CLIENTE,
-                        "telefone": record.FONE,
-                        "observacao": record.OBS,
-                        "endereco": {
-                                "uf": record.UF,
-                                "cidade": record.MUNICIPIO,
-                                "complemento": record.COMPLEMENTO,
-                                "numero": record.NUMERO,
-                                "logradouro": record.LOGRADOURO,
-                                "bairro": record.BAIRRO,
-                                "cep": record.CEP
-                        },
-                        "fantasia": record.CLIENTE,
-                        "razao_social": record.RAZ_SOCIAL,
-                        "cnpj_cpf": record.CPF_CNPJ,
-                        "status": record.STATUS
-                    }
-
-                    console.log(customer)
-                }
+                await readingAllRecord(result, 0)
+                .then(() => {
+                    resolve({code: 200, msg:'CLIENTES CONSULTADOS COM SUCESSO'});
+                })
 
             });
         
-        // FIX IT! JUST RUN THAT CODE WHEN ALL RECORD HAD BE READ
-        //db.detach();
-        //resolve({code: 200, msg:'CLIENTES CONSULTADOS COM SUCESSO'});
+        db.detach();
         });
   
       } catch (error) {
         reject(error);
       }
+    })
+}
+
+
+async function readingAllRecord(customersRecords, index){
+    return new Promise(async (resolve, reject) => {
+        let record = customersRecords[index]
+
+        let customer = {
+            "codigo": record.ID_CLIENTE,
+            "telefone": record.FONE,
+            "observacao": record.OBS,
+            "endereco": {
+                    "uf": record.UF,
+                    "cidade": record.MUNICIPIO,
+                    "complemento": record.COMPLEMENTO,
+                    "numero": record.NUMERO,
+                    "logradouro": record.LOGRADOURO,
+                    "bairro": record.BAIRRO,
+                    "cep": record.CEP
+            },
+            "fantasia": record.CLIENTE,
+            "razao_social": record.RAZ_SOCIAL,
+            "cnpj_cpf": record.CPF_CNPJ,
+            "status": record.STATUS
+        }
+        
+        console.log(customer);
+        /*
+        registerOrUpdateCustomer(customer)
+        .then(async() => {
+            let i = index + 1
+            await readingAllRecord(customersRecords, i)
+            .then(() => {
+                resolve()
+            })
+        })
+
+        if(index == (customersRecords.lenght-1)){
+            resolve()
+        }
+        */ 
+
+
+        setTimeout(async () => {
+            let i = index + 1
+            await readingAllRecord(customersRecords, i)
+            .then(() => {
+                resolve()
+            })
+        }, 2000);
+        
+        if(index == (customersRecords.lenght-1)){
+            resolve()
+        }
+
     })
 }
 
