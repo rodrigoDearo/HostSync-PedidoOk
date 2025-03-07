@@ -17,6 +17,7 @@ async function requireAllCustomers(config){
                 if (err)
                     resolve({code: 500, msg:'ERRO AO CONSULTAR TABELA CLIENTES, CONTATAR SUPORTE TECNICO'});
 
+                console.log(result.length)
                 await readingAllRecord(result, 0)
                 .then(() => {
                     resolve({code: 200, msg:'CLIENTES CONSULTADOS COM SUCESSO'});
@@ -37,6 +38,7 @@ async function requireAllCustomers(config){
 async function readingAllRecord(customersRecords, index){
     return new Promise(async (resolve, reject) => {
         let record = customersRecords[index]
+        let i = index + 1;
 
         let customer = {
             "codigo": record.ID_CLIENTE,
@@ -57,34 +59,18 @@ async function readingAllRecord(customersRecords, index){
             "status": record.STATUS
         }
         
-        console.log(customer);
-        /*
+        if(i == customersRecords.length){
+            resolve()
+        }
+
         registerOrUpdateCustomer(customer)
         .then(async() => {
-            let i = index + 1
             await readingAllRecord(customersRecords, i)
             .then(() => {
                 resolve()
             })
         })
 
-        if(index == (customersRecords.lenght-1)){
-            resolve()
-        }
-        */ 
-
-
-        setTimeout(async () => {
-            let i = index + 1
-            await readingAllRecord(customersRecords, i)
-            .then(() => {
-                resolve()
-            })
-        }, 2000);
-        
-        if(index == (customersRecords.lenght-1)){
-            resolve()
-        }
 
     })
 }
