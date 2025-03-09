@@ -2,6 +2,7 @@ const conexao = require('node-firebird');
 const fs = require ('fs')
 
 const { preparingPostProduct , preparingUpdateProduct, preparingDeleteProduct, preparingUndeleteProduct } = require('./preparingRequests.js');
+const { Console } = require('console');
 
 async function requireAllProducts(config){
     return new Promise(async(resolve, reject) => {
@@ -16,17 +17,14 @@ async function requireAllProducts(config){
                 if (err)
                     resolve({code: 500, msg:'ERRO AO CONSULTAR TABELA PRODUTOS, CONTATAR SUPORTE TECNICO'});
                 
-                await readingRecords(result)
+                await readingAllRecord(result, 0)
                 .then(() => {
-                    db.detach();
-                    resolve({code: 200, msg:'PRODUTOS CONSULTADOS COM SUCESSO'});
+                    resolve({code: 200, msg:'CLIENTES CONSULTADOS COM SUCESSO'});
                 })
                 
             });
           
-        // FIX IT! JUST RUN THAT CODE WHEN ALL RECORD HAD BE READ
-        //  db.detach();
-        //  resolve({code: 200, msg:'PRODUTOS CONSULTADOS COM SUCESSO'});
+        db.detach();
         });
   
       } catch (error) {
@@ -36,10 +34,15 @@ async function requireAllProducts(config){
 }
 
 
-async function readingRecords(result){
+async function readingAllRecord(productsRecords, index){
     return new Promise(async (resolve, reject) => {
-        for (const record of result) {
-                    
+        let record = productsRecords[index]
+        let i = index + 1;
+
+        if(i == productsRecords.length){
+            resolve()
+        }
+        else{
             let product = {
                 "codigo": record.ID_PRODUTO,
                 "observacao": record.OBS,
@@ -53,30 +56,40 @@ async function readingRecords(result){
                 "embalagem": 0,
                 "status": record.STATUS
             }
-
-            await registerOrUpdateProduct(product)
+    
+            registerOrUpdateProduct(product)
+            .then(async() => {
+                await readingAllRecord(productsRecords, i)
+                .then(() => {
+                    resolve()
+                })
+            })
         }
 
-        resolve()
     })
 }
 
 
 async function registerOrUpdateProduct(product){
     return new Promise(async (resolve, reject) => {
-        let productsDB = JSON.parse(fs.readFileSync('../../../config/products.json'))
+        let productsDB = JSON.parse(fs.readFileSync('./config/products.json'))
 
-        var productAlreadyRegister = productsDB[`${product.id_produto}`] ? true : false;
+        var productAlreadyRegister = productsDB[`${product.codigo}`] ? true : false;
         var productIsActiveOnHost = product.status == 'ATIVO' ? true : false;
 
-        const functionReturnStatusOnPedOk = () => {if(productAlreadyRegister){ return productsDB[`${product.id_produto}`].status }else{return null}}
-        const functionReturnIdProductOnPedOk = () => {if(productAlreadyRegister){ return productsDB[`${product.id_produto}`].idPedidoOk }else{return null}}
-
-        var productIsActiveOnPedidoOK =  functionReturnStatusOnPedOk()
-        var idProductOnPedidoOk = functionReturnIdProductOnPedOk()
+        const functionReturnStatusOnPedOk = () => {if(productAlreadyRegister){ return productsDB[`${product.codigo}`].status }else{return null}}
+        const functionReturnIdProductOnPedOk = () => {if(productAlreadyRegister){ return productsDB[`${product.codigo}`].idPedidoOk }else{return null}}
         
+        var statusProductOnPedidoOk = functionReturnStatusOnPedOk()
+
+        var productIsActiveOnPedidoOK =  statusProductOnPedidoOk == 'ATIVO' ? true : false;
+        var idProductOnPedidoOk = functionReturnIdProductOnPedOk()
+
         if(!productAlreadyRegister&&productIsActiveOnHost){
             await preparingPostProduct(product)
+            .then(() => {
+                resolve()
+            })
         }else
         if(!productAlreadyRegister&&(!productIsActiveOnHost)){
             resolve()
@@ -84,14 +97,23 @@ async function registerOrUpdateProduct(product){
         if(productAlreadyRegister&&productIsActiveOnHost){
             if(productIsActiveOnPedidoOK){
                 await preparingUpdateProduct(product, idProductOnPedidoOk)
+                .then(() => {
+                    resolve()
+                })
             }
             else{
-                await preparingUndeleteProduct(idProductOnPedidoOk)
+                await preparingUndeleteProduct(idProductOnPedidoOk, product.codigo)
+                .then(() => {
+                    resolve()
+                })
             }
         }else
         if(productAlreadyRegister&&(!productIsActiveOnHost)){
             if(productIsActiveOnPedidoOK){
-                await preparingDeleteProduct(idProductOnPedidoOk)
+                await preparingDeleteProduct(idProductOnPedidoOk, product.codigo)
+                .then(() => {
+                    resolve()
+                })
             }
             else{
                 resolve()

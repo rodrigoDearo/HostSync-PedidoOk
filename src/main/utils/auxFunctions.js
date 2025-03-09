@@ -92,6 +92,7 @@ async function succesHandlingRequests(destiny, resource, idHost, idPedOk){
       }
 
       fs.writeFileSync('./config/products.json', JSON.stringify(productsDB), 'utf-8')
+      gravarLog('Gravado registro no banco de ' + destiny);
       resolve()
     }else
     if(destiny=="customer"){

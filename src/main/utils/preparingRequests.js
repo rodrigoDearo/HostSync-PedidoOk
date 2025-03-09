@@ -9,10 +9,8 @@ async function preparingPostProduct(product){
 
         await returnHeader()
         .then(async (response) => {
-            const functionReturnStatusOnPedOk = async () => { await returnValueFromJson('idparceiro').then((response) => { return response}) }
-
             header = response;
-            product.id_parceiro  = functionReturnStatusOnPedOk()
+            product.id_parceiro  = await returnValueFromJson('idparceiro')
 
             delete product.status
             return product
@@ -20,9 +18,15 @@ async function preparingPostProduct(product){
         .then(async (response) => {
             body = response
             await postProduct(body, header)
+            .catch(async (error) => {
+                await incrementIdRequestPost()
+                .then(async () => {
+                    await preparingPostProduct(product)
+                })
+            })
         }) 
         .then(() => {
-        
+            resolve()
         })
 
     })  
@@ -47,7 +51,7 @@ async function preparingUpdateProduct(product, idproduct){
             await patchProduct(body, header, idproduct, idHost);
         })
         .then(() => {
-        
+            resolve()
         })
     })
 }
@@ -65,7 +69,7 @@ async function preparingDeleteProduct(idproduct, idHost){
             await deleteProduct(header, idproduct, idHost)
         })
         .then(() => {
-        
+            resolve()
         })
     })
 }
@@ -73,17 +77,15 @@ async function preparingDeleteProduct(idproduct, idHost){
 
 async function preparingUndeleteProduct(idproduct, idHost){
     return new Promise(async (resolve, reject) => {
-        let header;
-
         await returnHeader()
         .then(async (response) => {
-            header = response
+            return response
         })
-        .then(async () => {
+        .then(async (header) => {
             await undeleteProduct(header, idproduct, idHost)
         })
         .then(() => {
-        
+            resolve()
         })
     })
 }
@@ -154,7 +156,7 @@ async function preparingDeleteCustomer(idcustomer, idHost){
             await deleteCustomer(header, idcustomer, idHost)
         })
         .then(() => {
-        
+            resolve()
         })
     })
 }
@@ -172,7 +174,7 @@ async function preparingUndeleteCustomer(idcustomer, idHost){
             await undeleteProduct(header, idcustomer, idHost)
         })
         .then(() => {
-        
+            resolve()
         })
     })
 }

@@ -1,1 +1,10 @@
-{"host":{"pathdb":"C:/TSD/Host"},"pedidoOk":{"token":"616457fa-80e7-4e77-802c-38f92e65ef3c","idRequestPost":1838,"last_request":""}}
+{
+  "host": {
+    "pathdb": "C:/TSD/Host"
+  },
+  "pedidoOk": {
+    "token": "",
+    "idRequestPost": "",
+    "last_request": ""
+  }
+}

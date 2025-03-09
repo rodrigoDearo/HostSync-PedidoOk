@@ -5,13 +5,18 @@ function postProduct(body, header){
     return new Promise(async (resolve, reject) => {
         await axios.post('https://api.pedidook.com.br/v1/produtos/', body, header)
         .then(async (answer) => {
-            await succesHandlingRequests('product', 'post', body.codigo, answer.response.data.id)
+            await succesHandlingRequests('product', 'post', body.codigo, answer.data.produto.id)
         })
         .catch(async (error) => {
-            await errorHandlingRequest('product', 'POST', body.codigo, null, error.response.data.erros, body)
+            if(error.response.data.erros[0].codigo==24){
+                reject({code:24})
+            }
+            else{
+                await errorHandlingRequest('product', 'POST', body.codigo, null, error.response.data.erros, body)
+            }
         })
         .finally(() => {
-           
+            resolve()
         })    
     })
 }
@@ -27,7 +32,7 @@ function patchProduct(body, header, idproduct, idHost){
             await errorHandlingRequest('product', 'PUT', idHost, idproduct, error.response.data.erros, body)
         })
         .finally(() => {
-
+            resolve()
         })    
     })
 }
@@ -43,7 +48,7 @@ function deleteProduct(header, idproduct, idHost){
             await errorHandlingRequest('product', 'DELETE', idHost, idproduct, error.response.data.erros, null)
         })
         .finally(() => {
-            
+            resolve()
         })    
     })
 }
@@ -56,10 +61,11 @@ function undeleteProduct(header, idproduct, idHost){
             await succesHandlingRequests('product', 'undelete', idHost, idproduct)
         })
         .catch(async (error) => {
+            console.log(header)
             await errorHandlingRequest('product', 'UNDELETE', idHost, idproduct, error.response.data.erros, null)
         })
         .finally(() => {
-
+            resolve()
         })    
     })
 }
@@ -73,9 +79,6 @@ function postCustomer(body, header){
         await axios.post('https://api.pedidook.com.br/v1/clientes/', body, header)
         .then(async (answer) => {
             await succesHandlingRequests('customer', 'post', body.codigo, answer.data.cliente.id)
-            .then(() => {
-                resolve()
-            })
         })
         .catch(async (error) => {
             if(error.response.data.erros[0].codigo==24){
@@ -97,15 +100,12 @@ function patchCustomer(body, header, idcustomer, idHost){
         await axios.put(`https://api.pedidook.com.br/v1/clientes/${idcustomer}`, body, header)
         .then(async() => {
             await succesHandlingRequests('customer', 'put', idHost, idcustomer)
-            .then(() => {
-                resolve()
-            })
         })
         .catch(async (error) => {
             await errorHandlingRequest('customer', 'PUT', idHost, idcustomer, error.response.data.erros, body)
         })
         .finally(() => {
-            
+            resolve()
         })    
     })
 }
@@ -121,7 +121,7 @@ function deleteCustomer(header, idcustomer, idHost){
             await errorHandlingRequest('customer', 'DELETE', idHost, idcustomer, error.response.data.erros, null)
         })
         .finally(() => {
-
+            resolve()
         })    
     })
 }
@@ -137,7 +137,7 @@ function undeleteCustomer(header, idcustomer, idHost){
             await errorHandlingRequest('customer', 'UNDELETE', idHost, idcustomer, error.response.data.erros, null)
         })
         .finally(() => {
-
+            resolve()
         })    
     })
 }

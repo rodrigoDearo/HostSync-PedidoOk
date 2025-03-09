@@ -19,7 +19,6 @@ async function requireAllCustomers(config){
 
                 await readingAllRecord(result, 0)
                 .then(() => {
-                    console.log('SELOKO NUM COMPENSA')
                     resolve({code: 200, msg:'CLIENTES CONSULTADOS COM SUCESSO'});
                 })
 
@@ -115,7 +114,7 @@ async function registerOrUpdateCustomer(customer){
         if(customerAlreadyRegister&&customerIsActiveOnHost){
             if(customerIsActiveOnPedidoOK){
                 resolve()
-             /*   await preparingUpdateCustomer(customer, idCustomerOnPedidoOk)
+               /* await preparingUpdateCustomer(customer, idCustomerOnPedidoOk)
                 .then(() => {
                     resolve()
                 })*/
