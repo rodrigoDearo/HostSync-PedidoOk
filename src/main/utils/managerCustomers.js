@@ -52,13 +52,13 @@ async function readingAllRecord(customersRecords, index){
                         "cidade": record.MUNICIPIO,
                         "complemento": record.COMPLEMENTO,
                         "numero": record.NUMERO,
-                        "logradouro": record.LOGRADOURO,
+                        "logradouro": record.LOGRADOURO, //max 30
                         "bairro": record.BAIRRO,
-                        "cep": record.CEP
+                        "cep": record.CEP //char SEMPRE COMPLETAR 8
                 },
                 "fantasia": record.CLIENTE,
                 "razao_social": record.RAZ_SOCIAL,
-                "cnpj_cpf": record.CPF_CNPJ,
+                "cnpj_cpf": record.CPF_CNPJ, //sempre completar 11, char()
                 "status": record.STATUS
             }
     
