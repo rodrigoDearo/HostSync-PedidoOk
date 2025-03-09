@@ -17,9 +17,9 @@ async function requireAllCustomers(config){
                 if (err)
                     resolve({code: 500, msg:'ERRO AO CONSULTAR TABELA CLIENTES, CONTATAR SUPORTE TECNICO'});
 
-                console.log(result.length)
                 await readingAllRecord(result, 0)
                 .then(() => {
+                    console.log('SELOKO NUM COMPENSA')
                     resolve({code: 200, msg:'CLIENTES CONSULTADOS COM SUCESSO'});
                 })
 
@@ -40,37 +40,51 @@ async function readingAllRecord(customersRecords, index){
         let record = customersRecords[index]
         let i = index + 1;
 
-        let customer = {
-            "codigo": record.ID_CLIENTE,
-            "telefone": record.FONE,
-            "observacao": record.OBS,
-            "endereco": {
-                    "uf": record.UF,
-                    "cidade": record.MUNICIPIO,
-                    "complemento": record.COMPLEMENTO,
-                    "numero": record.NUMERO,
-                    "logradouro": record.LOGRADOURO,
-                    "bairro": record.BAIRRO,
-                    "cep": record.CEP
-            },
-            "fantasia": record.CLIENTE,
-            "razao_social": record.RAZ_SOCIAL,
-            "cnpj_cpf": record.CPF_CNPJ,
-            "status": record.STATUS
-        }
-        
         if(i == customersRecords.length){
             resolve()
         }
-
-        registerOrUpdateCustomer(customer)
-        .then(async() => {
-            await readingAllRecord(customersRecords, i)
-            .then(() => {
-                resolve()
-            })
-        })
-
+        else{
+            let customer = {
+                "codigo": record.ID_CLIENTE,
+                "telefone": record.FONE,
+                "observacao": record.OBS,
+                "endereco": {
+                        "uf": record.UF,
+                        "cidade": record.MUNICIPIO,
+                        "complemento": record.COMPLEMENTO,
+                        "numero": record.NUMERO,
+                        "logradouro": record.LOGRADOURO,
+                        "bairro": record.BAIRRO,
+                        "cep": record.CEP
+                },
+                "fantasia": record.CLIENTE,
+                "razao_social": record.RAZ_SOCIAL,
+                "cnpj_cpf": record.CPF_CNPJ,
+                "status": record.STATUS
+            }
+    
+            if(record.RAZ_SOCIAL==null){
+                await readingAllRecord(customersRecords, i)
+                .then(() => {
+                    resolve()
+                })
+            }
+            else if((record.RAZ_SOCIAL).length==0){
+                await readingAllRecord(customersRecords, i)
+                .then(() => {
+                    resolve()
+                })
+            }
+            else{
+                registerOrUpdateCustomer(customer)
+                .then(async() => {
+                    await readingAllRecord(customersRecords, i)
+                    .then(() => {
+                        resolve()
+                    })
+                })
+            }
+        }
 
     })
 }
@@ -78,34 +92,47 @@ async function readingAllRecord(customersRecords, index){
 
 async function registerOrUpdateCustomer(customer){
     return new Promise(async (resolve, reject) => {
-        let customersDB = JSON.parse(fs.readFileSync('../../../config/customer.json'))
+        let customersDB = JSON.parse(fs.readFileSync('./config/customers.json'))
 
-        var customerAlreadyRegister = customersDB[`${customer.id_cliente}`] ? true : false;
+        var customerAlreadyRegister = customersDB[`${customer.codigo}`] ? true : false;
         var customerIsActiveOnHost = customer.status == 'ATIVO' ? true : false;
 
-        const functionReturnStatusOnPedOk = () => {if(customerAlreadyRegister){ return customersDB[`${customer.id_cliente}`].status }else{return null}} 
-        const functionReturnIdCustomerOnPedOk = () => {if(customerAlreadyRegister){ return customersDB[`${customer.id_cliente}`].idPedidoOk }else{return null}}
-
-        var customerIsActiveOnPedidoOK =  functionReturnStatusOnPedOk()
-        var idCustomerOnPedidoOk = functionReturnIdCustomerOnPedOk()
+        const functionReturnStatusOnPedOk = async () => {if(customerAlreadyRegister){ return customersDB[`${customer.codigo}`].status }else{return null}} 
+        const functionReturnIdCustomerOnPedOk = async () => {if(customerAlreadyRegister){ return customersDB[`${customer.codigo}`].idPedidoOk }else{return null}}
+       
+        var customerIsActiveOnPedidoOK =  await functionReturnStatusOnPedOk()
+        var idCustomerOnPedidoOk = await functionReturnIdCustomerOnPedOk()
 
         if(!customerAlreadyRegister&&customerIsActiveOnHost){
             await preparingPostCustomer(customer)
+            .then(() => {
+                resolve()
+            })
         }else
         if(!customerAlreadyRegister&&(!customerIsActiveOnHost)){
             resolve()
         }else
         if(customerAlreadyRegister&&customerIsActiveOnHost){
             if(customerIsActiveOnPedidoOK){
-                await preparingUpdateCustomer(customer, idCustomerOnPedidoOk)
+                resolve()
+             /*   await preparingUpdateCustomer(customer, idCustomerOnPedidoOk)
+                .then(() => {
+                    resolve()
+                })*/
             }
             else{
-                await preparingUndeleteCustomer(idCustomerOnPedidoOk)
+                await preparingUndeleteCustomer(idCustomerOnPedidoOk, customer.codigo)
+                .then(() => {
+                    resolve()
+                })
             }
         }else
         if(customerAlreadyRegister&&(!customerIsActiveOnHost)){
             if(customerIsActiveOnPedidoOK){
-                await preparingDeleteCustomer(idCustomerOnPedidoOk)
+                await preparingDeleteCustomer(idCustomerOnPedidoOk, customer.codigo)
+                .then(() => {
+                    resolve()
+                })
             }
             else{
                 resolve()

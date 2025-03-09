@@ -1,15 +1,18 @@
 const { postProduct, patchProduct, deleteProduct, undeleteProduct, postCustomer, patchCustomer, deleteCustomer, undeleteCustomer, getSales } = require('./requestsPedidoOk');
 const { returnValueFromJson } = require('./manageInfoUser');
 const { returnInfo } = require('../envManager');
+const { incrementIdRequestPost } = require('./auxFunctions');
 
 async function preparingPostProduct(product){
     return new Promise(async (resolve, reject) => {
-        let body, header
+        let body, header;
 
         await returnHeader()
         .then(async (response) => {
+            const functionReturnStatusOnPedOk = async () => { await returnValueFromJson('idparceiro').then((response) => { return response}) }
+
             header = response;
-            product.id_parceiro  = await returnValueFromJson('idparceiro');
+            product.id_parceiro  = functionReturnStatusOnPedOk()
 
             delete product.status
             return product
@@ -28,20 +31,20 @@ async function preparingPostProduct(product){
 
 async function preparingUpdateProduct(product, idproduct){
     return new Promise(async (resolve, reject) => {
-        let body, header;
+        let body, header, idHost;
 
         await returnHeader()
         .then(async (response) => {
             header = response;
+            idHost = product.codigo;
 
             delete product.embalagem
-            delete product.codigo
             delete product.status
             return product
         })
         .then(async (response) => {
             body = response
-            await patchProduct(body, header, idproduct);
+            await patchProduct(body, header, idproduct, idHost);
         })
         .then(() => {
         
@@ -50,7 +53,7 @@ async function preparingUpdateProduct(product, idproduct){
 }
 
 
-async function preparingDeleteProduct(idproduct){
+async function preparingDeleteProduct(idproduct, idHost){
     return new Promise(async (resolve, reject) => {
         let header;
 
@@ -59,7 +62,7 @@ async function preparingDeleteProduct(idproduct){
             header = response
         })
         .then(async () => {
-            await deleteProduct(header, idproduct)
+            await deleteProduct(header, idproduct, idHost)
         })
         .then(() => {
         
@@ -68,7 +71,7 @@ async function preparingDeleteProduct(idproduct){
 }
 
 
-async function preparingUndeleteProduct(idproduct){
+async function preparingUndeleteProduct(idproduct, idHost){
     return new Promise(async (resolve, reject) => {
         let header;
 
@@ -77,7 +80,7 @@ async function preparingUndeleteProduct(idproduct){
             header = response
         })
         .then(async () => {
-            await undeleteProduct(header, idproduct)
+            await undeleteProduct(header, idproduct, idHost)
         })
         .then(() => {
         
@@ -93,17 +96,23 @@ async function preparingPostCustomer(customer){
         await returnHeader()
         .then(async (response) => {
             header = response;
-            customer.id_parceiro  = await returnValueFromJson('idparceiro');
-
+            customer.id_parceiro = await returnValueFromJson('idparceiro')
             delete customer.status
+
             return customer
         })
         .then(async (response) => {
             body = response
             await postCustomer(body, header)
+            .catch(async (error) => {
+                await incrementIdRequestPost()
+                .then(async () => {
+                    await preparingPostCustomer(customer)
+                })
+            })
         }) 
         .then(() => {
-     
+            resolve()
         })
 
     })  
@@ -112,28 +121,28 @@ async function preparingPostCustomer(customer){
 
 async function preparingUpdateCustomer(customer, idcustomer){
     return new Promise(async (resolve, reject) => {
-        let body, header;
+        let body, header, idHost;
 
         await returnHeader()
         .then(async (response) => {
             header = response;
+            idHost = customer.codigo
 
-            delete customer.codigo
             delete customer.status
             return customer
         })
         .then(async (response) => {
             body = response
-            await patchCustomer(body, header, idcustomer);
+            await patchCustomer(body, header, idcustomer, idHost);
         })
         .then(() => {
-        
+            resolve()
         })
     })
 }
 
 
-async function preparingDeleteCustomer(idcustomer){
+async function preparingDeleteCustomer(idcustomer, idHost){
     return new Promise(async (resolve, reject) => {
         let header;
 
@@ -142,7 +151,7 @@ async function preparingDeleteCustomer(idcustomer){
             header = response
         })
         .then(async () => {
-            await deleteCustomer(header, idcustomer)
+            await deleteCustomer(header, idcustomer, idHost)
         })
         .then(() => {
         
@@ -151,7 +160,7 @@ async function preparingDeleteCustomer(idcustomer){
 }
 
 
-async function preparingUndeleteCustomer(idcustomer){
+async function preparingUndeleteCustomer(idcustomer, idHost){
     return new Promise(async (resolve, reject) => {
         let header;
 
@@ -160,7 +169,7 @@ async function preparingUndeleteCustomer(idcustomer){
             header = response
         })
         .then(async () => {
-            await undeleteProduct(header, idcustomer)
+            await undeleteProduct(header, idcustomer, idHost)
         })
         .then(() => {
         

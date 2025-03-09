@@ -1,0 +1,759 @@
+{
+    "product": {},
+    "customer": {
+        "178": {
+            "typeRequest": "POST",
+            "idPedidoOk": null,
+            "timeRequest": "2025-3-8",
+            "returnRequest": [
+                {
+                    "codigo": 16,
+                    "mensagem": "Valor do campo inválido [cnpj_cpf]"
+                }
+            ],
+            "bodyRequest": {
+                "codigo": 178,
+                "telefone": "1599679999",
+                "observacao": null,
+                "endereco": {
+                    "uf": "",
+                    "cidade": "- TATU� - SP",
+                    "complemento": "",
+                    "numero": "32",
+                    "logradouro": "JOSE DE CAMARGO BARROS FILHO",
+                    "bairro": "LOTEAMENTO VISTA ALTA (BELA VITA)",
+                    "cep": ""
+                },
+                "fantasia": "KELEN PRADO",
+                "razao_social": "KELEN DAIANE  PRADO SCHMIDT",
+                "cnpj_cpf": "3959169086.0",
+                "id_parceiro": 1838
+            }
+        },
+        "404": {
+            "typeRequest": "POST",
+            "idPedidoOk": null,
+            "timeRequest": "2025-3-8",
+            "returnRequest": [
+                {
+                    "codigo": 16,
+                    "mensagem": "Valor do campo inválido [cnpj_cpf]"
+                }
+            ],
+            "bodyRequest": {
+                "codigo": 404,
+                "telefone": "",
+                "observacao": null,
+                "endereco": {
+                    "uf": "SP",
+                    "cidade": "TATUI",
+                    "complemento": "CASA",
+                    "numero": "355",
+                    "logradouro": "AV SENADOR LAURINDO MINHOTO",
+                    "bairro": "DR LAURINDO",
+                    "cep": ""
+                },
+                "fantasia": "JESSICA APARECIDA PADILHA",
+                "razao_social": "JESSICA APARECIDA PADILHA",
+                "cnpj_cpf": "480707327",
+                "id_parceiro": 1838
+            }
+        },
+        "591": {
+            "typeRequest": "POST",
+            "idPedidoOk": null,
+            "timeRequest": "2025-3-8",
+            "returnRequest": [
+                {
+                    "codigo": 16,
+                    "mensagem": "Valor do campo inválido [cnpj_cpf]"
+                }
+            ],
+            "bodyRequest": {
+                "codigo": 591,
+                "telefone": "",
+                "observacao": null,
+                "endereco": {
+                    "uf": "SP",
+                    "cidade": "TATUI",
+                    "complemento": null,
+                    "numero": "101",
+                    "logradouro": "RUA CONEGO DEMETRICO",
+                    "bairro": "CENTRO",
+                    "cep": null
+                },
+                "fantasia": "ELIANE REGINA SACOLA",
+                "razao_social": "ELIANE REGINA ADUM POLES",
+                "cnpj_cpf": "099301048-28",
+                "id_parceiro": 1838
+            }
+        },
+        "628": {
+            "typeRequest": "POST",
+            "idPedidoOk": null,
+            "timeRequest": "2025-3-8",
+            "returnRequest": [
+                {
+                    "codigo": 14,
+                    "mensagem": "Já existe um registro com o código informado [628]"
+                }
+            ],
+            "bodyRequest": {
+                "codigo": 628,
+                "telefone": "",
+                "observacao": null,
+                "endereco": {
+                    "uf": "SP",
+                    "cidade": "TATUI",
+                    "complemento": null,
+                    "numero": null,
+                    "logradouro": null,
+                    "bairro": null,
+                    "cep": null
+                },
+                "fantasia": "SUSI CAIXA",
+                "razao_social": "SUSILAINE",
+                "cnpj_cpf": null,
+                "id_parceiro": 1838
+            }
+        },
+        "714": {
+            "typeRequest": "POST",
+            "idPedidoOk": null,
+            "timeRequest": "2025-3-8",
+            "returnRequest": [
+                {
+                    "codigo": 16,
+                    "mensagem": "Valor do campo inválido [cnpj_cpf]"
+                }
+            ],
+            "bodyRequest": {
+                "codigo": 714,
+                "telefone": "",
+                "endereco": {
+                    "uf": "SP",
+                    "cidade": "CAPELA DO ALTO",
+                    "complemento": null,
+                    "numero": "5",
+                    "logradouro": "RUA CESARIO DOMINGUES MENCK",
+                    "bairro": "JD MARIA DE LOURDES",
+                    "cep": null
+                },
+                "fantasia": "INGRID IRMA DA BRUNA DENTISTA",
+                "razao_social": "INGRID BONITI DE PAULA",
+                "cnpj_cpf": "3548790879",
+                "id_parceiro": 1838
+            }
+        },
+        "1012": {
+            "typeRequest": "POST",
+            "idPedidoOk": null,
+            "timeRequest": "2025-3-8",
+            "returnRequest": [
+                {
+                    "codigo": 16,
+                    "mensagem": "Valor do campo inválido [cnpj_cpf]"
+                }
+            ],
+            "bodyRequest": {
+                "codigo": 1012,
+                "telefone": "",
+                "observacao": null,
+                "endereco": {
+                    "uf": "SP",
+                    "cidade": "TATUI",
+                    "complemento": null,
+                    "numero": "193",
+                    "logradouro": "HUMAITA",
+                    "bairro": "CENTRO",
+                    "cep": null
+                },
+                "fantasia": "SARA DE SALES SACOLA",
+                "razao_social": "SARA DE SALES POPTS",
+                "cnpj_cpf": "1228245797",
+                "id_parceiro": 1838
+            }
+        },
+        "1042": {
+            "typeRequest": "POST",
+            "idPedidoOk": null,
+            "timeRequest": "2025-3-8",
+            "returnRequest": [
+                {
+                    "codigo": 16,
+                    "mensagem": "Valor do campo inválido [cnpj_cpf]"
+                }
+            ],
+            "bodyRequest": {
+                "codigo": 1042,
+                "telefone": "",
+                "observacao": null,
+                "endereco": {
+                    "uf": "",
+                    "cidade": "TATUI",
+                    "complemento": null,
+                    "numero": "240",
+                    "logradouro": "ALIRIO RODRIGUES DE SOUZA",
+                    "bairro": "RESIDENCIAL ALVORADA",
+                    "cep": null
+                },
+                "fantasia": "LAIS PROFETA",
+                "razao_social": "LAIS DE OLIVEIRA PROFETA",
+                "cnpj_cpf": "342424890",
+                "id_parceiro": 1838
+            }
+        },
+        "1115": {
+            "typeRequest": "POST",
+            "idPedidoOk": null,
+            "timeRequest": "2025-3-8",
+            "returnRequest": [
+                {
+                    "codigo": 16,
+                    "mensagem": "Valor do campo inválido [cnpj_cpf]"
+                }
+            ],
+            "bodyRequest": {
+                "codigo": 1115,
+                "telefone": "",
+                "observacao": null,
+                "endereco": {
+                    "uf": "SP",
+                    "cidade": "TATUI",
+                    "complemento": null,
+                    "numero": "116",
+                    "logradouro": "RUA ALAMEDA DE BARROCO",
+                    "bairro": "NOVA TATUI",
+                    "cep": null
+                },
+                "fantasia": "NATALIA MENDES",
+                "razao_social": "NATALIA APARECIDA MENDES",
+                "cnpj_cpf": "433351818886",
+                "id_parceiro": 1838
+            }
+        },
+        "1254": {
+            "typeRequest": "POST",
+            "idPedidoOk": null,
+            "timeRequest": "2025-3-8",
+            "returnRequest": [
+                {
+                    "codigo": 16,
+                    "mensagem": "Valor do campo inválido [cep]"
+                }
+            ],
+            "bodyRequest": {
+                "codigo": 1254,
+                "telefone": "",
+                "observacao": null,
+                "endereco": {
+                    "uf": "SP",
+                    "cidade": "TATUI",
+                    "complemento": null,
+                    "numero": null,
+                    "logradouro": null,
+                    "bairro": null,
+                    "cep": "  182707"
+                },
+                "fantasia": "SILVANIA AP DE BARROS",
+                "razao_social": "SILVANIA AP DE BARROS",
+                "cnpj_cpf": null,
+                "id_parceiro": 1838
+            }
+        },
+        "1262": {
+            "typeRequest": "POST",
+            "idPedidoOk": null,
+            "timeRequest": "2025-3-8",
+            "returnRequest": [
+                {
+                    "codigo": 16,
+                    "mensagem": "Valor do campo inválido [cep]"
+                }
+            ],
+            "bodyRequest": {
+                "codigo": 1262,
+                "telefone": "",
+                "observacao": null,
+                "endereco": {
+                    "uf": "",
+                    "cidade": "TATUI",
+                    "complemento": null,
+                    "numero": null,
+                    "logradouro": null,
+                    "bairro": null,
+                    "cep": "   18270"
+                },
+                "fantasia": "ROSE BANCO BRADESCO",
+                "razao_social": "ROSE BANCO BRADESCO",
+                "cnpj_cpf": null,
+                "id_parceiro": 1838
+            }
+        },
+        "1317": {
+            "typeRequest": "POST",
+            "idPedidoOk": null,
+            "timeRequest": "2025-3-8",
+            "returnRequest": [
+                {
+                    "codigo": 16,
+                    "mensagem": "Valor do campo inválido [cep]"
+                }
+            ],
+            "bodyRequest": {
+                "codigo": 1317,
+                "telefone": "",
+                "observacao": null,
+                "endereco": {
+                    "uf": "",
+                    "cidade": "TATUI",
+                    "complemento": null,
+                    "numero": "230",
+                    "logradouro": "CONEGO DEMETRIO",
+                    "bairro": "CENTRO",
+                    "cep": "   18270"
+                },
+                "fantasia": "ROSANA BALLSAM",
+                "razao_social": "ROSANA APARECIDA SANTI",
+                "cnpj_cpf": "18217795843",
+                "id_parceiro": 1838
+            }
+        },
+        "1329": {
+            "typeRequest": "POST",
+            "idPedidoOk": null,
+            "timeRequest": "2025-3-8",
+            "returnRequest": [
+                {
+                    "codigo": 16,
+                    "mensagem": "Valor do campo inválido [cnpj_cpf]"
+                }
+            ],
+            "bodyRequest": {
+                "codigo": 1329,
+                "telefone": "",
+                "observacao": null,
+                "endereco": {
+                    "uf": "SP",
+                    "cidade": "TATUI",
+                    "complemento": "CASA 15",
+                    "numero": "95",
+                    "logradouro": "RUA JULIO PICCHI",
+                    "bairro": "PARQUE SANTA MARIA",
+                    "cep": null
+                },
+                "fantasia": "KARINA SOUSA",
+                "razao_social": "KARINA CAMARGO DE SOUSA",
+                "cnpj_cpf": "40369998-8",
+                "id_parceiro": 1838
+            }
+        },
+        "1434": {
+            "typeRequest": "POST",
+            "idPedidoOk": null,
+            "timeRequest": "2025-3-8",
+            "returnRequest": [
+                {
+                    "codigo": 16,
+                    "mensagem": "Valor do campo inválido [cnpj_cpf]"
+                }
+            ],
+            "bodyRequest": {
+                "codigo": 1434,
+                "telefone": "",
+                "observacao": null,
+                "endereco": {
+                    "uf": "SP",
+                    "cidade": "TATUI",
+                    "complemento": "APARTAMENTO BLOCO 3 AP 604",
+                    "numero": "155",
+                    "logradouro": "AVENIDA JORNALISTA J�LIO DE MESQUITA FILHO",
+                    "bairro": "DR LAURINDO",
+                    "cep": null
+                },
+                "fantasia": "DAIANE DIAS MIRANDA BATELLI",
+                "razao_social": "DAIANE DIAS MIRANDA BATELLI",
+                "cnpj_cpf": "419573689",
+                "id_parceiro": 1838
+            }
+        },
+        "1585": {
+            "typeRequest": "POST",
+            "idPedidoOk": null,
+            "timeRequest": "2025-3-8",
+            "returnRequest": [
+                {
+                    "codigo": 16,
+                    "mensagem": "Valor do campo inválido [cnpj_cpf]"
+                }
+            ],
+            "bodyRequest": {
+                "codigo": 1585,
+                "telefone": "",
+                "observacao": null,
+                "endereco": {
+                    "uf": "SP",
+                    "cidade": "TATUI",
+                    "complemento": null,
+                    "numero": "320",
+                    "logradouro": "JOSE GASPAR",
+                    "bairro": "JARDIM JULIANA",
+                    "cep": null
+                },
+                "fantasia": "NATAJA TURRI DE CAMARGO",
+                "razao_social": "NATAJA TURRI",
+                "cnpj_cpf": "524527854",
+                "id_parceiro": 1838
+            }
+        },
+        "1589": {
+            "typeRequest": "POST",
+            "idPedidoOk": null,
+            "timeRequest": "2025-3-8",
+            "returnRequest": [
+                {
+                    "codigo": 15,
+                    "mensagem": "Valor do campo excede o limite permitido [logradouro] limite:50"
+                }
+            ],
+            "bodyRequest": {
+                "codigo": 1589,
+                "telefone": "",
+                "observacao": null,
+                "endereco": {
+                    "uf": "SP",
+                    "cidade": "TATUI",
+                    "complemento": null,
+                    "numero": "149",
+                    "logradouro": "PROFESSORA MARIA OLIMPIA ALC�NTARA BARBOSA LOUREN�O",
+                    "bairro": "DONATO FLORES",
+                    "cep": null
+                },
+                "fantasia": "VALENTINA TRIST�O",
+                "razao_social": "VALENTINA TRIST�O MEDEIROS",
+                "cnpj_cpf": "50701707836",
+                "id_parceiro": 1838
+            }
+        },
+        "1590": {
+            "typeRequest": "POST",
+            "idPedidoOk": null,
+            "timeRequest": "2025-3-8",
+            "returnRequest": [
+                {
+                    "codigo": 16,
+                    "mensagem": "Valor do campo inválido [cep]"
+                }
+            ],
+            "bodyRequest": {
+                "codigo": 1590,
+                "telefone": "",
+                "observacao": null,
+                "endereco": {
+                    "uf": "SP",
+                    "cidade": "TATUI",
+                    "complemento": null,
+                    "numero": null,
+                    "logradouro": null,
+                    "bairro": null,
+                    "cep": "     182"
+                },
+                "fantasia": "MARCIA APE",
+                "razao_social": "MARCIA APE",
+                "cnpj_cpf": null,
+                "id_parceiro": 1838
+            }
+        },
+        "1617": {
+            "typeRequest": "POST",
+            "idPedidoOk": null,
+            "timeRequest": "2025-3-8",
+            "returnRequest": [
+                {
+                    "codigo": 16,
+                    "mensagem": "Valor do campo inválido [cnpj_cpf]"
+                }
+            ],
+            "bodyRequest": {
+                "codigo": 1617,
+                "telefone": "",
+                "observacao": null,
+                "endereco": {
+                    "uf": "SP",
+                    "cidade": "TATUI",
+                    "complemento": null,
+                    "numero": "637",
+                    "logradouro": "CARIDADE TERCEIRA",
+                    "bairro": "COLINA VERDE",
+                    "cep": null
+                },
+                "fantasia": "TANIA REGINA PETRINI",
+                "razao_social": "TANIA REGINA PETRINI",
+                "cnpj_cpf": "364979043818",
+                "id_parceiro": 1838
+            }
+        },
+        "1637": {
+            "typeRequest": "POST",
+            "idPedidoOk": null,
+            "timeRequest": "2025-3-8",
+            "returnRequest": [
+                {
+                    "codigo": 16,
+                    "mensagem": "Valor do campo inválido [cnpj_cpf]"
+                }
+            ],
+            "bodyRequest": {
+                "codigo": 1637,
+                "telefone": "",
+                "observacao": null,
+                "endereco": {
+                    "uf": "SP",
+                    "cidade": "TATUI",
+                    "complemento": null,
+                    "numero": "472",
+                    "logradouro": "ANTONIO LUCIANO DE CAMPOS",
+                    "bairro": "NOSSA SENHORA DE FATIMA",
+                    "cep": null
+                },
+                "fantasia": "APARECIDA BONINI",
+                "razao_social": "APARECIDA DE FATIMA BRANCO BONINI",
+                "cnpj_cpf": "110347538-00",
+                "id_parceiro": 1838
+            }
+        },
+        "1804": {
+            "typeRequest": "POST",
+            "idPedidoOk": null,
+            "timeRequest": "2025-3-8",
+            "returnRequest": [
+                {
+                    "codigo": 16,
+                    "mensagem": "Valor do campo inválido [cnpj_cpf]"
+                }
+            ],
+            "bodyRequest": {
+                "codigo": 1804,
+                "telefone": "",
+                "observacao": null,
+                "endereco": {
+                    "uf": "SP",
+                    "cidade": "TATUI",
+                    "complemento": null,
+                    "numero": "481",
+                    "logradouro": "RUA ANTONIO HENRIQUE DA SILVA",
+                    "bairro": "VILA ESPERAN�A",
+                    "cep": null
+                },
+                "fantasia": "CLEUNICE CAMARGO",
+                "razao_social": "CLEUNICE CAMARGO NOGUEIRA",
+                "cnpj_cpf": "258586028856",
+                "id_parceiro": 1838
+            }
+        },
+        "1958": {
+            "typeRequest": "POST",
+            "idPedidoOk": null,
+            "timeRequest": "2025-3-8",
+            "returnRequest": [
+                {
+                    "codigo": 16,
+                    "mensagem": "Valor do campo inválido [cnpj_cpf]"
+                }
+            ],
+            "bodyRequest": {
+                "codigo": 1958,
+                "telefone": "",
+                "observacao": null,
+                "endereco": {
+                    "uf": "SP",
+                    "cidade": "TATUI",
+                    "complemento": "CASA",
+                    "numero": null,
+                    "logradouro": "CHACARA DAS ORQUIDEAS",
+                    "bairro": "DOS SOUZAS",
+                    "cep": null
+                },
+                "fantasia": "CARINA ANTUNES",
+                "razao_social": "CARINA ANTUNES DE SOUZA",
+                "cnpj_cpf": "365571498",
+                "id_parceiro": 1838
+            }
+        },
+        "2022": {
+            "typeRequest": "POST",
+            "idPedidoOk": null,
+            "timeRequest": "2025-3-8",
+            "returnRequest": [
+                {
+                    "codigo": 16,
+                    "mensagem": "Valor do campo inválido [cnpj_cpf]"
+                }
+            ],
+            "bodyRequest": {
+                "codigo": 2022,
+                "telefone": "",
+                "observacao": null,
+                "endereco": {
+                    "uf": "SP",
+                    "cidade": "CAPELA DO ALTO",
+                    "complemento": "CASA",
+                    "numero": "138",
+                    "logradouro": "JORGE ANTONIO DE OLIVEIRA",
+                    "bairro": "CENTRO",
+                    "cep": null
+                },
+                "fantasia": "CILMARA APARECIDA",
+                "razao_social": "CILMARA APARECIDA BARBOSA NOGUEIRA",
+                "cnpj_cpf": "9731372830",
+                "id_parceiro": 1838
+            }
+        },
+        "2106": {
+            "typeRequest": "POST",
+            "idPedidoOk": null,
+            "timeRequest": "2025-3-8",
+            "returnRequest": [
+                {
+                    "codigo": 16,
+                    "mensagem": "Valor do campo inválido [cnpj_cpf]"
+                }
+            ],
+            "bodyRequest": {
+                "codigo": 2106,
+                "telefone": "",
+                "observacao": null,
+                "endereco": {
+                    "uf": "SP",
+                    "cidade": "BOITUVA",
+                    "complemento": "CASA",
+                    "numero": "264",
+                    "logradouro": "RUA ASUNTA PIERONI LABROICE",
+                    "bairro": "CHACARA LABRONICE",
+                    "cep": null
+                },
+                "fantasia": "ELISABETE MARIA ROSI",
+                "razao_social": "ELISABETE",
+                "cnpj_cpf": "277644018997",
+                "id_parceiro": 1838
+            }
+        },
+        "2136": {
+            "typeRequest": "POST",
+            "idPedidoOk": null,
+            "timeRequest": "2025-3-8",
+            "returnRequest": [
+                {
+                    "codigo": 16,
+                    "mensagem": "Valor do campo inválido [cnpj_cpf]"
+                }
+            ],
+            "bodyRequest": {
+                "codigo": 2136,
+                "telefone": "",
+                "observacao": null,
+                "endereco": {
+                    "uf": "SP",
+                    "cidade": "TATUI",
+                    "complemento": null,
+                    "numero": null,
+                    "logradouro": null,
+                    "bairro": null,
+                    "cep": null
+                },
+                "fantasia": "LUCIANA HOLTS",
+                "razao_social": "LUCIANA HOLTS",
+                "cnpj_cpf": "2049673836",
+                "id_parceiro": 1838
+            }
+        },
+        "2156": {
+            "typeRequest": "POST",
+            "idPedidoOk": null,
+            "timeRequest": "2025-3-8",
+            "returnRequest": [
+                {
+                    "codigo": 16,
+                    "mensagem": "Valor do campo inválido [cnpj_cpf]"
+                }
+            ],
+            "bodyRequest": {
+                "codigo": 2156,
+                "telefone": "",
+                "observacao": null,
+                "endereco": {
+                    "uf": "SP",
+                    "cidade": "TATUI",
+                    "complemento": "CASA",
+                    "numero": "180",
+                    "logradouro": "RUA JOAO FELIPE DE  BARROS",
+                    "bairro": "JARDIM TATUI",
+                    "cep": null
+                },
+                "fantasia": "ALESSANDRA CRISTINA DE MOURA",
+                "razao_social": "ALESSANDRA CRISTINA DE MOURA",
+                "cnpj_cpf": "2734866864",
+                "id_parceiro": 1838
+            }
+        },
+        "2217": {
+            "typeRequest": "POST",
+            "idPedidoOk": null,
+            "timeRequest": "2025-3-8",
+            "returnRequest": [
+                {
+                    "codigo": 14,
+                    "mensagem": "Já existe um registro com o código informado [2217]"
+                }
+            ],
+            "bodyRequest": {
+                "codigo": 2217,
+                "telefone": "",
+                "observacao": null,
+                "endereco": {
+                    "uf": "SP",
+                    "cidade": "TATUI",
+                    "complemento": null,
+                    "numero": null,
+                    "logradouro": null,
+                    "bairro": null,
+                    "cep": null
+                },
+                "fantasia": "FLAVIA",
+                "razao_social": "FLAVIA",
+                "cnpj_cpf": null,
+                "id_parceiro": 1838
+            }
+        },
+        "2218": {
+            "typeRequest": "POST",
+            "idPedidoOk": null,
+            "timeRequest": "2025-3-8",
+            "returnRequest": [
+                {
+                    "codigo": 14,
+                    "mensagem": "Já existe um registro com o código informado [2218]"
+                }
+            ],
+            "bodyRequest": {
+                "codigo": 2218,
+                "telefone": "",
+                "observacao": null,
+                "endereco": {
+                    "uf": "SP",
+                    "cidade": "TATUI",
+                    "complemento": "CASA",
+                    "numero": "151",
+                    "logradouro": "VEREADOR ELIAS SALLUM",
+                    "bairro": "JARDIM PALMIRA",
+                    "cep": null
+                },
+                "fantasia": "ISABEL CRISTINA DE OLIVEIRA",
+                "razao_social": "ISABEL CRISTINA DE OLIVEIRA",
+                "cnpj_cpf": "27262949870",
+                "id_parceiro": 1838
+            }
+        }
+    },
+    "sale": {}
+}

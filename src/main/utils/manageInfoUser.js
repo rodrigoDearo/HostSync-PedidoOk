@@ -50,7 +50,7 @@ async function returnValueFromJson(campo){
             break;
 
           case 'idparceiro':
-            resolve(dados.pedidoOk.idparceiro);
+            resolve(dados.pedidoOk.idRequestPost);
             break;
 
           case 'lastrequest':

@@ -3,6 +3,7 @@ const path = require('node:path')
 
 const { returnInfo } = require('../envManager');
 const { returnValueFromJson } = require('./manageInfoUser');
+const { error } = require('node:console');
 
 async function returnConfigToAccessDB(){
     return new Promise(async (resolve, reject) => {
@@ -66,7 +67,7 @@ async function succesHandlingRequests(destiny, resource, idHost, idPedOk){
   return new Promise(async (resolve, reject) => {
 
     if(destiny=="product"){
-      let productsDB = JSON.parse(fs.readFileSync('../../../config/products.json'))
+      let productsDB = JSON.parse(fs.readFileSync('./config/products.json'))
 
       switch (resource) {
         case "post":
@@ -90,11 +91,11 @@ async function succesHandlingRequests(destiny, resource, idHost, idPedOk){
           break;
       }
 
-      fs.writeFileSync('../../../config/products.json', JSON.stringify(productsDB), 'utf-8')
-
+      fs.writeFileSync('./config/products.json', JSON.stringify(productsDB), 'utf-8')
+      resolve()
     }else
     if(destiny=="customer"){
-      let customersDB = JSON.parse(fs.readFileSync('../../../config/customers.json'))
+      let customersDB = JSON.parse(fs.readFileSync('./config/customers.json'))
 
       switch (resource) {
         case "post":
@@ -118,14 +119,16 @@ async function succesHandlingRequests(destiny, resource, idHost, idPedOk){
           break;
       }
 
-      fs.writeFileSync('../../../config/customers.json', JSON.stringify(customersDB), 'utf-8')
-      
+      fs.writeFileSync('./config/customers.json', JSON.stringify(customersDB), 'utf-8')
+      gravarLog('Gravado registro no banco de ' + destiny);
+      resolve()
     }else
     if(destiny=="sales"){
-      let configDB = JSON.parse(fs.readFileSync('../../../config/configApp.json'))
+      let configDB = JSON.parse(fs.readFileSync('./config/configApp.json'))
       // ATUALIZAR DATA REQUEST
 
-      fs.writeFileSync('../../../config/configApp.json', JSON.stringify(configDB), 'utf-8')
+      fs.writeFileSync('./config/configApp.json', JSON.stringify(configDB), 'utf-8')
+      
     }
 
   })
@@ -133,9 +136,25 @@ async function succesHandlingRequests(destiny, resource, idHost, idPedOk){
 
 
 
-async function errorHandlingRequest(){
+async function errorHandlingRequest(destiny, resource, Identifier, idPedidoOk, errors, body){
   return new Promise(async (resolve, reject) => {
-    
+      let errorsDB = JSON.parse(fs.readFileSync('./config/errorsDB.json'))
+
+      const data = new Date();
+      data.setHours(data.getHours() - 3);
+      const dataFormatada = `${data.getFullYear()}-${data.getMonth() + 1}-${data.getDate()}`;
+
+      errorsDB[destiny][Identifier] = {
+        "typeRequest": resource,
+        "idPedidoOk": idPedidoOk,
+        "timeRequest": dataFormatada,
+        "returnRequest": errors,
+        "bodyRequest": body
+      }
+
+      fs.writeFileSync('./config/errorsDB.json', JSON.stringify(errorsDB), 'utf-8')
+      gravarLog('Gravado registro no banco de erros')
+      resolve()
   })
 }
 
