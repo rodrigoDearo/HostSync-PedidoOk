@@ -77,11 +77,13 @@ async function preparingDeleteProduct(idproduct, idHost){
 
 async function preparingUndeleteProduct(idproduct, idHost){
     return new Promise(async (resolve, reject) => {
+        let header;
+
         await returnHeader()
         .then(async (response) => {
-            return response
+            header = response
         })
-        .then(async (header) => {
+        .then(async () => {
             await undeleteProduct(header, idproduct, idHost)
         })
         .then(() => {
@@ -171,7 +173,7 @@ async function preparingUndeleteCustomer(idcustomer, idHost){
             header = response
         })
         .then(async () => {
-            await undeleteProduct(header, idcustomer, idHost)
+            await undeleteCustomer(header, idcustomer, idHost)
         })
         .then(() => {
             resolve()

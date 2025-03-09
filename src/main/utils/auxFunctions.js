@@ -75,7 +75,10 @@ async function succesHandlingRequests(destiny, resource, idHost, idPedOk){
             "idPedidoOk": `${idPedOk}`,
             "status": "ATIVO"
           }
-          await incrementIdRequestPost();
+          await incrementIdRequestPost()
+          .then(async () => {
+            await verifyToDeleteErrorRecord(destiny, idHost)
+          })
           break;
 
         case "update":
@@ -104,7 +107,10 @@ async function succesHandlingRequests(destiny, resource, idHost, idPedOk){
             "idPedidoOk": `${idPedOk}`,
             "status": "ATIVO"
           }
-          await incrementIdRequestPost();
+          await incrementIdRequestPost()
+          .then(async () => {
+            await verifyToDeleteErrorRecord(destiny, idHost)
+          })
           break;
 
           case "update":
@@ -137,7 +143,7 @@ async function succesHandlingRequests(destiny, resource, idHost, idPedOk){
 
 
 
-async function errorHandlingRequest(destiny, resource, Identifier, idPedidoOk, errors, body){
+async function errorHandlingRequest(destiny, resource, idHost, idPedidoOk, errors, body){
   return new Promise(async (resolve, reject) => {
       let errorsDB = JSON.parse(fs.readFileSync('./config/errorsDB.json'))
 
@@ -145,7 +151,7 @@ async function errorHandlingRequest(destiny, resource, Identifier, idPedidoOk, e
       data.setHours(data.getHours() - 3);
       const dataFormatada = `${data.getFullYear()}-${data.getMonth() + 1}-${data.getDate()}`;
 
-      errorsDB[destiny][Identifier] = {
+      errorsDB[destiny][idHost] = {
         "typeRequest": resource,
         "idPedidoOk": idPedidoOk,
         "timeRequest": dataFormatada,
@@ -153,12 +159,26 @@ async function errorHandlingRequest(destiny, resource, Identifier, idPedidoOk, e
         "bodyRequest": body
       }
 
-      fs.writeFileSync('./config/errorsDB.json', JSON.stringify(errorsDB), 'utf-8')
+      fs.writeFileSync('./config/errorsDB.json', JSON.stringify(errorsDB), 'utf-8');
       gravarLog('Gravado registro no banco de erros')
       resolve()
   })
 }
 
+
+async function verifyToDeleteErrorRecord(destiny, idHost){
+  return new Promise(async (resolve, reject) => {
+    let errorsDB = JSON.parse(fs.readFileSync('./config/errorsDB.json'));
+
+    if(errorsDB[destiny][idHost]&&errorsDB[destiny][idHost].typeRequest == 'POST'){
+        delete errorsDB[destiny][idHost]
+    }
+
+    fs.writeFileSync('./config/errorsDB.json', JSON.stringify(errorsDB), 'utf-8');
+    gravarLog('Retirado registro no banco de erros')
+    resolve()
+  })
+}
 
 
 module.exports = {

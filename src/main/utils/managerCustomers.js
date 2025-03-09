@@ -2,7 +2,6 @@ const conexao = require('node-firebird');
 const fs = require ('fs')
 
 const { preparingPostCustomer , preparingUpdateCustomer, preparingDeleteCustomer, preparingUndeleteCustomer } = require('./preparingRequests.js');
-const { undeleteCustomer } = require('./requestsPedidoOk.js');
 
 async function requireAllCustomers(config){
     return new Promise(async(resolve, reject) => {
@@ -52,13 +51,13 @@ async function readingAllRecord(customersRecords, index){
                         "cidade": record.MUNICIPIO,
                         "complemento": record.COMPLEMENTO,
                         "numero": record.NUMERO,
-                        "logradouro": record.LOGRADOURO, //max 30
+                        "logradouro": record.LOGRADOURO,
                         "bairro": record.BAIRRO,
-                        "cep": record.CEP //char SEMPRE COMPLETAR 8
+                        "cep": record.CEP
                 },
                 "fantasia": record.CLIENTE,
                 "razao_social": record.RAZ_SOCIAL,
-                "cnpj_cpf": record.CPF_CNPJ, //sempre completar 11, char()
+                "cnpj_cpf": record.CPF_CNPJ,
                 "status": record.STATUS
             }
     
@@ -99,7 +98,9 @@ async function registerOrUpdateCustomer(customer){
         const functionReturnStatusOnPedOk = async () => {if(customerAlreadyRegister){ return customersDB[`${customer.codigo}`].status }else{return null}} 
         const functionReturnIdCustomerOnPedOk = async () => {if(customerAlreadyRegister){ return customersDB[`${customer.codigo}`].idPedidoOk }else{return null}}
        
-        var customerIsActiveOnPedidoOK =  await functionReturnStatusOnPedOk()
+        var statusCustomerOnPedidoOk = await functionReturnStatusOnPedOk()
+
+        var customerIsActiveOnPedidoOK =  statusCustomerOnPedidoOk == 'ATIVO' ? true : false;
         var idCustomerOnPedidoOk = await functionReturnIdCustomerOnPedOk()
 
         if(!customerAlreadyRegister&&customerIsActiveOnHost){
@@ -113,11 +114,10 @@ async function registerOrUpdateCustomer(customer){
         }else
         if(customerAlreadyRegister&&customerIsActiveOnHost){
             if(customerIsActiveOnPedidoOK){
-                resolve()
-               /* await preparingUpdateCustomer(customer, idCustomerOnPedidoOk)
-                .then(() => {
+               // await preparingUpdateCustomer(customer, idCustomerOnPedidoOk)
+               // .then(() => {
                     resolve()
-                })*/
+               // })
             }
             else{
                 await preparingUndeleteCustomer(idCustomerOnPedidoOk, customer.codigo)

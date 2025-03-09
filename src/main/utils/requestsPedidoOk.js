@@ -41,7 +41,7 @@ function patchProduct(body, header, idproduct, idHost){
 function deleteProduct(header, idproduct, idHost){
     return new Promise(async (resolve, reject) => {
         await axios.delete(`https://api.pedidook.com.br/v1/produtos/${idproduct}`, header)
-        .then(async (response) => {
+        .then(async () => {
             await succesHandlingRequests('product', 'delete', idHost, idproduct)
         })
         .catch(async (error) => {
@@ -56,12 +56,11 @@ function deleteProduct(header, idproduct, idHost){
 
 function undeleteProduct(header, idproduct, idHost){
     return new Promise(async (resolve, reject) => {
-        await axios.patch(`https://api.pedidook.com.br/v1/produtos/${idproduct}/undelete`, header)
+        await axios.patch(`https://api.pedidook.com.br/v1/produtos/${idproduct}/undelete`, '', header)
         .then(async (response) => {
             await succesHandlingRequests('product', 'undelete', idHost, idproduct)
         })
         .catch(async (error) => {
-            console.log(header)
             await errorHandlingRequest('product', 'UNDELETE', idHost, idproduct, error.response.data.erros, null)
         })
         .finally(() => {
@@ -86,6 +85,9 @@ function postCustomer(body, header){
             }
             else{
                 await errorHandlingRequest('customer', 'POST', body.codigo, null, error.response.data.erros, body)
+                .then(() => {
+                    resolve()
+                })
             }
         })
         .finally(() => {
@@ -114,7 +116,7 @@ function patchCustomer(body, header, idcustomer, idHost){
 function deleteCustomer(header, idcustomer, idHost){
     return new Promise(async (resolve, reject) => {
         await axios.delete(`https://api.pedidook.com.br/v1/clientes/${idcustomer}`, header)
-        .then(async (response) => {
+        .then(async () => {
             await succesHandlingRequests('customer', 'delete', idHost, idcustomer)
         })
         .catch(async (error) => {
@@ -129,7 +131,7 @@ function deleteCustomer(header, idcustomer, idHost){
 
 function undeleteCustomer(header, idcustomer, idHost){
     return new Promise(async (resolve, reject) => {
-        await axios.patch(`https://api.pedidook.com.br/v1/clientes/${idcustomer}/undelete`, header)
+        await axios.patch(`https://api.pedidook.com.br/v1/clientes/${idcustomer}/undelete`, '', header)
         .then(async (response) => {
             await succesHandlingRequests('customer', 'undelete', idHost, idcustomer)
         })

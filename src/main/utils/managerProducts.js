@@ -80,7 +80,7 @@ async function registerOrUpdateProduct(product){
         const functionReturnStatusOnPedOk = () => {if(productAlreadyRegister){ return productsDB[`${product.codigo}`].status }else{return null}}
         const functionReturnIdProductOnPedOk = () => {if(productAlreadyRegister){ return productsDB[`${product.codigo}`].idPedidoOk }else{return null}}
         
-        var statusProductOnPedidoOk = functionReturnStatusOnPedOk()
+        var statusProductOnPedidoOk = await functionReturnStatusOnPedOk()
 
         var productIsActiveOnPedidoOK =  statusProductOnPedidoOk == 'ATIVO' ? true : false;
         var idProductOnPedidoOk = functionReturnIdProductOnPedOk()
@@ -96,10 +96,10 @@ async function registerOrUpdateProduct(product){
         }else
         if(productAlreadyRegister&&productIsActiveOnHost){
             if(productIsActiveOnPedidoOK){
-                await preparingUpdateProduct(product, idProductOnPedidoOk)
-                .then(() => {
+              //  await preparingUpdateProduct(product, idProductOnPedidoOk)
+              //  .then(() => {
                     resolve()
-                })
+             //   })
             }
             else{
                 await preparingUndeleteProduct(idProductOnPedidoOk, product.codigo)
