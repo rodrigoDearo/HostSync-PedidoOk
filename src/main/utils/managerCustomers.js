@@ -16,7 +16,7 @@ async function requireAllCustomers(config){
                 if (err)
                     resolve({code: 500, msg:'ERRO AO CONSULTAR TABELA CLIENTES, CONTATAR SUPORTE TECNICO'});
 
-                await readingAllRecord(result, 0)
+                await readingAllRecordCustomers(result, 0)
                 .then(() => {
                     resolve({code: 200, msg:'CLIENTES CONSULTADOS COM SUCESSO'});
                 })
@@ -33,7 +33,7 @@ async function requireAllCustomers(config){
 }
 
 
-async function readingAllRecord(customersRecords, index){
+async function readingAllRecordCustomers(customersRecords, index){
     return new Promise(async (resolve, reject) => {
         let record = customersRecords[index]
         let i = index + 1;
@@ -62,13 +62,13 @@ async function readingAllRecord(customersRecords, index){
             }
     
             if(record.RAZ_SOCIAL==null){
-                await readingAllRecord(customersRecords, i)
+                await readingAllRecordCustomers(customersRecords, i)
                 .then(() => {
                     resolve()
                 })
             }
             else if((record.RAZ_SOCIAL).length==0){
-                await readingAllRecord(customersRecords, i)
+                await readingAllRecordCustomers(customersRecords, i)
                 .then(() => {
                     resolve()
                 })
@@ -76,7 +76,7 @@ async function readingAllRecord(customersRecords, index){
             else{
                 registerOrUpdateCustomer(customer)
                 .then(async() => {
-                    await readingAllRecord(customersRecords, i)
+                    await readingAllRecordCustomers(customersRecords, i)
                     .then(() => {
                         resolve()
                     })
@@ -114,10 +114,10 @@ async function registerOrUpdateCustomer(customer){
         }else
         if(customerAlreadyRegister&&customerIsActiveOnHost){
             if(customerIsActiveOnPedidoOK){
-               // await preparingUpdateCustomer(customer, idCustomerOnPedidoOk)
-               // .then(() => {
+                await preparingUpdateCustomer(customer, idCustomerOnPedidoOk)
+                .then(() => {
                     resolve()
-               // })
+                })
             }
             else{
                 await preparingUndeleteCustomer(idCustomerOnPedidoOk, customer.codigo)
@@ -143,5 +143,6 @@ async function registerOrUpdateCustomer(customer){
 
 
 module.exports = {
-    requireAllCustomers
+    requireAllCustomers,
+    readingAllRecordCustomers
 }

@@ -17,7 +17,7 @@ async function requireAllProducts(config){
                 if (err)
                     resolve({code: 500, msg:'ERRO AO CONSULTAR TABELA PRODUTOS, CONTATAR SUPORTE TECNICO'});
                 
-                await readingAllRecord(result, 0)
+                await readingAllRecordProducts(result, 0)
                 .then(() => {
                     resolve({code: 200, msg:'CLIENTES CONSULTADOS COM SUCESSO'});
                 })
@@ -34,7 +34,7 @@ async function requireAllProducts(config){
 }
 
 
-async function readingAllRecord(productsRecords, index){
+async function readingAllRecordProducts(productsRecords, index){
     return new Promise(async (resolve, reject) => {
         let record = productsRecords[index]
         let i = index + 1;
@@ -59,7 +59,7 @@ async function readingAllRecord(productsRecords, index){
     
             registerOrUpdateProduct(product)
             .then(async() => {
-                await readingAllRecord(productsRecords, i)
+                await readingAllRecordProducts(productsRecords, i)
                 .then(() => {
                     resolve()
                 })
@@ -96,10 +96,10 @@ async function registerOrUpdateProduct(product){
         }else
         if(productAlreadyRegister&&productIsActiveOnHost){
             if(productIsActiveOnPedidoOK){
-              //  await preparingUpdateProduct(product, idProductOnPedidoOk)
-              //  .then(() => {
+                await preparingUpdateProduct(product, idProductOnPedidoOk)
+                .then(() => {
                     resolve()
-             //   })
+                })
             }
             else{
                 await preparingUndeleteProduct(idProductOnPedidoOk, product.codigo)
@@ -126,5 +126,6 @@ async function registerOrUpdateProduct(product){
 
 
 module.exports = {
-    requireAllProducts
+    requireAllProducts,
+    readingAllRecordProducts
 }
