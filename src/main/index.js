@@ -3,7 +3,7 @@ const path = require('node:path')
 
 const { saveInfos, returnValueFromJson } = require('./utils/manageInfoUser.js')
 const { createDependencies, limparTabela } = require('./utils/dependenciesFDB.js')
-const { returnConfigToAccessDB, gravarLog } = require('./utils/auxFunctions.js')
+const { returnConfigToAccessDB, gravarLog, deleteErrorsRecords } = require('./utils/auxFunctions.js')
 const { requireAllProducts } = require('./utils/managerProducts.js')
 const { requireAllCustomers } = require('./utils/managerCustomers.js')
 const { readNewRecords } = require('./utils/managerHostTableNotify.js')
@@ -94,6 +94,7 @@ async function mainProcess(){
   return new Promise(async (resolve, reject) => {
     await returnConfigToAccessDB()
     .then(async (config) => {
+      await deleteErrorsRecords()
       let mensageReturn = await createDependencies(config)
       if(mensageReturn.code == 500){
         reject(mensageReturn)

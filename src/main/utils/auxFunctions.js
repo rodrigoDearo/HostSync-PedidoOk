@@ -181,10 +181,26 @@ async function verifyToDeleteErrorRecord(destiny, idHost){
 }
 
 
+async function deleteErrorsRecords(){
+  return new Promise(async (resolve, reject) => {
+    let errorsDB = JSON.parse(fs.readFileSync('./config/errorsDB.json'));
+
+    errorsDB.product = {}
+    errorsDB.customer = {}
+    errorsDB.sale = {}
+
+    fs.writeFileSync('./config/errorsDB.json', JSON.stringify(errorsDB), 'utf-8');
+    gravarLog('RESETADO BANCO DE ERROS')
+    resolve()
+  })
+}
+
+
 module.exports = {
     returnConfigToAccessDB,
     incrementIdRequestPost,
     succesHandlingRequests,
     errorHandlingRequest,
+    deleteErrorsRecords,
     gravarLog
 }
