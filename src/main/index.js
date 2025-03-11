@@ -6,6 +6,7 @@ const { createDependencies, limparTabela } = require('./utils/dependenciesFDB.js
 const { returnConfigToAccessDB, gravarLog } = require('./utils/auxFunctions.js')
 const { requireAllProducts } = require('./utils/managerProducts.js')
 const { requireAllCustomers } = require('./utils/managerCustomers.js')
+const { readNewRecords } = require('./utils/managerHostTableNotify.js')
 
 var win;
 
@@ -98,7 +99,7 @@ async function mainProcess(){
         reject(mensageReturn)
       }
       return config
-    })
+    })/*
     .then(async (config) => {
       let mensageReturn = await limparTabela(config)
       if(mensageReturn.code == 500){
@@ -118,6 +119,14 @@ async function mainProcess(){
       if(mensageReturn.code == 500){
         reject(mensageReturn)
       }
+      return config
+    }) */
+    .then(async (config) => {
+      let mensageReturn = await readNewRecords(config)
+      if(mensageReturn.code == 500){
+        reject(mensageReturn)
+      }
+      return config
     }) 
   })
 }

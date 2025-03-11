@@ -1,129 +1,140 @@
 const conexao = require('node-firebird');
-const fs = require ('fs')
 
 const { readingAllRecordProducts } = require('./managerProducts.js')
 const { readingAllRecordCustomers } = require('./managerCustomers.js')
+const { limparTabela } = require('./dependenciesFDB.js');
+const { gravarLog } = require("./auxFunctions.js");
 
-async function requireAllRecordsNotifyTable(config){
+async function readNewRecords(config){
+    return new Promise(async(resolve, reject) => {
+        var recordsProductsNotify, recordsCustomersNotify;
+
+        await requireAllRecordsProductNotifyTable(config)
+        .then(async (response) => {
+            recordsProductsNotify = response
+            recordsCustomersNotify = await requireAllRecordsCustomerNotifyTable(config)
+        })
+        .then(async () => {
+            await limparTabela(config);
+        })
+        .then(async () => {
+            if(recordsProductsNotify.length>0){
+                await readingAllRecordProducts(recordsProductsNotify, 0)
+            }
+        })
+        .then(async () => {
+            if(recordsCustomersNotify.length>0){
+                await readingAllRecordCustomers(recordsCustomersNotify, 0)
+            }
+        })
+        .then(async () => {
+            gravarLog('------------------------------------------------')
+            if((recordsProductsNotify.length==0)&&(recordsCustomersNotify.length==0)){
+                gravarLog('SEM NOVO REGISTROS PARA LER')
+                gravarLog('------------------------------------------------')
+            }
+            else{
+                gravarLog('FINALIZADO LEITURA DA TABELA DE NOVOS REGISTRO !')
+                gravarLog('------------------------------------------------')
+            }
+        })
+        .then(() => {
+            resolve({code: 200, msg:'NOVOS REGISTROS CONSULTADOS COM SUCESSO'});
+        })
+        .catch(() => {
+            resolve({code: 500, msg:'ERRO AO CONSULTAR TABELA NOTIFICACOES, CONTATAR SUPORTE TECNICO'})
+        })
+
+    })
+}
+
+
+async function requireAllRecordsProductNotifyTable(config){
     return new Promise(async(resolve, reject) => {
         try {
         conexao.attach(config, function (err, db){
             if (err)
                 throw err;
   
-            let codigoSQL = `SELECT 
-                            NH.*,
-                            CASE 
-                                WHEN NH.tipo = 'PRODUTO' THEN P.id_produto
-                                ELSE C.id_cliente
-                            END AS id, 
-                            CASE 
-                                WHEN NH.tipo = 'PRODUTO' THEN P.obs
-                                ELSE C.obs
-                            END AS obs,
-                            CASE 
-                                WHEN NH.tipo = 'PRODUTO' THEN P.barras
-                                ELSE NULL
-                            END AS barras,
-                            CASE 
-                                WHEN NH.tipo = 'PRODUTO' THEN PG.grupo
-                                ELSE NULL
-                            END AS grupo,
-                            CASE 
-                                WHEN NH.tipo = 'PRODUTO' THEN P.produto
-                                ELSE C.cliente
-                            END AS nome,
-                            CASE 
-                                WHEN NH.tipo = 'PRODUTO' THEN P.estoque
-                                ELSE NULL
-                            END AS estoque,
-                            CASE 
-                                WHEN NH.tipo = 'PRODUTO' THEN PM.marca
-                                ELSE NULL
-                            END AS marca,
-                            CASE 
-                                WHEN NH.tipo = 'PRODUTO' THEN P.valor_venda
-                                ELSE NULL
-                            END AS valor_venda,
-                            CASE 
-                                WHEN NH.tipo = 'PRODUTO' THEN P.custo
-                                ELSE NULL
-                            END AS custo,
-                            CASE 
-                                WHEN NH.tipo = 'CLIENTE' THEN C.fone
-                                ELSE NULL
-                            END AS fone,
-                            CASE 
-                                WHEN NH.tipo = 'CLIENTE' THEN C.uf
-                                ELSE NULL
-                            END AS uf,
-                            CASE 
-                                WHEN NH.tipo = 'CLIENTE' THEN C.municipio
-                                ELSE NULL
-                            END AS municipio,
-                            CASE 
-                                WHEN NH.tipo = 'CLIENTE' THEN C.complemento
-                                ELSE NULL
-                            END AS complemento,
-                            CASE 
-                                WHEN NH.tipo = 'CLIENTE' THEN C.numero
-                                ELSE NULL
-                            END AS numero,
-                            CASE 
-                                WHEN NH.tipo = 'CLIENTE' THEN C.logradouro
-                                ELSE NULL
-                            END AS logradouro,
-                            CASE 
-                                WHEN NH.tipo = 'CLIENTE' THEN C.bairro
-                                ELSE NULL
-                            END AS bairro,
-                            CASE 
-                                WHEN NH.tipo = 'CLIENTE' THEN C.cep
-                                ELSE NULL
-                            END AS cep,
-                            CASE 
-                                WHEN NH.tipo = 'CLIENTE' THEN C.raz_social
-                                ELSE NULL
-                            END AS raz_social,
-                            CASE 
-                                WHEN NH.tipo = 'CLIENTE' THEN C.cpf_cnpj
-                                ELSE NULL
-                            END AS cpf_cnpj,
-                            CASE 
-                                WHEN NH.tipo = 'PRODUTO' THEN 
-                                    CASE 
-                                        WHEN P.status = 'ATIVO' THEN 1
-                                        WHEN P.status = 'INATIVO' THEN 0
-                                        ELSE NULL
-                                    END
-                                WHEN NH.tipo = 'CLIENTE' THEN 
-                                    CASE 
-                                        WHEN C.status = 'ATIVO' THEN 1
-                                        WHEN C.status = 'INATIVO' THEN 0
-                                        ELSE NULL
-                                    END
-                            END AS status
-                        FROM NOTIFICACOES_HOSTSYNC NH
-                        LEFT JOIN PRODUTOS P ON NH.tipo = 'PRODUTO' AND NH.iditem = P.id_produto
-                        LEFT JOIN PRODUTOS_GRUPO PG ON P.grupo = PG.id
-                        LEFT JOIN PRODUTOS_MARCA PM ON P.marca = PM.id
-                        LEFT JOIN CLIENTES C ON NH.tipo = 'CLIENTE' AND NH.iditem = C.id_cliente;
-                        WHERE NH.iditem IN (
-                            SELECT iditem 
-                            FROM NOTIFICACOES_HOSTSYNC 
-                            GROUP BY iditem 
-                            HAVING COUNT(*) = 1
-                        )
+            let codigoSQL = `SELECT
+                                produto_tabela.id_produto,
+                                produto_tabela.obs,
+                                produto_tabela.barras,
+                                produto_grupo.grupo,
+                                produto_tabela.produto,
+                                produto_tabela.estoque,
+                                produto_marca.marca,
+                                produto_tabela.valor_venda,
+                                produto_tabela.custo,
+                                produto_tabela.status
+                            FROM NOTIFICACOES_HOSTSYNC AS nh
+                            LEFT JOIN PRODUTOS AS produto_tabela ON nh.iditem = produto_tabela.id_produto
+                            LEFT JOIN PRODUTOS_GRUPO AS produto_grupo ON produto_tabela.grupo = produto_grupo.id
+                            LEFT JOIN PRODUTOS_MARCA AS produto_marca ON produto_tabela.marca = produto_marca.id
+                            WHERE nh.tipo = 'PRODUTO'
+                            AND nh.id IN (
+                                SELECT MIN(id)
+                                FROM NOTIFICACOES_HOSTSYNC
+                                WHERE tipo = 'PRODUTO'
+                                GROUP BY iditem
+                            );
                         `;
   
             db.query(codigoSQL, async function (err, result){
                 if (err)
-                    resolve({code: 500, msg:'ERRO AO CONSULTAR TABELA NOTIFICACOES, CONTATAR SUPORTE TECNICO'});
+                    reject({code: 500, msg:'ERRO AO CONSULTAR TABELA NOTIFICACOES, CONTATAR SUPORTE TECNICO'});
                 
-                await readingAllRecordProducts(result, 0)
-                .then(() => {
-                    resolve({code: 200, msg:'NOTIFICACOES CONSULTADAS COM SUCESSO'});
-                })
+                resolve(result)
+            });
+          
+        db.detach();
+        });
+  
+      } catch (error) {
+        reject(error);
+      }
+    })
+}
+
+
+async function requireAllRecordsCustomerNotifyTable(config){
+    return new Promise(async(resolve, reject) => {
+        try {
+        conexao.attach(config, function (err, db){
+            if (err)
+                throw err;
+  
+            let codigoSQL = `SELECT
+                                cliente_tabela.id_cliente,
+                                cliente_tabela.fone,
+                                cliente_tabela.obs,
+                                cliente_tabela.uf,
+                                cliente_tabela.municipio,
+                                cliente_tabela.complemento,
+                                cliente_tabela.numero,
+                                cliente_tabela.logradouro,
+                                cliente_tabela.bairro,
+                                cliente_tabela.cep,
+                                cliente_tabela.cliente,
+                                cliente_tabela.raz_social,
+                                cliente_tabela.cpf_cnpj,
+                                cliente_tabela.status
+                            FROM NOTIFICACOES_HOSTSYNC AS nh
+                            LEFT JOIN CLIENTES AS cliente_tabela ON nh.iditem = cliente_tabela.id_cliente
+                            WHERE nh.tipo = 'CLIENTE'
+                            AND nh.id IN (
+                                SELECT MIN(id)
+                                FROM NOTIFICACOES_HOSTSYNC
+                                WHERE tipo = 'CLIENTE'
+                                GROUP BY iditem
+                            );
+                        `;
+  
+            db.query(codigoSQL, async function (err, result){
+                if (err)
+                    reject({code: 500, msg:'ERRO AO CONSULTAR TABELA NOTIFICACOES, CONTATAR SUPORTE TECNICO'});
+
+                resolve(result)
                 
             });
           
@@ -134,4 +145,10 @@ async function requireAllRecordsNotifyTable(config){
         reject(error);
       }
     })
+}
+
+
+
+module.exports = {
+    readNewRecords
 }
