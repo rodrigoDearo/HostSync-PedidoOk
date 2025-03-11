@@ -148,11 +148,11 @@ function undeleteCustomer(header, idcustomer, idHost){
 // ---------------------------------------------------------------------
 
 
-function getSales(header){
+function getSales(dateTime, page, header){
     return new Promise(async (resolve, reject) => {
-        await axios.patch(`https://api.pedidook.com.br/v1/pedidos/`, header)
+        await axios.get(`https://api.pedidook.com.br/v1/pedidos/?alterado_apos=${dateTime}&pagina=${page}`, header)
         .then((response) => {
-            succesHandlingRequests('sales', 'get', idHost, idPedOk)
+            resolve([response.data.pedidos, response.data.href_proxima_pagina])
         })
         .catch((error) => {
 

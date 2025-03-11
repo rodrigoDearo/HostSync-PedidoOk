@@ -2,7 +2,6 @@ const conexao = require('node-firebird');
 const fs = require ('fs')
 
 const { preparingPostProduct , preparingUpdateProduct, preparingDeleteProduct, preparingUndeleteProduct } = require('./preparingRequests.js');
-const { Console } = require('console');
 
 async function requireAllProducts(config){
     return new Promise(async(resolve, reject) => {

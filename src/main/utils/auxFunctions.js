@@ -129,15 +129,21 @@ async function succesHandlingRequests(destiny, resource, idHost, idPedOk){
       fs.writeFileSync('./config/customers.json', JSON.stringify(customersDB), 'utf-8')
       gravarLog('Gravado registro no banco de ' + destiny);
       resolve()
-    }else
-    if(destiny=="sales"){
-      let configDB = JSON.parse(fs.readFileSync('./config/configApp.json'))
-      // ATUALIZAR DATA REQUEST
-
-      fs.writeFileSync('./config/configApp.json', JSON.stringify(configDB), 'utf-8')
-      
     }
+  })
+}
 
+
+
+async function updateDatetimeOfLastRequest(dateTime){
+  return new Promise(async (resolve, reject) => {
+      let appDB = JSON.parse(fs.readFileSync('./config/configApp.json'));
+
+      appDB.pedidoOk.last_request = dateTime;
+
+      fs.writeFileSync('./config/configApp.json', JSON.stringify(appDB), 'utf-8');
+      gravarLog('Atualizado registro da ultima request no banco')
+      resolve()
   })
 }
 
@@ -196,11 +202,30 @@ async function deleteErrorsRecords(){
 }
 
 
+async function getActualDatetime(){
+  return new Promise(async (resolve, reject) => {
+    const now = new Date();
+
+    now.setMinutes(now.getMinutes() - 1);
+
+    let actualTime = now.getFullYear() + "-" +
+    String(now.getMonth() + 1).padStart(2, '0') + "-" +
+    String(now.getDate()).padStart(2, '0') + "T" +
+    String(now.getHours()).padStart(2, '0') + ":" +
+    String(now.getMinutes()).padStart(2, '0') + ":00";
+
+    resolve(actualTime)
+  })
+}
+
+
 module.exports = {
     returnConfigToAccessDB,
     incrementIdRequestPost,
     succesHandlingRequests,
+    updateDatetimeOfLastRequest,
     errorHandlingRequest,
     deleteErrorsRecords,
+    getActualDatetime,
     gravarLog
 }

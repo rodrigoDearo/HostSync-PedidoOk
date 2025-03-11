@@ -7,6 +7,7 @@ const { returnConfigToAccessDB, gravarLog, deleteErrorsRecords } = require('./ut
 const { requireAllProducts } = require('./utils/managerProducts.js')
 const { requireAllCustomers } = require('./utils/managerCustomers.js')
 const { readNewRecords } = require('./utils/managerHostTableNotify.js')
+const { managementRequestsSales } = require('./utils/managerSales.js')
 
 var win;
 
@@ -121,14 +122,21 @@ async function mainProcess(){
         reject(mensageReturn)
       }
       return config
-    }) */
+    }) 
     .then(async (config) => {
       let mensageReturn = await readNewRecords(config)
       if(mensageReturn.code == 500){
         reject(mensageReturn)
       }
       return config
-    }) 
+    }) */
+    .then(async (config) => {
+    let mensageReturn = await managementRequestsSales()
+    if(mensageReturn.code == 500){
+      reject(mensageReturn)
+    }
+    return config
+    })
   })
 }
 

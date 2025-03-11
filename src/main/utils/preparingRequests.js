@@ -182,6 +182,24 @@ async function preparingUndeleteCustomer(idcustomer, idHost){
 }
 
 
+async function preparingGetSales(dateTime, page){
+    return new Promise(async (resolve, reject) => {
+        let header;
+
+        await returnHeader()
+        .then(async (response) => {
+            header = response
+        })
+        .then(async () => {
+            return await getSales(dateTime, page, header)
+        })
+        .then((response) => {
+            resolve(response)
+        })
+    })
+}
+
+
 async function returnHeader(){
     return new Promise(async (resolve, reject) => {
         let tokenParceiro, tokenPedidoOk;
@@ -210,6 +228,7 @@ async function returnHeader(){
 
 
 
+
 module.exports = {
     preparingPostProduct,
     preparingUpdateProduct,
@@ -219,4 +238,5 @@ module.exports = {
     preparingUpdateCustomer,
     preparingDeleteCustomer,
     preparingUndeleteCustomer,
+    preparingGetSales
 }
