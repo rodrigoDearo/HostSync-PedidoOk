@@ -25,7 +25,7 @@ const createWindow = () => {
     icon: path.join(__dirname, 'img/icon.jpg')
   })
 
-  win.loadFile('../renderer/index.html')
+  win.loadFile(path.join(__dirname, '../renderer/index.html'))
 }
 
 app.on('window-all-closed', () => {
@@ -72,7 +72,7 @@ ipcMain.handle('saveInfoHost', async (events, args) => {
   events.preventDefault();
   await saveInfos('host', args)
   .then(() => {
-    return 'success'
+    return
   })
 })
 
@@ -80,7 +80,7 @@ ipcMain.handle('saveInfoPedidoOk', async (events, args) => {
   events.preventDefault();
   await saveInfos('pedidoOk', args)
   .then(() => {
-    return 'success'
+    return
   })
 })
 
