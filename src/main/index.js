@@ -138,6 +138,7 @@ async function mainProcess(){
       if(mensageReturn.code == 500){
         reject(mensageReturn)
       }
+      console.log('to aqui')
       return config
     })
   })

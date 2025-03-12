@@ -232,18 +232,35 @@ async function returnCustomerIdHostFromIdPed(idCustomerPed){
   return new Promise(async (resolve, reject) => {
       let customersDB = JSON.parse(fs.readFileSync('./config/customers.json'))
 
-      for (const idCustomerHost in customersDB) {
-        if (customersDB.hasOwnProperty(idCustomerHost)) {
-            const customer = customersDB[idCustomerHost];
-            if (customer.idPedidoOk == idCustomerPed) {
-                resolve(idCustomerHost) 
-            }
-        }
+    for (const idCustomerHost in customersDB) {
+      if (customersDB.hasOwnProperty(idCustomerHost)) {
+          const customer = customersDB[idCustomerHost];
+          if (customer.idPedidoOk == idCustomerPed) {
+              resolve(idCustomerHost) 
+          }
+      }
     }
     return null;
   })
 }
 
+
+async function returnProductIdHostFromIdPed(idProductPed){
+  return new Promise(async (resolve, reject) => {
+    let productsDB = JSON.parse(fs.readFileSync('./config/products.json'))
+
+    for (const idProductHost in productsDB) {
+      if (productsDB.hasOwnProperty(idProductHost)) {
+          const product = productsDB[idProductHost];
+          if (product.idPedidoOk == idProductPed) {
+              resolve(idProductHost) 
+          }
+      }
+    }
+
+    return null;
+  })
+}
 
 
 module.exports = {
@@ -255,5 +272,6 @@ module.exports = {
     deleteErrorsRecords,
     getActualDatetime,
     returnCustomerIdHostFromIdPed,
+    returnProductIdHostFromIdPed,
     gravarLog
 }
