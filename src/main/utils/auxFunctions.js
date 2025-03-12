@@ -125,8 +125,17 @@ async function succesHandlingRequests(destiny, resource, idHost, idPedOk){
           customersDB[`${idHost}`].status = "ATIVO";
           break;
       }
-
+      
       fs.writeFileSync('./config/customers.json', JSON.stringify(customersDB), 'utf-8')
+      gravarLog('Gravado registro no banco de ' + destiny);
+      resolve()
+    }else
+    if(destiny=="sale"){
+      let salesDB = JSON.parse(fs.readFileSync('./config/sales.json'))
+
+      salesDB[idPedOk] = idHost;
+      
+      fs.writeFileSync('./config/sales.json', JSON.stringify(salesDB), 'utf-8')
       gravarLog('Gravado registro no banco de ' + destiny);
       resolve()
     }
@@ -219,6 +228,24 @@ async function getActualDatetime(){
 }
 
 
+async function returnCustomerIdHostFromIdPed(idCustomerPed){
+  return new Promise(async (resolve, reject) => {
+      let customersDB = JSON.parse(fs.readFileSync('./config/customers.json'))
+
+      for (const idCustomerHost in customersDB) {
+        if (customersDB.hasOwnProperty(idCustomerHost)) {
+            const customer = customersDB[idCustomerHost];
+            if (customer.idPedidoOk == idCustomerPed) {
+                resolve(idCustomerHost) 
+            }
+        }
+    }
+    return null;
+  })
+}
+
+
+
 module.exports = {
     returnConfigToAccessDB,
     incrementIdRequestPost,
@@ -227,5 +254,6 @@ module.exports = {
     errorHandlingRequest,
     deleteErrorsRecords,
     getActualDatetime,
+    returnCustomerIdHostFromIdPed,
     gravarLog
 }

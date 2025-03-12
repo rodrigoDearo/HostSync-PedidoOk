@@ -155,7 +155,7 @@ function getSales(dateTime, page, header){
             resolve([response.data.pedidos, response.data.href_proxima_pagina])
         })
         .catch((error) => {
-
+            console.log(error.response.data.erros)
         })
         .finally(() => {
 

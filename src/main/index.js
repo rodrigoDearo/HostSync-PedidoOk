@@ -42,6 +42,9 @@ app.whenReady().then(() => {
     { label: 'Abrir', click: function(){
       win.show()
     }},
+    { label: 'Minimizar', click: function(){
+      win.hide();
+    }},
     { label: 'Fechar', click: function(){
       app.quit() 
     }}
@@ -131,11 +134,11 @@ async function mainProcess(){
       return config
     }) */
     .then(async (config) => {
-    let mensageReturn = await managementRequestsSales()
-    if(mensageReturn.code == 500){
-      reject(mensageReturn)
-    }
-    return config
+      let mensageReturn = await managementRequestsSales(config)
+      if(mensageReturn.code == 500){
+        reject(mensageReturn)
+      }
+      return config
     })
   })
 }
@@ -143,57 +146,14 @@ async function mainProcess(){
 
 /*
 
-*LIGA GERADOR:
-
-*LIMPA TABELA NOTIFICAÇÃO
-
-*PEGA TABELA PRODUTOS:
-*PRODUTO EXISTE?
-*ATUALIZA
-*PRODUTO NÃO EXISTE?
-*CADASTRA
-
-*PEGA TABELA CLIENTE
-*CLIENTE EXISTE?
-*ATUALIZA
-*CLIENTE NÃO EXISTE?
-*CADASTRA
-
-REQUISITA VENDAS A PARTIR DO ULTIMA LAST_REQUEST
-LE TODAS AS VENDAS <============================ )
-VENDA EXISTE?				                          	||
-ATUALIZA			                              		||
-VENDA NÃO EXISTE? 			                       	||
-CADASTRA				      	                        ||
-TEM MAIS PAG?				      	                    ||
-REQUISITA VENDAS A PARTIR DA NOVA PROXIMA PAG _	||
-NÃO TEM MAIS VENDAS?
-ATUALIZA LAST_REQUEST
 
 AGUARDA 5 MINUTOS PARA INICIAR LEITURA DA TABELA NOTIFICAÇÕES
 DEPOIS DE LER TABELA NOTIFICAÇÕES E CADASTRAR
 AGUARDA 10 MINUTOS PARA INICIAR LEITURA DAS NOVAS VENDAS
 
-CRIAR UM TRATATAMENTO DE ERROS E TACAR EM TODOS OS REQUESTS
 AJEITAR ENV ARQUIVO
-ENVIAR ERROS PRO LOG
-VER OQ VAI NO LOG
-ENVIAR ERROS COMO POP UP
 ARRUMAR POP UP E FAZER COMO PROMISE O IPC MAIN (MUDAR PRA HANDLE)
-CASO DE ERRO NA REQUISIÇÃO POR CAUSA DO ID PARCEIRO APENAS ADICIONAR MAIS UM NO ID PARCEIRO E TENTAR DNV, CASO CONTRARIO ANUNCIAR NO LOG MOTIVO
 MELHORAR TELA INICIAL
 
-SOBRE TABELA NOTIFICACAO
-- CRIAR FUNÇÃO QUE PEGA REGISTROS DA TABELA
-- LE UM POR UM
-- SE PRODUTO LER O REGISTRO NA TABELA PRODUTOS E MANDA PRO MANAGERPRODUCT
-- SE CLIENTE LER O REGISTRO NA TABELA CLIENTES E MANDA PRO MANAGERCUSTOMER
-- SE DER ERRO EM ALGUM ANUNCIAR NO LOG E NÃO DELETAR O REGISTRO
- 
-SOBRE AS VENDAS
-- CRIAR FUNÇÃO QUE CADASTRA A VENDA COM BASE NAS INFO
-- CRIAR FUNÇAO QUE TRABALHA COM OS REQUEST BASEADO NO ULTIMO REQUEST FEITO
-- VERIFICA VENDA POR VENDA E VERIFICA ATE HREF_PAGINA SER IGUAL NULL
-- SEMPRE ADICIONAR UM NO ID_PARCEIRO
 
 */ 
