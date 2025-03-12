@@ -12,14 +12,22 @@ function buttonMinimizeApp(){
     window.api.minimizeApp()
 }
 
-function saveInfoHost(){
+async function saveInfoHost(){
     let pathdb = document.getElementById('pathdb-input').value;
-    window.api.saveHost(pathdb)
+    let returnOfApi = await window.api.saveHost(pathdb)
+    
+    if(returnOfApi=='success'){
+        alert("Informações salvas com sucesso!")
+    }
 }
 
-function saveInfoPedidoOk(){
+async function saveInfoPedidoOk(){
     let token = document.getElementById('token-input').value;
-    window.api.savePedidoOk(token)
+    let returnOfApi = await window.api.savePedidoOk(token)
+
+    if(returnOfApi=='success'){
+        alert("Informações salvas com sucesso!")
+    }
 }
 
 async function startSync(){
@@ -31,30 +39,3 @@ async function startSync(){
   //  alert(mensage)
 }
 
-
-
-
-
-
-async function loadingPage(status){
-    let buttons = document.getElementsByClassName('btn');
-    let gifLoading = document.getElementById('gif-loading');
-    let backgroundLoading = document.getElementById('background-loading')
-
-    if(status){
-        for(let i=0; i<buttons.length; i++){
-            buttons[i].disabled = true
-        }
-        gifLoading.src = './assets/loading.gif'
-        backgroundLoading.style.width = '100vw';
-        backgroundLoading.style.height = '100vh' 
-    }
-    else{
-        for(let i=0; i<buttons.length; i++){
-            buttons[i].disabled = false
-        }
-        gifLoading.src = '';
-        backgroundLoading.style.width = '0';
-        backgroundLoading.style.height = '0' 
-    }
-}

@@ -4,8 +4,8 @@ const WINDOW_API = {
     closeApp: () => ipcRenderer.send('close'),
     minimizeApp: () => ipcRenderer.send('minimize'),
 
-    saveHost: (pathdb) => ipcRenderer.send('saveInfoHost', pathdb),
-    savePedidoOk: (token) => ipcRenderer.send('saveInfoPedidoOk', token),
+    saveHost: (pathdb) => ipcRenderer.invoke('saveInfoHost', pathdb),
+    savePedidoOk: (token) => ipcRenderer.invoke('saveInfoPedidoOk', token),
     getInfoUser: (field) => ipcRenderer.invoke('getInfoUser', field),
     start: () => ipcRenderer.invoke('startProgram')
 }

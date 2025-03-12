@@ -68,14 +68,20 @@ ipcMain.on('minimize', (events) => {
   win.hide();
 })
 
-ipcMain.on('saveInfoHost', (events, args) => {
+ipcMain.handle('saveInfoHost', async (events, args) => {
   events.preventDefault();
-  saveInfos('host', args)
+  await saveInfos('host', args)
+  .then(() => {
+    return 'success'
+  })
 })
 
-ipcMain.on('saveInfoPedidoOk', (events, args) => {
+ipcMain.handle('saveInfoPedidoOk', async (events, args) => {
   events.preventDefault();
-  saveInfos('pedidoOk', args)
+  await saveInfos('pedidoOk', args)
+  .then(() => {
+    return 'success'
+  })
 })
 
 
@@ -96,50 +102,48 @@ ipcMain.handle('startProgram', async () => {
 
 async function mainProcess(){
   return new Promise(async (resolve, reject) => {
+    var config;
+
     await returnConfigToAccessDB()
-    .then(async (config) => {
+    .then(async (response) => {
+      config = response;
       await deleteErrorsRecords()
       let mensageReturn = await createDependencies(config)
       if(mensageReturn.code == 500){
         reject(mensageReturn)
       }
-      return config
-    })/*
-    .then(async (config) => {
+    })
+    .then(async () => {
       let mensageReturn = await limparTabela(config)
       if(mensageReturn.code == 500){
         reject(mensageReturn)
       }
-      return config
     })
-    .then(async (config) => {
+    .then(async () => {
       let mensageReturn = await requireAllProducts(config)
       if(mensageReturn.code == 500){
         reject(mensageReturn)
       }
-      return config
     })
-    .then(async (config) => {
+    .then(async () => {
       let mensageReturn = await requireAllCustomers(config)
       if(mensageReturn.code == 500){
         reject(mensageReturn)
       }
-      return config
     }) 
-    .then(async (config) => {
-      let mensageReturn = await readNewRecords(config)
-      if(mensageReturn.code == 500){
-        reject(mensageReturn)
-      }
-      return config
-    }) */
-    .then(async (config) => {
-      let mensageReturn = await managementRequestsSales(config)
-      if(mensageReturn.code == 500){
-        reject(mensageReturn)
-      }
-      console.log('to aqui')
-      return config
+    .then(async () => {
+      setInterval(async () => {
+        await readNewRecords(config)
+        .then(async () => {
+            await managementRequestsSales(config)
+        })
+        .then(() => {
+          gravarLog('---------------------------------------------------------------------')
+          gravarLog('REALIZADO A LEITURA PERIODICA DA TABELA DE NOTIFICACOES E DAS VENDAS')
+          gravarLog('---------------------------------------------------------------------')
+        })
+      
+      }, 600000);
     })
   })
 }
@@ -147,12 +151,6 @@ async function mainProcess(){
 
 /*
 
-
-AGUARDA 5 MINUTOS PARA INICIAR LEITURA DA TABELA NOTIFICAÇÕES
-DEPOIS DE LER TABELA NOTIFICAÇÕES E CADASTRAR
-AGUARDA 10 MINUTOS PARA INICIAR LEITURA DAS NOVAS VENDAS
-
-AJEITAR ENV ARQUIVO
 ARRUMAR POP UP E FAZER COMO PROMISE O IPC MAIN (MUDAR PRA HANDLE)
 MELHORAR TELA INICIAL
 
