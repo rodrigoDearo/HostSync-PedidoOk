@@ -1,21 +1,18 @@
-require('dotenv').config
+require('dotenv').config({ path: __dirname + '/.env' });
 
 function returnInfo(infoRequired){
     return new Promise((resolve, reject) => {
         switch (infoRequired) {
             case 'user_database':
-                //resolve(process.env.USR_DATABASE) 
-                resolve('SYSDBA') 
+                resolve(process.env.USR_DATABASE) 
                 break;
         
             case 'password_database':
-                //resolve(process.env.PSW_DATABASE) 
-                resolve('masterkey') 
+                resolve(process.env.PSW_DATABASE) 
                 break;
 
             case 'token_partner':
-                //resolve(process.env.TOKEN_PARTNER) 
-                resolve('c4feeb6f-a967-4315-abe7-453269b24dfb') 
+                resolve(process.env.TOKEN_PARTNER) 
                 break;
         }
     })
