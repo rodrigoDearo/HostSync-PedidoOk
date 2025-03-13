@@ -1,7 +1,12 @@
 const conexao = require('node-firebird');
 const fs = require ('fs')
+const path = require('node:path')
+const { app } = require('electron')
 
 const { preparingPostProduct , preparingUpdateProduct, preparingDeleteProduct, preparingUndeleteProduct } = require('./preparingRequests.js');
+
+const userDataPath = path.join(app.getPath('userData'), 'ConfigFiles');
+const pathProducts = path.join(userDataPath, 'products.json');
 
 async function requireAllProducts(config){
     return new Promise(async(resolve, reject) => {
@@ -71,7 +76,7 @@ async function readingAllRecordProducts(productsRecords, index){
 
 async function registerOrUpdateProduct(product){
     return new Promise(async (resolve, reject) => {
-        let productsDB = JSON.parse(fs.readFileSync('./config/products.json'))
+        let productsDB = JSON.parse(fs.readFileSync(pathProducts))
 
         var productAlreadyRegister = productsDB[`${product.codigo}`] ? true : false;
         var productIsActiveOnHost = product.status == 'ATIVO' ? true : false;

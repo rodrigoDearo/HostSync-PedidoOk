@@ -3,7 +3,7 @@ const path = require('node:path')
 
 const { saveInfos, returnValueFromJson } = require('./utils/manageInfoUser.js')
 const { createDependencies, limparTabela } = require('./utils/dependenciesFDB.js')
-const { returnConfigToAccessDB, gravarLog, deleteErrorsRecords } = require('./utils/auxFunctions.js')
+const { copyJsonFilesToUserData, returnConfigToAccessDB, gravarLog, deleteErrorsRecords } = require('./utils/auxFunctions.js')
 const { requireAllProducts } = require('./utils/managerProducts.js')
 const { requireAllCustomers } = require('./utils/managerCustomers.js')
 const { readNewRecords } = require('./utils/managerHostTableNotify.js')
@@ -33,6 +33,7 @@ app.on('window-all-closed', () => {
 })
 
 app.whenReady().then(() => {
+  copyJsonFilesToUserData()
   createWindow()
 
   const icon = path.join(__dirname, 'img/icon.jpg')
@@ -99,6 +100,7 @@ ipcMain.handle('startProgram', async () => {
     return response
   })
 })
+
 
 async function mainProcess(){
   return new Promise(async (resolve, reject) => {

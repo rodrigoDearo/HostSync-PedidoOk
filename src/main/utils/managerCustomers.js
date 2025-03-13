@@ -1,7 +1,12 @@
 const conexao = require('node-firebird');
 const fs = require ('fs')
+const { app } = require('electron')
+const path = require('node:path')
 
 const { preparingPostCustomer , preparingUpdateCustomer, preparingDeleteCustomer, preparingUndeleteCustomer } = require('./preparingRequests.js');
+
+const userDataPath = path.join(app.getPath('userData'), 'ConfigFiles');
+const pathCustomers = path.join(userDataPath, 'customers.json');
 
 async function requireAllCustomers(config){
     return new Promise(async(resolve, reject) => {
@@ -90,7 +95,7 @@ async function readingAllRecordCustomers(customersRecords, index){
 
 async function registerOrUpdateCustomer(customer){
     return new Promise(async (resolve, reject) => {
-        let customersDB = JSON.parse(fs.readFileSync('./config/customers.json'))
+        let customersDB = JSON.parse(fs.readFileSync(pathCustomers))
 
         var customerAlreadyRegister = customersDB[`${customer.codigo}`] ? true : false;
         var customerIsActiveOnHost = customer.status == 'ATIVO' ? true : false;

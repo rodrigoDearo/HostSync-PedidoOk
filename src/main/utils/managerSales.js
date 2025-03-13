@@ -1,11 +1,16 @@
 const conexao = require('node-firebird');
 const fs = require('fs');
+const path = require('node:path')
+const { app } = require('electron')
 
 const { preparingGetSales } = require('./preparingRequests.js')
 const { returnValueFromJson } = require('./manageInfoUser.js')
 const { getActualDatetime, updateDatetimeOfLastRequest, returnCustomerIdHostFromIdPed, returnProductIdHostFromIdPed, succesHandlingRequests } = require('./auxFunctions.js')
 const { insertOrcamento, insertItemOrcamento } = require('./insertsHostFDB.js');
 const { Console } = require('console');
+
+const userDataPath = path.join(app.getPath('userData'), 'ConfigFiles');
+const pathSales = path.join(userDataPath, 'sales.json');
 
 async function managementRequestsSales(config){
     return new Promise(async (resolve, reject) => {
@@ -48,7 +53,7 @@ async function managementRequestsSales(config){
 async function readingAllRecordsSales(sales, config){
     return new Promise(async (resolve, reject) => {
         const now = new Date();
-        const salesDB = JSON.parse(fs.readFileSync('./config/sales.json'))
+        const salesDB = JSON.parse(fs.readFileSync(pathSales))
         let finish = false
 
         for(let i=0; i<sales.length; i++){

@@ -1,4 +1,9 @@
-require('dotenv').config({ path: __dirname + '/.env' });
+const { app } = require('electron')
+const path = require('node:path')
+
+const userDataPath = path.join(app.getPath('userData'), 'ConfigFiles');
+
+require('dotenv').config({ path: path.join(userDataPath, '.env') });
 
 function returnInfo(infoRequired){
     return new Promise((resolve, reject) => {
