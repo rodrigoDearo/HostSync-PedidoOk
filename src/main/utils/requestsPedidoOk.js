@@ -150,7 +150,7 @@ function undeleteCustomer(header, idcustomer, idHost){
 
 function getSales(dateTime, page, header){
     return new Promise(async (resolve, reject) => {
-        await axios.get(`https://api.pedidook.com.br/v1/pedidos/?alterado_apos=${dateTime}&pagina=${page}`, header)
+        await axios.get(`https://api.pedidook.com.br/v1/pedidos/?alterado_apos=${dateTime}&pagina=${page}&excluido=false`, header)
         .then((response) => {
             resolve([response.data.pedidos, response.data.href_proxima_pagina])
         })
