@@ -301,12 +301,12 @@ function copyJsonFilesToUserData() {
       if (!fs.existsSync(destinationPath)) {
           if (fs.existsSync(sourcePath)) {
               fs.copyFileSync(sourcePath, destinationPath);
-              console.log(`✅ Copiado ${file} para ${userDataPath}`);
+              console.log(`Copiado ${file} para ${userDataPath}`);
           } else {
-              console.warn(`⚠️ Arquivo não encontrado: ${sourcePath}`);
+              console.warn(`Arquivo nao encontrado: ${sourcePath}`);
           }
       } else {
-          console.log(`🔹 ${file} já existe em ${userDataPath}`);
+          console.log(`${file} ja existe em ${userDataPath}`);
       }
   });
 }

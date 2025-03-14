@@ -154,8 +154,8 @@ function getSales(dateTime, page, header){
         .then((response) => {
             resolve([response.data.pedidos, response.data.href_proxima_pagina])
         })
-        .catch((error) => {
-            console.log(error.response.data.erros)
+        .catch(async (error) => {
+            await errorHandlingRequest('sale', 'GET', 0, 0, error.response.data.erros, null)
         })
         .finally(() => {
 
