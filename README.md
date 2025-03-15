@@ -1,22 +1,22 @@
-🚀 HostSync - PedidoOk
+# 🚀 HostSync - PedidoOk
 
-📌 Visão Geral
+## 📌 Visão Geral
 
 HostSync - PedidoOk é um software integrador entre o sistema Host e o sistema PedidoOk, sincronizando produtos, clientes e vendas. Esta documentação fornece informações essenciais para instalação, configuração e resolução de problemas.
 
-🛠 Instalação
+## 🛠 Instalação
 
 O software possui um instalador executável que automatiza o processo.
 
 Não necessita de dependências adicionais, desde que instalado na máquina servidora do banco de dados Host.
 
-⚙️ Configuração
+## ⚙️ Configuração
 
-🔹 Host
+### 🔹 Host
 
 O caminho do banco HOST.FDB deve ser definido, geralmente C:\TSD\Host.
 
-🔹 PedidoOk
+### 🔹 PedidoOk
 
 Acesse o software PedidoOk.
 
@@ -24,7 +24,7 @@ No menu, selecione "Integrações" > "Host" > "Configurar a Integração".
 
 Obtenha o token e insira no integrador.
 
-🔄 Ciclo de Execução
+## 🔄 Ciclo de Execução
 
 Limpeza de registros antigos de erro.
 
@@ -38,25 +38,25 @@ Importação de vendas do PedidoOk.
 
 Monitoramento de notificações e ajustes conforme necessidade.
 
-🔍 Dados Sincronizados
+## 🔍 Dados Sincronizados
 
-🛒 Produtos
+### 🛒 Produtos
 
 ID, Nome, Categoria, Marca, Estoque, Preço de venda, Custo, Código de barras, etc.
 
-👥 Clientes
+### 👥 Clientes
 
 ID, Nome, Telefone, Endereço completo, CNPJ/CPF, etc.
 
-📦 Vendas
+### 📦 Vendas
 
 ID, Data, Valor final, Status, Cliente associado, Itens da venda.
 
-📁 Logs e Bancos de Dados
+## 📁 Logs e Bancos de Dados
 
 📍 Arquivos armazenados em:
 
-{disco}:\Users\{usuario}\AppData\Roaming\hostsync-pedidook\ConfigFiles
+```{disco}:\Users\{usuario}\AppData\Roaming\hostsync-pedidook\ConfigFiles```
 
 📝 Logs ajudam na identificação de problemas.
 
@@ -66,16 +66,16 @@ ID, Data, Valor final, Status, Cliente associado, Itens da venda.
 
 📂 Caso ocorra falha, verificar os arquivos JSON auxiliares: products.json, customers.json, sales.json.
 
-🆘 Suporte
+## 🆘 Suporte
 
 ❌ Se o erro for operacional (ex: dados inconsistentes no Host ou PedidoOk), ajuste os registros.
 
 ✅ Se houver erro no integrador, execute via cmd para depuração:
 
-cd "{disco}\Users\{usuario}\AppData\Local\Programs\hostsync-pedidook"
-HostSync-PedOk
+```cd "{disco}\Users\{usuario}\AppData\Local\Programs\hostsync-pedidook"```
+```HostSync-PedOk```
 
 💡 Se um erro crítico for encontrado, contate o desenvolvedor com os logs anexados.
 
-✍️ Autor: Rodrigo Dearo - 📅 2025
+### ✍️ Autor: Rodrigo Dearo - 📅 2025
 
