@@ -1,7 +1,9 @@
 # 🚀 HostSync - PedidoOk
 
 🔹 Effortless Integration: Seamlessly syncs your Host system with PedidoOk, ensuring accurate and up-to-date records of products, customers, and sales.
+
 🔹 Optimized Performance: Handles large amounts of data efficiently while minimizing server load.
+
 🔹 Secure and Reliable: Built with robust error handling and logging to maintain data integrity.
 
 ## 📌 Overview
@@ -94,8 +96,6 @@ This will generate the necessary executable files for deployment.
 
 - 💡 If a critical error is found, contact the developer with the attached logs.
 
-✍️ Author: Rodrigo Dearo - 📅 2025
-
 ## Built With
 
 * ![Electron](https://img.shields.io/badge/electron-%2347848F.svg?style=for-the-badge&logo=electron&logoColor=white)
@@ -115,20 +115,4 @@ This will generate the necessary executable files for deployment.
 * [Node Firebird](https://github.com/xdenser/node-firebird)
 
 
-⚠️ O arquivo errorsDB.json armazena falhas nas requisições de sincronização.
-
-📂 Caso ocorra falha, verificar os arquivos JSON auxiliares: products.json, customers.json, sales.json.
-
-## 🆘 Suporte
-
-❌ Se o erro for operacional (ex: dados inconsistentes no Host ou PedidoOk), ajuste os registros.
-
-✅ Se houver erro no integrador, execute via cmd para depuração:
-
-```cd "{disco}\Users\{usuario}\AppData\Local\Programs\hostsync-pedidook"```
-```HostSync-PedOk```
-
-💡 Se um erro crítico for encontrado, contate o desenvolvedor com os logs anexados.
-
 ### ✍️ Autor: Rodrigo Dearo - 📅 2025
-
