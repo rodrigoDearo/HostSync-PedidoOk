@@ -76,7 +76,7 @@ ID, Date, Final Value, Status, Associated Customer, Sale Items.
 
 - 📂 If an error occurs, check the auxiliary JSON files: products.json, customers.json, sales.json.
 
-### 🏗️ Building the Application
+## 🏗️ Building the Application
 
 To package the application, simply clone the repository and run the following command:
 
@@ -84,7 +84,7 @@ To package the application, simply clone the repository and run the following co
 
 This will generate the necessary executable files for deployment.
 
-### 🆘 Support
+## 🆘 Support
 
 - ❌ If the error is operational (e.g., inconsistent data in Host or PedidoOk), adjust the records.
 
