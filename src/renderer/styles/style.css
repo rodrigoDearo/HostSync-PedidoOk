@@ -14,7 +14,7 @@ body{
 }
 
 #navbar_menu{
-  background-color: #333;
+  background-color: #ff6c04;
   margin-bottom: 35px;
 }
 
@@ -111,7 +111,7 @@ main {
 
 .tagline {
   font-size: 32px;
-  color: #333;
+  color: #ff6c04;
 }
 
 .description {
@@ -121,7 +121,7 @@ main {
 }
 
 .get-started {
-  background-color: #333;
+  background-color: #ff6c04;
   color: #fff;
   border: none;
   padding: 10px 20px;
@@ -131,7 +131,7 @@ main {
 
 footer {
   position: absolute;
-  background-color: #333;
+  background-color: #ff6c04;
   color: #fff;
   width: 100vw;
   top: 90%;
@@ -160,7 +160,7 @@ footer p {
 .title {
   font-size: 28px;
   font-weight: bold;
-  color: #333;
+  color: #ff6c04;
   margin-bottom: 20px;
 }
 
@@ -172,7 +172,7 @@ footer p {
 
 .cta-button {
   padding: 10px 20px;
-  background-color: #333;
+  background-color: #ff6c04;
   color: #fff;
   text-decoration: none;
   font-size: 16px;
@@ -276,7 +276,7 @@ footer p {
   text-align: center;
   font-size: 18px;
   font-weight: bold;
-  color: #333;
+  color: #ff6c04;
   position: relative;
   animation: popup-fade-in 0.3s ease-in-out;
 }

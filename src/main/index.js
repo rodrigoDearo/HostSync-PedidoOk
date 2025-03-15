@@ -36,7 +36,7 @@ app.whenReady().then(() => {
   copyJsonFilesToUserData()
   createWindow()
 
-  const icon = path.join(__dirname, 'img/icon.jpg')
+  const icon = path.join(__dirname, 'img/icon.png')
   tray = new Tray(icon)
 
   const contextMenu = Menu.buildFromTemplate([
@@ -52,7 +52,7 @@ app.whenReady().then(() => {
   ])
   
   tray.setContextMenu(contextMenu)
-  tray.setToolTip('Hostsync')
+  tray.setToolTip('Hostsync - PedOk')
 })
 
 
