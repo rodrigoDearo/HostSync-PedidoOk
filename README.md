@@ -1,66 +1,119 @@
 # 🚀 HostSync - PedidoOk
 
-## 📌 Visão Geral
+🔹 Effortless Integration: Seamlessly syncs your Host system with PedidoOk, ensuring accurate and up-to-date records of products, customers, and sales.
+🔹 Optimized Performance: Handles large amounts of data efficiently while minimizing server load.
+🔹 Secure and Reliable: Built with robust error handling and logging to maintain data integrity.
 
-HostSync - PedidoOk é um software integrador entre o sistema Host e o sistema PedidoOk, sincronizando produtos, clientes e vendas. Esta documentação fornece informações essenciais para instalação, configuração e resolução de problemas.
+## 📌 Overview
 
-## 🛠 Instalação
+HostSync - PedidoOk is an integration software between the Host system and the PedidoOk system, synchronizing products, customers, and sales. This documentation provides essential information for installation, configuration, and troubleshooting.
 
-O software possui um instalador executável que automatiza o processo.
+⚠️ This is a private software. To use it, you must purchase a license. Upon activation, an .env file containing the necessary access keys will be provided.
 
-Não necessita de dependências adicionais, desde que instalado na máquina servidora do banco de dados Host.
+## 🛠 Installation
 
-## ⚙️ Configuração
+- The software includes an executable installer that automates the installation process.
+
+- No additional dependencies are required, as long as it is installed on the database server machine running Host.
+
+## ⚙️ Configuration
 
 ### 🔹 Host
 
-O caminho do banco HOST.FDB deve ser definido, geralmente C:\TSD\Host.
+- The path to the HOST.FDB database must be defined, usually C:\TSD\Host.
 
 ### 🔹 PedidoOk
 
-Acesse o software PedidoOk.
+1. Access the PedidoOk software.
 
-No menu, selecione "Integrações" > "Host" > "Configurar a Integração".
+2. In the menu, select "Integrations" > "Host" > "Configure Integration".
 
-Obtenha o token e insira no integrador.
+3. Retrieve the token and insert it into the integrator.
 
-## 🔄 Ciclo de Execução
+## 🔄 Execution Cycle
 
-Limpeza de registros antigos de erro.
+1. Cleaning up old error records.
 
-Criação de tabelas e triggers no banco do Host.
+2. Creating tables and triggers in the Host database.
 
-Sincronização de produtos e clientes.
+3. Synchronizing products and customers.
 
-Timeout de 10 minutos para otimização.
+4. 10-minute timeout for optimization.
 
-Importação de vendas do PedidoOk.
+5. Importing sales from PedidoOk.
 
-Monitoramento de notificações e ajustes conforme necessidade.
+6. Monitoring notifications and making adjustments as needed.
 
-## 🔍 Dados Sincronizados
+7. Return to the 10-minute timeout
 
-### 🛒 Produtos
+## 🔍 Synchronized Data
 
-ID, Nome, Categoria, Marca, Estoque, Preço de venda, Custo, Código de barras, etc.
+### 🛒 Products
 
-### 👥 Clientes
+ID, Name, Category, Brand, Stock, Sale Price, Cost, Barcode, etc.
 
-ID, Nome, Telefone, Endereço completo, CNPJ/CPF, etc.
+### 👥 Customers
 
-### 📦 Vendas
+ID, Name, Phone, Full Address, CNPJ/CPF, etc.
 
-ID, Data, Valor final, Status, Cliente associado, Itens da venda.
+### 📦 Sales
 
-## 📁 Logs e Bancos de Dados
+ID, Date, Final Value, Status, Associated Customer, Sale Items.
 
-📍 Arquivos armazenados em:
+## 📁 Logs and Databases
 
-```{disco}:\Users\{usuario}\AppData\Roaming\hostsync-pedidook\ConfigFiles```
+📍 Files stored at:
 
-📝 Logs ajudam na identificação de problemas.
+```{disk}:\Users\{user}\AppData\Roaming\hostsync-pedidook\ConfigFiles```
 
-🚨 Diagnóstico de Erros
+📝 Logs help identify issues.
+
+### 🚨 Error Diagnosis
+
+- ⚠️ The errorsDB.json file stores failed synchronization requests.
+
+- 📂 If an error occurs, check the auxiliary JSON files: products.json, customers.json, sales.json.
+
+###🏗️ Building the Application
+
+To package the application, simply clone the repository and run the following command:
+
+```npm run build```
+
+This will generate the necessary executable files for deployment.
+
+### 🆘 Support
+
+- ❌ If the error is operational (e.g., inconsistent data in Host or PedidoOk), adjust the records.
+
+- ✅ If there is an error in the integrator, run it via cmd for debugging:
+
+```cd "{disk}\Users\{user}\AppData\Local\Programs\hostsync-pedidook"```
+
+```HostSync-PedOk```
+
+- 💡 If a critical error is found, contact the developer with the attached logs.
+
+✍️ Author: Rodrigo Dearo - 📅 2025
+
+## Built With
+
+* ![Electron](https://img.shields.io/badge/electron-%2347848F.svg?style=for-the-badge&logo=electron&logoColor=white)
+* ![Electron Builder](https://img.shields.io/badge/electron--builder-%23007ACC.svg?style=for-the-badge&logo=appveyor&logoColor=white)
+* ![Axios](https://img.shields.io/badge/axios-%23323330.svg?style=for-the-badge&logo=axios&logoColor=white)
+* ![Dotenv](https://img.shields.io/badge/dotenv-%23008080.svg?style=for-the-badge&logo=dotenv&logoColor=white)
+* ![FS](https://img.shields.io/badge/fs-%23000000.svg?style=for-the-badge&logo=folder&logoColor=white)
+* ![Node Firebird](https://img.shields.io/badge/node--firebird-%23FF5733.svg?style=for-the-badge&logo=firebird&logoColor=white)
+
+## Acknowledgments
+
+* [Electron](https://www.electronjs.org/)
+* [Electron Builder](https://www.electron.build/)
+* [Axios](https://github.com/axios/axios)
+* [Dotenv](https://github.com/motdotla/dotenv)
+* [FS (File System)](https://nodejs.org/api/fs.html)
+* [Node Firebird](https://github.com/xdenser/node-firebird)
+
 
 ⚠️ O arquivo errorsDB.json armazena falhas nas requisições de sincronização.
 
