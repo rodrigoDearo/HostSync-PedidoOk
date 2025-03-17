@@ -216,8 +216,8 @@ async function returnHeader(){
 
         const config = {
             headers: {
-                'token_parceiro': 'c4feeb6f-a967-4315-abe7-453269b24dfb',
-                'token_pedidook': '616457fa-80e7-4e77-802c-38f92e65ef3c',
+                'token_parceiro': tokenParceiro,
+                'token_pedidook': tokenPedidoOk,
                 'Content-Type': 'application/json'
             }       
         }
