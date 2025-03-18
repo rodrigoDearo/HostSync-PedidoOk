@@ -244,6 +244,14 @@ footer p {
   border: 1px solid rgb(14, 14, 160);
 }
 
+#watermark{
+  position: absolute;
+  z-index: -5;
+  height: 50vh;
+  left: 225px;
+  opacity: 0.1;
+  top: 100px;
+}
 
 
 
