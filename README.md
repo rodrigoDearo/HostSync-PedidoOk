@@ -2,6 +2,7 @@
 
 🔹 Effortless Integration: Seamlessly syncs your Host system with PedidoOk, ensuring accurate and up-to-date records of products, customers, and sales.
 
+
 🔹 Optimized Performance: Handles large amounts of data efficiently while minimizing server load.
 
 🔹 Secure and Reliable: Built with robust error handling and logging to maintain data integrity.
