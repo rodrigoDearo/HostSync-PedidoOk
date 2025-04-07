@@ -15,7 +15,7 @@ async function requireAllProducts(config){
             if (err)
                 throw err;
   
-            let codigoSQL = `SELECT id_produto, obs, barras, PRODUTOS_GRUPO.grupo, produto, estoque, PRODUTOS_MARCA.marca, valor_venda, custo, status FROM PRODUTOS LEFT JOIN PRODUTOS_GRUPO on PRODUTOS.grupo = PRODUTOS_GRUPO.id LEFT JOIN PRODUTOS_MARCA on PRODUTOS.marca = PRODUTOS_MARCA.id`;
+            let codigoSQL = `SELECT id_produto, obs, barras, PRODUTOS_GRUPO.grupo, produto, descricao_complementar, estoque, PRODUTOS_MARCA.marca, valor_venda, custo, status FROM PRODUTOS LEFT JOIN PRODUTOS_GRUPO on PRODUTOS.grupo = PRODUTOS_GRUPO.id LEFT JOIN PRODUTOS_MARCA on PRODUTOS.marca = PRODUTOS_MARCA.id`;
   
             db.query(codigoSQL, async function (err, result){
                 if (err)
@@ -43,6 +43,15 @@ async function readingAllRecordProducts(productsRecords, index){
         let record = productsRecords[index]
         let i = index + 1;
 
+       let nomeProduto
+
+       if(record.DESCRICAO_COMPLEMENTAR){
+            nomeProduto = record.DESCRICAO_COMPLEMENTAR
+            
+       }else{
+            nomeProduto = record.PRODUTO  
+       }
+
         if(i == productsRecords.length){
             resolve()
         }
@@ -52,7 +61,7 @@ async function readingAllRecordProducts(productsRecords, index){
                 "observacao": record.OBS,
                 "codigo_barra": record.BARRAS,
                 "categoria": record.GRUPO,
-                "nome": record.PRODUTO,
+                "nome": nomeProduto,
                 "estoque": record.ESTOQUE,
                 "marca": record.MARCA,
                 "venda": record.VALOR_VENDA,
