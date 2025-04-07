@@ -29,7 +29,11 @@ function patchProduct(body, header, idproduct, idHost){
             await succesHandlingRequests('product', 'update', idHost, idproduct)
         })
         .catch(async (error) => {
-            await errorHandlingRequest('product', 'PUT', idHost, idproduct, error.response.data.erros, body)
+            if(error.response.data.erros[0].codigo==18){
+                //registro inativo
+            }else{
+                await errorHandlingRequest('product', 'PUT', idHost, idproduct, error.response.data.erros, body)
+            }
         })
         .finally(() => {
             resolve()
@@ -45,7 +49,11 @@ function deleteProduct(header, idproduct, idHost){
             await succesHandlingRequests('product', 'delete', idHost, idproduct)
         })
         .catch(async (error) => {
-            await errorHandlingRequest('product', 'DELETE', idHost, idproduct, error.response.data.erros, null)
+            if(error.response.data.erros[0].codigo==18){
+                
+            }else{
+                await errorHandlingRequest('product', 'DELETE', idHost, idproduct, error.response.data.erros, null)
+            }
         })
         .finally(() => {
             resolve()
@@ -61,7 +69,12 @@ function undeleteProduct(header, idproduct, idHost){
             await succesHandlingRequests('product', 'undelete', idHost, idproduct)
         })
         .catch(async (error) => {
-            await errorHandlingRequest('product', 'UNDELETE', idHost, idproduct, error.response.data.erros, null)
+            if(error.response.data.erros[0].codigo==19){
+                
+            }
+            else{
+                await errorHandlingRequest('product', 'UNDELETE', idHost, idproduct, error.response.data.erros, null)
+            }
         })
         .finally(() => {
             resolve()

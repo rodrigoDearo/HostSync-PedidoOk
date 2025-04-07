@@ -94,7 +94,6 @@ async function succesHandlingRequests(destiny, resource, idHost, idPedOk){
           break;
 
         case "update":
-          
           break;
 
         case "delete":
