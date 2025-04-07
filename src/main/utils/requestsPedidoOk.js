@@ -30,7 +30,13 @@ function patchProduct(body, header, idproduct, idHost){
         })
         .catch(async (error) => {
             if(error.response.data.erros[0].codigo==18){
-                //registro inativo
+                await undeleteProduct(header, idproduct, idHost)
+                .then(async () => {
+                    await patchProduct(body, header, idproduct, idHost)
+                    .then(async () => {
+                        await succesHandlingRequests('product', 'update', idHost, idproduct)
+                    })
+                })
             }else{
                 await errorHandlingRequest('product', 'PUT', idHost, idproduct, error.response.data.erros, body)
             }
@@ -50,7 +56,7 @@ function deleteProduct(header, idproduct, idHost){
         })
         .catch(async (error) => {
             if(error.response.data.erros[0].codigo==18){
-                
+                await succesHandlingRequests('product', 'delete', idHost, idproduct)
             }else{
                 await errorHandlingRequest('product', 'DELETE', idHost, idproduct, error.response.data.erros, null)
             }
@@ -70,7 +76,7 @@ function undeleteProduct(header, idproduct, idHost){
         })
         .catch(async (error) => {
             if(error.response.data.erros[0].codigo==19){
-                
+                await succesHandlingRequests('product', 'undelete', idHost, idproduct)
             }
             else{
                 await errorHandlingRequest('product', 'UNDELETE', idHost, idproduct, error.response.data.erros, null)
