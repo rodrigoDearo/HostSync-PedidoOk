@@ -8,6 +8,8 @@
 
 ## 📌 Overview
 
+# <img width="485" alt="Screenshot_2" src="https://github.com/user-attachments/assets/449f7110-8c2f-44a0-ae8b-347cd10f4bfc" />
+
 HostSync - PedidoOk is an integration software between the Host system and the PedidoOk system, synchronizing products, customers, and sales. This documentation provides essential information for installation, configuration, and troubleshooting.
 
 ⚠️ This is a private software. To use it, you must purchase a license. Upon activation, an .env file containing the necessary access keys will be provided.
