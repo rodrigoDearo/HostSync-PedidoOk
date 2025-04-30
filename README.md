@@ -98,6 +98,22 @@ This will generate the necessary executable files for deployment.
 
 - 💡 If a critical error is found, contact the developer with the attached logs.
 
+## Contributions
+
+This project was developed on demand for a partner company and is being made available solely for technical review purposes.
+
+**External contributions are not accepted.**
+
+Additionally, the repository **does not include the environment variables (.env)** required for the full operation of the application, due to security and privacy concerns.
+
+Thank you for your understanding.
+
+## Repository Status
+
+📦 This repository has been archived and is no longer actively maintained.  
+It remains available for reference and historical purposes only.
+
+
 ## Built With
 
 * ![Electron](https://img.shields.io/badge/electron-%2347848F.svg?style=for-the-badge&logo=electron&logoColor=white)
