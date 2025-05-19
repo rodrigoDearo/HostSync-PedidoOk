@@ -15,7 +15,7 @@ async function requireAllProducts(config){
             if (err)
                 throw err;
   
-            let codigoSQL = `SELECT id_produto, obs, barras, PRODUTOS_GRUPO.grupo, produto, estoque, PRODUTOS_MARCA.marca, valor_venda, custo, unidade_comecial, status FROM PRODUTOS LEFT JOIN PRODUTOS_GRUPO on PRODUTOS.grupo = PRODUTOS_GRUPO.id LEFT JOIN PRODUTOS_MARCA on PRODUTOS.marca = PRODUTOS_MARCA.id`;
+            let codigoSQL = `SELECT id_produto, obs, barras, PRODUTOS_GRUPO.grupo, produto, estoque, PRODUTOS_MARCA.marca, valor_venda, valor_atacado, unidade_comecial, status FROM PRODUTOS LEFT JOIN PRODUTOS_GRUPO on PRODUTOS.grupo = PRODUTOS_GRUPO.id LEFT JOIN PRODUTOS_MARCA on PRODUTOS.marca = PRODUTOS_MARCA.id`;
   
             db.query(codigoSQL, async function (err, result){
                 if (err)
@@ -64,7 +64,7 @@ async function readingAllRecordProducts(productsRecords, index){
                 "estoque": record.ESTOQUE,
                 "marca": record.MARCA,
                 "venda": record.VALOR_VENDA,
-                "custo": record.CUSTO,
+                "custo": record.VALOR_ATACADO,
                 "embalagem": record.UNIDADE_COMECIAL,
                 "status": record.STATUS,
             }
