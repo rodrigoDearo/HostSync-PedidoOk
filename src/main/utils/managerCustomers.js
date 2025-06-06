@@ -8,34 +8,40 @@ const { preparingPostCustomer , preparingUpdateCustomer, preparingDeleteCustomer
 const userDataPath = path.join(app.getPath('userData'), 'ConfigFiles');
 const pathCustomers = path.join(userDataPath, 'customers.json');
 
-async function requireAllCustomers(config){
-    return new Promise(async(resolve, reject) => {
-        try {
-        conexao.attach(config, function (err, db){
-            if (err)
-                throw err;
-  
-            let codigoSQL = `SELECT id_cliente, fone, obs, uf, municipio, complemento, numero, logradouro, bairro, cep, cliente, raz_social, cpf_cnpj, status FROM CLIENTES`;
-  
-            db.query(codigoSQL, async function (err, result){
-                if (err)
-                    resolve({code: 500, msg:'ERRO AO CONSULTAR TABELA CLIENTES, CONTATAR SUPORTE TECNICO'});
+async function requireAllCustomers(config) {
+    return new Promise((resolve, reject) => {
+        conexao.attach(config, function (err, db) {
+            if (err) {
+                return reject(err);
+            }
 
-                await readingAllRecordCustomers(result, 0)
-                .then(() => {
-                    resolve({code: 200, msg:'CLIENTES CONSULTADOS COM SUCESSO'});
-                })
+            let codigoSQL = `
+                SELECT id_cliente, fone, obs, uf, municipio, complemento, numero, 
+                       logradouro, bairro, cep, cliente, raz_social, cpf_cnpj, status 
+                FROM CLIENTES`;
 
+            db.query(codigoSQL, async function (err, result) {
+                if (err) {
+                    db.detach(); 
+                    return resolve({
+                        code: 500,
+                        msg: 'ERRO AO CONSULTAR TABELA CLIENTES, CONTATAR SUPORTE TECNICO'
+                    });
+                }
+
+                try {
+                    await readingAllRecordCustomers(result, 0);
+                    resolve({ code: 200, msg: 'CLIENTES CONSULTADOS COM SUCESSO' });
+                } catch (e) {
+                    reject(e); 
+                } finally {
+                    db.detach(); 
+                }
             });
-        
-        db.detach();
         });
-  
-      } catch (error) {
-        reject(error);
-      }
-    })
+    });
 }
+
 
 
 async function readingAllRecordCustomers(customersRecords, index){
