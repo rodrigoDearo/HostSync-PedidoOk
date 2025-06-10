@@ -134,6 +134,9 @@ async function mainProcess(){
       }
     }) 
     .then(async () => {
+        await managementRequestsSales(config)
+    })
+    .then(async () => {
       setInterval(async () => {
         await readNewRecords(config)
         .then(async () => {
