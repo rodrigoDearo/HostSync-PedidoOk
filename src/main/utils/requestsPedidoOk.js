@@ -1,6 +1,17 @@
 const axios = require('axios');
 const { succesHandlingRequests, errorHandlingRequest, } = require('./auxFunctions')
 
+
+function getProducts(page, header){
+    return new Promise(async (resolve, reject) => {
+        await axios.get(`https://api.pedidook.com.br/v1/produtos/?pagina=${page}`, header)
+        .then(async (answer) => {
+            resolve(answer)
+        })
+    })
+}
+
+
 function postProduct(body, header){
     return new Promise(async (resolve, reject) => {
         await axios.post('https://api.pedidook.com.br/v1/produtos/', body, header)
@@ -185,6 +196,7 @@ function getSales(dateTime, page, header){
 
 
 module.exports = {
+    getProducts,
     postProduct,
     patchProduct,
     deleteProduct,

@@ -291,7 +291,7 @@ function copyJsonFilesToUserData() {
       const sourcePath = path.join(resourcesPath, file);
       const destinationPath = path.join(userDataPath, file);
 
-      console.log(`📂 Copiando: ${file}`);
+      console.log(`Copiando: ${file}`);
 
       if (!fs.existsSync(userDataPath)) {
           fs.mkdirSync(userDataPath, { recursive: true });
@@ -311,6 +311,18 @@ function copyJsonFilesToUserData() {
 }
 
 
+async function registerProductInDatabase(codigoProduto, idProduto, excluido){
+    let productsDB = JSON.parse(fs.readFileSync(pathProducts))
+
+    let status = excluido ? 'INATIVO' : 'ATIVO'
+
+    productsDB.codigoProduto = {
+        "idPedidoOk": `${idProduto}`,
+        "status": status
+    }
+}
+
+
 module.exports = {
     copyJsonFilesToUserData,
     returnConfigToAccessDB,
@@ -322,5 +334,6 @@ module.exports = {
     getActualDatetime,
     returnCustomerIdHostFromIdPed,
     returnProductIdHostFromIdPed,
+    registerProductInDatabase,
     gravarLog
 }

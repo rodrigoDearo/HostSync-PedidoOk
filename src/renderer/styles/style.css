@@ -232,13 +232,13 @@ footer p {
   border: 0.5px solid black;
 }
 
-#botaoStart{
+.botaoStart{
   color: rgb(14, 14, 160);
   background-color: white;
   border: 1px solid rgb(14, 14, 160);
 }
 
-#botaoStart:hover{
+.botaoStart:hover{
   color: white;
   background-color: rgb(14, 14, 160);
   border: 1px solid rgb(14, 14, 160);

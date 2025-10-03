@@ -46,12 +46,36 @@ async function startSync(){
     .then(async () => {
         await loadingPage(false)
     })
-  //  alert(mensage)
+}
+
+async function startAlignProductsDatabase(password){
+    
+    if(password=='3205'){
+        await loadingPage(true)
+        await window.api.alignProducts()
+        .then(async () => {
+            await loadingPage(false)
+        })
+    }else{
+        alert('Senha inválida, função destinada para uso técnico')
+    }
+
 }
 
 
+async function showRequirePassword() {
+    const popup = document.getElementById("requirePasswordPopup");
+    popup.classList.add("show");
 
+    let button = document.getElementById('authButton')
 
+    button.addEventListener("click", function (e) {
+        popup.classList.remove("show");
+        let password = document.getElementById('inputAdminPassword').value;
+        startAlignProductsDatabase(password)
+    })
+    
+  }
 
 
 async function loadingPage(status){
@@ -86,4 +110,7 @@ function showSuccessPopup() {
       popup.classList.remove("show");
     }, 2000); // Fecha após 3 segundos
   }
+
+
+  
 

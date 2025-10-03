@@ -20,7 +20,7 @@ const createWindow = () => {
     },
     movable: false,
     resizable: false,
-    autoHideMenuBar: true,
+    autoHideMenuBar: false,
     frame: false,
     icon: path.join(__dirname, 'img/icon.jpg')
   })
@@ -100,6 +100,23 @@ ipcMain.handle('startProgram', async () => {
     return response
   })
 })
+
+
+ipcMain.handle('startAlignProductsDatabase', async () => {
+  gravarLog(' . . . Starting Align Products Database  . . .')
+
+  await alignProductsDatabase()
+  .then((response) => {
+    return response
+  })
+})
+
+
+async function alignProductsDatabase(){
+  return new Promise(async (resolve, reject) => {
+    
+  })
+}
 
 
 async function mainProcess(){
