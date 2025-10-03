@@ -321,6 +321,9 @@ async function registerProductInDatabase(codigoProduto, idProduto, excluido){
         "status": status
     }
 
+    gravarLog(`[registerProductInDatabase] ${codigoProduto} <=> ${idProduto} | ${status}`)
+    fs.writeFileSync(pathProducts, JSON.stringify(productsDB), 'utf-8');
+    
     return
 }
 
