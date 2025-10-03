@@ -120,7 +120,7 @@ async function alignProductsDatabase(page){
 
     await preparingGetProducts(page)
     .then(async (response) => {
-      let products = response.produtos;
+      let products = response.data.produtos;
 
       const delay = ms => new Promise(resolve => setTimeout(resolve, ms));
 
