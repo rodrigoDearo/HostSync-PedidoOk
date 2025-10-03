@@ -18,6 +18,9 @@ async function preparingGetProducts(page){
         .then((response) => {
             resolve(response)
         })
+        .catch((error) => {
+            console.log(error)
+        })
     })
 }
 

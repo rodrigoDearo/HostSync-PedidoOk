@@ -6,7 +6,11 @@ function getProducts(page, header){
     return new Promise(async (resolve, reject) => {
         await axios.get(`https://api.pedidook.com.br/v1/produtos/?pagina=${page}`, header)
         .then(async (answer) => {
+            console.log(answer)
             resolve(answer)
+        })
+        .catch(async (error) => {
+            return error
         })
     })
 }

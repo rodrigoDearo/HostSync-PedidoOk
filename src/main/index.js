@@ -3,11 +3,12 @@ const path = require('node:path')
 
 const { saveInfos, returnValueFromJson } = require('./utils/manageInfoUser.js')
 const { createDependencies, limparTabela } = require('./utils/dependenciesFDB.js')
-const { copyJsonFilesToUserData, returnConfigToAccessDB, gravarLog, deleteErrorsRecords } = require('./utils/auxFunctions.js')
+const { copyJsonFilesToUserData, returnConfigToAccessDB, gravarLog, deleteErrorsRecords, registerProductInDatabase } = require('./utils/auxFunctions.js')
 const { requireAllProducts } = require('./utils/managerProducts.js')
 const { requireAllCustomers } = require('./utils/managerCustomers.js')
 const { readNewRecords } = require('./utils/managerHostTableNotify.js')
 const { managementRequestsSales } = require('./utils/managerSales.js')
+const { preparingGetProducts } = require('./utils/preparingRequests.js')
 
 var win;
 
@@ -105,16 +106,41 @@ ipcMain.handle('startProgram', async () => {
 ipcMain.handle('startAlignProductsDatabase', async () => {
   gravarLog(' . . . Starting Align Products Database  . . .')
 
-  await alignProductsDatabase()
+  await alignProductsDatabase(0)
   .then((response) => {
     return response
   })
 })
 
 
-async function alignProductsDatabase(){
+async function alignProductsDatabase(page){
   return new Promise(async (resolve, reject) => {
-    
+
+    page++  
+
+    await preparingGetProducts(page)
+    .then(async (response) => {
+      let products = response.produtos;
+
+      const delay = ms => new Promise(resolve => setTimeout(resolve, ms));
+
+      for (const produto of products) {
+        await registerProductInDatabase(produto.codigo, produto.id, produto.excluido);
+        await delay(200);
+      }
+
+      if (response.href_proxima_pagina === null) {
+        resolve({ message: 'Todos os produtos alinhados com sucesso!' });
+      } else {
+        await delay(3000);
+        await alignProductsDatabase(page)
+        .then(resolve)
+        .catch(reject);
+      }
+
+    })
+    .catch(reject);
+
   })
 }
 

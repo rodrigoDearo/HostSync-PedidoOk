@@ -320,6 +320,8 @@ async function registerProductInDatabase(codigoProduto, idProduto, excluido){
         "idPedidoOk": `${idProduto}`,
         "status": status
     }
+
+    return
 }
 
 
