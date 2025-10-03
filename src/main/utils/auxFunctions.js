@@ -316,11 +316,13 @@ async function registerProductInDatabase(codigoProduto, idProduto, excluido){
 
     let status = excluido ? 'INATIVO' : 'ATIVO'
 
-    productsDB.codigoProduto = {
+    productsDB[`${codigoProduto}`] = {
         "idPedidoOk": `${idProduto}`,
         "status": status
     }
-
+    gravarLog(`[registerProductInDatabase] ${codigoProduto} <=> ${idProduto} | ${status}`)
+    fs.writeFileSync(pathProducts, JSON.stringify(productsDB), 'utf-8');
+    
     return
 }
 
