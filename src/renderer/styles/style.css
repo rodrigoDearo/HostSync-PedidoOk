@@ -306,3 +306,11 @@ footer p {
     opacity: 1;
   }
 }
+
+
+#inputAdminPassword{
+  text-align: center;
+  align-items: center;
+  justify-content: center;
+  border-radius: 20px;
+}
