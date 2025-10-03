@@ -311,8 +311,8 @@ function copyJsonFilesToUserData() {
 }
 
 
-async function registerProductInDatabase(codigoProduto, idProduto, excluido){
-    let productsDB = JSON.parse(fs.readFileSync(pathProducts))
+async function registerProductInDatabase(codigoProduto, idProduto, excluido, products){
+ 
 
     let status = excluido ? 'INATIVO' : 'ATIVO'
 
@@ -322,7 +322,7 @@ async function registerProductInDatabase(codigoProduto, idProduto, excluido){
     }
 
     gravarLog(`[registerProductInDatabase] ${codigoProduto} <=> ${idProduto} | ${status}`)
-    fs.writeFileSync(pathProducts, JSON.stringify(productsDB), 'utf-8');
+       
     
     return
 }

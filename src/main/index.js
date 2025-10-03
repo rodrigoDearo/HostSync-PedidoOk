@@ -105,15 +105,16 @@ ipcMain.handle('startProgram', async () => {
 
 ipcMain.handle('startAlignProductsDatabase', async () => {
   gravarLog(' . . . Starting Align Products Database  . . .')
-
-  await alignProductsDatabase(0)
-  .then((response) => {
-    return response
+  let productsDB = JSON.parse(fs.readFileSync(pathProducts))
+    
+  await alignProductsDatabase(0, productsDB)
+  .then(() => {
+    fs.writeFileSync(pathProducts, JSON.stringify(productsDB), 'utf-8');
   })
 })
 
 
-async function alignProductsDatabase(page){
+async function alignProductsDatabase(page, productsDB){
   return new Promise(async (resolve, reject) => {
 
     page++  
@@ -125,7 +126,7 @@ async function alignProductsDatabase(page){
       const delay = ms => new Promise(resolve => setTimeout(resolve, ms));
 
       for (const produto of products) {
-        await registerProductInDatabase(produto.codigo, produto.id, produto.excluido);
+        await registerProductInDatabase(produto.codigo, produto.id, produto.excluido, productsDB);
         await delay(200);
       }
 
@@ -133,7 +134,7 @@ async function alignProductsDatabase(page){
         resolve({ message: 'Todos os produtos alinhados com sucesso!' });
       } else {
         await delay(3000);
-        await alignProductsDatabase(page)
+        await alignProductsDatabase(page, productsDB)
         .then(resolve)
         .catch(reject);
       }
