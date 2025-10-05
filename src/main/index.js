@@ -1,5 +1,6 @@
 const { app, BrowserWindow, ipcMain, Tray, Menu } = require('electron')
 const path = require('node:path')
+const fs = require('fs')
 
 const { saveInfos, returnValueFromJson } = require('./utils/manageInfoUser.js')
 const { createDependencies, limparTabela } = require('./utils/dependenciesFDB.js')
@@ -9,6 +10,9 @@ const { requireAllCustomers } = require('./utils/managerCustomers.js')
 const { readNewRecords } = require('./utils/managerHostTableNotify.js')
 const { managementRequestsSales } = require('./utils/managerSales.js')
 const { preparingGetProducts } = require('./utils/preparingRequests.js')
+
+const userDataPath = path.join(app.getPath('userData'), 'ConfigFiles');
+const pathProducts = path.join(userDataPath, 'products.json');
 
 var win;
 
@@ -108,8 +112,8 @@ ipcMain.handle('startAlignProductsDatabase', async () => {
   let productsDB = JSON.parse(fs.readFileSync(pathProducts))
     
   await alignProductsDatabase(0, productsDB)
-  .then(() => {
-    fs.writeFileSync(pathProducts, JSON.stringify(productsDB), 'utf-8');
+  .then((response) => {
+    fs.writeFileSync(pathProducts, JSON.stringify(response), 'utf-8');
   })
 })
 
@@ -119,23 +123,27 @@ async function alignProductsDatabase(page, productsDB){
 
     page++  
 
+    console.log('Lendo pagina ' + page)
     await preparingGetProducts(page)
     .then(async (response) => {
+
       let products = response.data.produtos;
 
       const delay = ms => new Promise(resolve => setTimeout(resolve, ms));
 
       for (const produto of products) {
         await registerProductInDatabase(produto.codigo, produto.id, produto.excluido, productsDB);
-        await delay(200);
+        await delay(100);
       }
 
-      if (response.href_proxima_pagina === null) {
-        resolve({ message: 'Todos os produtos alinhados com sucesso!' });
+      if (response.data.href_proxima_pagina == null) {
+        resolve(productsDB);
       } else {
         await delay(3000);
         await alignProductsDatabase(page, productsDB)
-        .then(resolve)
+        .then((response) => {
+          resolve(response)
+        })
         .catch(reject);
       }
 

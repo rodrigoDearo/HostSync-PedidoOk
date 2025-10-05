@@ -6,6 +6,7 @@ const { returnInfo } = require('../envManager');
 const { returnValueFromJson } = require('./manageInfoUser');
 const { error } = require('node:console');
 
+//const userDataPath = 'src/build';
 const userDataPath = path.join(app.getPath('userData'), 'ConfigFiles');
 const pathLog = path.join(userDataPath, 'logs');
 const pathConfigApp = path.join(userDataPath, 'configApp.json');
@@ -311,20 +312,20 @@ function copyJsonFilesToUserData() {
 }
 
 
-async function registerProductInDatabase(codigoProduto, idProduto, excluido, products){
- 
-
+async function registerProductInDatabase(codigoProduto, idProduto, excluido, productsDB){
+  return new Promise(async (resolve, reject) => {
     let status = excluido ? 'INATIVO' : 'ATIVO'
 
-    productsDB.codigoProduto = {
+    productsDB[`${codigoProduto}`] = {
         "idPedidoOk": `${idProduto}`,
         "status": status
     }
 
     gravarLog(`[registerProductInDatabase] ${codigoProduto} <=> ${idProduto} | ${status}`)
-       
+  
     
-    return
+    resolve(productsDB)
+  })
 }
 
 
