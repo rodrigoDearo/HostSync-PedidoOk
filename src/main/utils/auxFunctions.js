@@ -312,16 +312,19 @@ function copyJsonFilesToUserData() {
 
 
 async function registerProductInDatabase(codigoProduto, idProduto, excluido, productsDB){
-
+  return new Promise(async (resolve, reject) => {
     let status = excluido ? 'INATIVO' : 'ATIVO'
 
     productsDB[`${codigoProduto}`] = {
         "idPedidoOk": `${idProduto}`,
         "status": status
     }
+
     gravarLog(`[registerProductInDatabase] ${codigoProduto} <=> ${idProduto} | ${status}`)
+  
     
-    return
+    resolve(productsDB)
+  })
 }
 
 
