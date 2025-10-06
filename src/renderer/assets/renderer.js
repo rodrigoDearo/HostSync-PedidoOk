@@ -48,11 +48,41 @@ async function startSync(){
     })
 }
 
-async function startAlignProductsDatabase(password){
+
+async function startSyncNewRegisters(){
+    alert('ola')
+    await loadingPage(true)
+    await window.api.syncNewRegisters()
+    .then(async () => {
+        await loadingPage(false)
+    })
+}
+
+
+async function showChooseSync() {
+  const popup = document.getElementById("chooseSync");
+  popup.classList.add("show");
+
+  let syncFull = document.getElementById('syncFull')
+  let synNewRegisters = document.getElementById('syncNewRegisters')
+
+  syncFull.addEventListener("click", function (e) {
+      popup.classList.remove("show");
+      startSync()
+  }, { once: true }) 
+
+  synNewRegisters.addEventListener("click", function (e) {
+      popup.classList.remove("show");
+      startSyncNewRegisters()
+  }, { once: true }) 
+}
+
+
+async function startAlignProductsAndCustomersDatabase(password){
     
     if(password=='3205'){
         await loadingPage(true)
-        await window.api.alignProducts()
+        await window.api.alignProductsAndCustomers()
         .then(async () => {
             await loadingPage(false)
         })
@@ -72,7 +102,7 @@ async function showRequirePassword() {
     button.addEventListener("click", function (e) {
         popup.classList.remove("show");
         let password = document.getElementById('inputAdminPassword').value;
-        startAlignProductsDatabase(password)
+        startAlignProductsAndCustomersDatabase(password)
     })
     
   }

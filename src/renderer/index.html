@@ -19,7 +19,16 @@
                 <button type="button" id="authButton" class="btn btn-primary sync container botao-save mb-2 mt-4">Autenticar</button>
             </form>
         </div>
-      </div>
+    </div>
+
+    <div id="chooseSync" class="popup">
+        <div class="popup-content">
+            <form>
+                <button type="button" id="syncFull" class="btn btn-primary sync container botao-save mb-2 mt-4">Sincronização Completa</button>
+                <button type="button" id="syncNewRegisters" class="btn btn-primary sync container botao-save mb-2 mt-4">Sincronização Novos Registros</button>
+            </form>
+        </div>
+    </div>
 
     <div id="background-loading"></div>
     <img src="" id="gif-loading" type="gif"> 
@@ -62,8 +71,8 @@
         </div>
 
         <form class="container col-5" id="formularioFull">
-            <button type="button" id="botaoStart" onclick="startSync()" class="btn btn-primary sync container botao-save mb-2 botaoStart">Iniciar Sincronização</button>
-            <button type="button" id="botaoAlignDatabse" onclick="showRequirePassword()" class="btn btn-primary sync container botao-save mb-2 botaoStart">Alinhar Banco de Produtos</button>
+            <button type="button" id="botaoStart" onclick="showChooseSync()" class="btn btn-primary sync container botao-save mb-2 botaoStart">Iniciar Sincronização</button>
+            <button type="button" id="botaoAlignDatabse" onclick="showRequirePassword()" class="btn btn-primary sync container botao-save mb-2 botaoStart">Alinhar Produtos e Clientes</button>
         </form>
     </div>
 

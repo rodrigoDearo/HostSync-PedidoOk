@@ -106,6 +106,19 @@ function undeleteProduct(header, idproduct, idHost){
 
 // ---------------------------------------------------------------------
 
+function getCustomers(page, header){
+    return new Promise(async (resolve, reject) => {
+        await axios.get(`https://api.pedidook.com.br/v1/clientes/?pagina=${page}`, header)
+        .then(async (answer) => {
+            console.log(answer)
+            resolve(answer)
+        })
+        .catch(async (error) => {
+            return error
+        })
+    })
+}
+
 
 function postCustomer(body, header){
     return new Promise(async (resolve, reject) => {
@@ -205,6 +218,7 @@ module.exports = {
     patchProduct,
     deleteProduct,
     undeleteProduct,
+    getCustomers,
     postCustomer,
     patchCustomer,
     deleteCustomer,

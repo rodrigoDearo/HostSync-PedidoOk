@@ -6,6 +6,7 @@ const { returnInfo } = require('../envManager');
 const { returnValueFromJson } = require('./manageInfoUser');
 const { error } = require('node:console');
 
+//const userDataPath = 'src/build';
 const userDataPath = path.join(app.getPath('userData'), 'ConfigFiles');
 const pathLog = path.join(userDataPath, 'logs');
 const pathConfigApp = path.join(userDataPath, 'configApp.json');
@@ -328,6 +329,23 @@ async function registerProductInDatabase(codigoProduto, idProduto, excluido, pro
 }
 
 
+async function registerCustomerInDatabase(codigoCliente, idCliente, excluido, custoemrsDB){
+  return new Promise(async (resolve, reject) => {
+    let status = excluido ? 'INATIVO' : 'ATIVO'
+
+    custoemrsDB[`${codigoCliente}`] = {
+        "idPedidoOk": `${idCliente}`,
+        "status": status
+    }
+
+    gravarLog(`[registerCustomerInDatabase] ${codigoCliente} <=> ${idCliente} | ${status}`)
+  
+    
+    resolve(custoemrsDB)
+  })
+}
+
+
 module.exports = {
     copyJsonFilesToUserData,
     returnConfigToAccessDB,
@@ -340,5 +358,6 @@ module.exports = {
     returnCustomerIdHostFromIdPed,
     returnProductIdHostFromIdPed,
     registerProductInDatabase,
+    registerCustomerInDatabase,
     gravarLog
 }
