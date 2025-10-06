@@ -8,6 +8,7 @@ const WINDOW_API = {
     savePedidoOk: (token) => ipcRenderer.invoke('saveInfoPedidoOk', token),
     getInfoUser: (field) => ipcRenderer.invoke('getInfoUser', field),
     start: () => ipcRenderer.invoke('startProgram'),
+    syncNewRegisters: () => ipcRenderer.invoke('startSyncNewRegisters'),
     alignProductsAndCustomers: () => ipcRenderer.invoke('startAlignProductAndCustomerssDatabase')
 }
 

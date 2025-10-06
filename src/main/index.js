@@ -108,6 +108,35 @@ ipcMain.handle('startProgram', async () => {
 })
 
 
+ipcMain.handle('startSyncNewRegisters', async () => {
+  gravarLog(' . . . Starting Sync New Registers  . . .')
+  var config;
+
+    await returnConfigToAccessDB()
+    .then(async (response) => {
+      config = response
+
+      await deleteErrorsRecords()
+
+      await managementRequestsSales(config)
+      .then(async () => {
+        setInterval(async () => {
+          await readNewRecords(config)
+          .then(async () => {
+              await managementRequestsSales(config)
+          })
+          .then(() => {
+            gravarLog('---------------------------------------------------------------------')
+            gravarLog('REALIZADO A LEITURA PERIODICA DA TABELA DE NOTIFICACOES E DAS VENDAS')
+            gravarLog('---------------------------------------------------------------------')
+          })
+          }, 600000)
+      })
+    })
+    
+})
+
+
 ipcMain.handle('startAlignProductAndCustomerssDatabase', async () => {
   gravarLog(' . . . Starting Align Products Database  . . .')
   let productsDB = JSON.parse(fs.readFileSync(pathProducts))
