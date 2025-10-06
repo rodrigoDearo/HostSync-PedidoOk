@@ -4,15 +4,16 @@ const fs = require('fs')
 
 const { saveInfos, returnValueFromJson } = require('./utils/manageInfoUser.js')
 const { createDependencies, limparTabela } = require('./utils/dependenciesFDB.js')
-const { copyJsonFilesToUserData, returnConfigToAccessDB, gravarLog, deleteErrorsRecords, registerProductInDatabase } = require('./utils/auxFunctions.js')
+const { copyJsonFilesToUserData, returnConfigToAccessDB, gravarLog, deleteErrorsRecords, registerProductInDatabase, registerCustomerInDatabase } = require('./utils/auxFunctions.js')
 const { requireAllProducts } = require('./utils/managerProducts.js')
 const { requireAllCustomers } = require('./utils/managerCustomers.js')
 const { readNewRecords } = require('./utils/managerHostTableNotify.js')
 const { managementRequestsSales } = require('./utils/managerSales.js')
-const { preparingGetProducts } = require('./utils/preparingRequests.js')
+const { preparingGetProducts, preparingGetCustomers } = require('./utils/preparingRequests.js')
 
 const userDataPath = path.join(app.getPath('userData'), 'ConfigFiles');
 const pathProducts = path.join(userDataPath, 'products.json');
+const pathCustomers = path.join(userDataPath, 'customers.json');
 
 var win;
 
@@ -107,13 +108,20 @@ ipcMain.handle('startProgram', async () => {
 })
 
 
-ipcMain.handle('startAlignProductsDatabase', async () => {
+ipcMain.handle('startAlignProductAndCustomerssDatabase', async () => {
   gravarLog(' . . . Starting Align Products Database  . . .')
   let productsDB = JSON.parse(fs.readFileSync(pathProducts))
+  let customersDB = JSON.parse(fs.readFileSync(pathCustomers))
     
   await alignProductsDatabase(0, productsDB)
-  .then((response) => {
-    fs.writeFileSync(pathProducts, JSON.stringify(response), 'utf-8');
+  .then((productsJSON) => {
+    fs.writeFileSync(pathProducts, JSON.stringify(productsJSON), 'utf-8');
+  })
+  .then(async () => {
+    return await alignCustomersDatabase(0, customersDB)
+  })
+  .then((customersJSON) => {
+    fs.writeFileSync(pathCustomers, JSON.stringify(customersJSON), 'utf-8');
   })
 })
 
@@ -141,6 +149,42 @@ async function alignProductsDatabase(page, productsDB){
       } else {
         await delay(3000);
         await alignProductsDatabase(page, productsDB)
+        .then((response) => {
+          resolve(response)
+        })
+        .catch(reject);
+      }
+
+    })
+    .catch(reject);
+
+  })
+}
+
+
+async function alignCustomersDatabase(page, customersDB){
+  return new Promise(async (resolve, reject) => {
+
+    page++  
+
+    console.log('Lendo pagina ' + page)
+    await preparingGetCustomers(page)
+    .then(async (response) => {
+
+      let customers = response.data.clientes;
+
+      const delay = ms => new Promise(resolve => setTimeout(resolve, ms));
+
+      for (const customer of customers) {
+        await registerCustomerInDatabase(customer.codigo, customer.id, customer.excluido, customersDB);
+        await delay(100);
+      }
+
+      if (response.data.href_proxima_pagina == null) {
+        resolve(customersDB);
+      } else {
+        await delay(3000);
+        await alignCustomersDatabase(page, customersDB)
         .then((response) => {
           resolve(response)
         })

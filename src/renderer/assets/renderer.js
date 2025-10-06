@@ -48,11 +48,11 @@ async function startSync(){
     })
 }
 
-async function startAlignProductsDatabase(password){
+async function startAlignProductsAndCustomersDatabase(password){
     
     if(password=='3205'){
         await loadingPage(true)
-        await window.api.alignProducts()
+        await window.api.alignProductsAndCustomers()
         .then(async () => {
             await loadingPage(false)
         })
@@ -72,7 +72,7 @@ async function showRequirePassword() {
     button.addEventListener("click", function (e) {
         popup.classList.remove("show");
         let password = document.getElementById('inputAdminPassword').value;
-        startAlignProductsDatabase(password)
+        startAlignProductsAndCustomersDatabase(password)
     })
     
   }

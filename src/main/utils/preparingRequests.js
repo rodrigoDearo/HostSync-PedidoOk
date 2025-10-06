@@ -1,4 +1,4 @@
-const { getProducts, postProduct, patchProduct, deleteProduct, undeleteProduct, postCustomer, patchCustomer, deleteCustomer, undeleteCustomer, getSales } = require('./requestsPedidoOk');
+const { getProducts, postProduct, patchProduct, deleteProduct, undeleteProduct, getCustomers, postCustomer, patchCustomer, deleteCustomer, undeleteCustomer, getSales } = require('./requestsPedidoOk');
 const { returnValueFromJson } = require('./manageInfoUser');
 const { returnInfo } = require('../envManager');
 const { incrementIdRequestPost } = require('./auxFunctions');
@@ -110,6 +110,27 @@ async function preparingUndeleteProduct(idproduct, idHost){
         })
         .then(() => {
             resolve()
+        })
+    })
+}
+
+
+async function preparingGetCustomers(page){
+    return new Promise(async (resolve, reject) => {
+        let header;
+
+        await returnHeader()
+        .then(async (response) => {
+            header = response
+        })
+        .then(async () => {
+            return await getCustomers(page, header)
+        })
+        .then((response) => {
+            resolve(response)
+        })
+        .catch((error) => {
+            console.log(error)
         })
     })
 }
@@ -257,6 +278,7 @@ module.exports = {
     preparingUpdateProduct,
     preparingDeleteProduct,
     preparingUndeleteProduct,
+    preparingGetCustomers,
     preparingPostCustomer,
     preparingUpdateCustomer,
     preparingDeleteCustomer,

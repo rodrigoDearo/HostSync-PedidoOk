@@ -329,6 +329,23 @@ async function registerProductInDatabase(codigoProduto, idProduto, excluido, pro
 }
 
 
+async function registerCustomerInDatabase(codigoCliente, idCliente, excluido, custoemrsDB){
+  return new Promise(async (resolve, reject) => {
+    let status = excluido ? 'INATIVO' : 'ATIVO'
+
+    custoemrsDB[`${codigoCliente}`] = {
+        "idPedidoOk": `${idCliente}`,
+        "status": status
+    }
+
+    gravarLog(`[registerCustomerInDatabase] ${codigoCliente} <=> ${idCliente} | ${status}`)
+  
+    
+    resolve(custoemrsDB)
+  })
+}
+
+
 module.exports = {
     copyJsonFilesToUserData,
     returnConfigToAccessDB,
@@ -341,5 +358,6 @@ module.exports = {
     returnCustomerIdHostFromIdPed,
     returnProductIdHostFromIdPed,
     registerProductInDatabase,
+    registerCustomerInDatabase,
     gravarLog
 }
