@@ -50,80 +50,65 @@ async function managementRequestsSales(config){
 }
 
 
-async function readingAllRecordsSales(sales, config){
+async function readingAllRecordsSales(sales, config) {
     return new Promise(async (resolve, reject) => {
         const now = new Date();
-        const salesDB = JSON.parse(fs.readFileSync(pathSales))
-        let finish = false
+        const salesDB = JSON.parse(fs.readFileSync(pathSales));
 
-        for(let i=0; i<sales.length; i++){
-
+        for (let i = 0; i < sales.length; i++) {
             let saleRead = sales[i];
-            let customer;
-            let dadosSale;
-            let idSalePedOk = saleRead.id
+            let idSalePedOk = saleRead.id;
             let products = saleRead.itens;
 
-            if(!(salesDB[idSalePedOk])){
-                const [yearSale, monthSale, daySale] = (saleRead.emissao).split("-");
-                let dateSaleFormated = `${daySale}.${monthSale}.${yearSale}`;
-    
-                let actualTime = String(now.getHours()).padStart(2, '0') + "." +
+            // Se já processou antes, ignora
+            if (salesDB[idSalePedOk]) continue;
+
+            const [yearSale, monthSale, daySale] = (saleRead.emissao).split("-");
+            let dateSaleFormated = `${daySale}.${monthSale}.${yearSale}`;
+
+            let actualTime =
+                String(now.getHours()).padStart(2, '0') + "." +
                 String(now.getMinutes()).padStart(2, '0') + "." +
-                String(now.getSeconds()).padStart(2, '0')
-    
-                dadosSale = {
-                    'ID_USUARIO': 1,
-                    'DATA_VENDA': dateSaleFormated,
-                    'HORA_VENDA': actualTime,
-                    'DESCONTO': 0,
-                    'ACRESCIMO': 0,
-                    'VALOR_FINAL': '',
-                    'TOTAL_PRODUTOS': '',
-                    'ACRESCIMO_ITENS': 0,
-                    'DESCONTO_ITENS': 0,
-                    'STATUS_VENDA': 'A',
-                    'CANCELADO': 'N',
-                    'SITUACAO': 'PENDENTE',
-                    'OBS': 'PEDIDOOK'
-                };
-    
-                await returnCustomerInfos(saleRead.id_cliente)
-                .then(async (response) => {
-                    customer = response;
-                    return await getTotalValueOfSale(saleRead.itens)
-                })
-                .then(async (response) => {
-                    dadosSale.VALOR_FINAL = response;
-                    dadosSale.TOTAL_PRODUTOS = response;
-                })
-                .then(async () => {
-                    await insertOrcamento(dadosSale, customer, config)
-                    .then(async () => {
-                        return await returnIdLastOrcamento(config)
-                    })
-                    .then(async (response) => {
-                        idOrcamentoHost = response
-                        await succesHandlingRequests('sale', null, response, idSalePedOk)
-                        .then(async () => {
-                            await readingAllRecordsItensOfSale(products, idOrcamentoHost, config)
-                        })
-                        .then(() => {
-                            finish = i == (sales.length-1) ? true : false;
-                        })
-            
-                    })
-                })
-    
+                String(now.getSeconds()).padStart(2, '0');
+
+            let dadosSale = {
+                'ID_USUARIO': 1,
+                'DATA_VENDA': dateSaleFormated,
+                'HORA_VENDA': actualTime,
+                'DESCONTO': 0,
+                'ACRESCIMO': 0,
+                'VALOR_FINAL': '',
+                'TOTAL_PRODUTOS': '',
+                'ACRESCIMO_ITENS': 0,
+                'DESCONTO_ITENS': 0,
+                'STATUS_VENDA': 'A',
+                'CANCELADO': 'N',
+                'SITUACAO': 'PENDENTE',
+                'OBS': 'PEDIDOOK'
+            };
+
+            const customer = await returnCustomerInfos(saleRead.id_cliente);
+
+            if (!customer) {
+                console.log(`Cliente ${saleRead.id_cliente} não encontrado. Ignorando venda ${idSalePedOk}.`);
+                continue; 
             }
-          
+
+            const totalValue = await getTotalValueOfSale(saleRead.itens);
+            dadosSale.VALOR_FINAL = totalValue;
+            dadosSale.TOTAL_PRODUTOS = totalValue;
+
+            const idOrcamentoHost = await insertOrcamento(dadosSale, customer, config)
+                .then(() => returnIdLastOrcamento(config));
+
+            await succesHandlingRequests('sale', null, idOrcamentoHost, idSalePedOk);
+            await readingAllRecordsItensOfSale(products, idOrcamentoHost, config);
         }
 
-        if(finish){
-            resolve()
-        }
-    })
+        resolve();
+    });
 }
+
 
 
 async function readingAllRecordsItensOfSale(itensList, idOrcamentoHost, config){
@@ -198,6 +183,10 @@ async function returnCustomerInfos(customerIdPedOk){
                     if (err)
                         reject({code: 500, msg:'ERRO AO CONSULTAR CLIENTE NA TABELA DE CLIENTES, CONTATAR SUPORTE TECNICO'});
                     
+                    if(!result){
+                        resolve(null)
+                    }
+
                     let customer = result[0];
 
                     if(customer.LOGRADOURO==null){

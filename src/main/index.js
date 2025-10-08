@@ -123,15 +123,16 @@ ipcMain.handle('startSyncNewRegisters', async () => {
 
       await managementRequestsSales(config)
       .then(async () => {
+        await limparTabela(config)
+      })
+      .then(async () => {
         setInterval(async () => {
           await readNewRecords(config)
           .then(async () => {
               await managementRequestsSales(config)
           })
           .then(() => {
-            gravarLog('---------------------------------------------------------------------')
             gravarLog('REALIZADO A LEITURA PERIODICA DA TABELA DE NOTIFICACOES E DAS VENDAS')
-            gravarLog('---------------------------------------------------------------------')
           })
           }, 600000)
       })
