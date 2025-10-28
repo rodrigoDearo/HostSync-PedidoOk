@@ -183,7 +183,7 @@ async function returnCustomerInfos(customerIdPedOk){
                     if (err)
                         reject({code: 500, msg:'ERRO AO CONSULTAR CLIENTE NA TABELA DE CLIENTES, CONTATAR SUPORTE TECNICO'});
                     
-                    if(!result){
+                    if(result==undefined){
                         resolve(null)
                     }
 
