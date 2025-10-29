@@ -5,7 +5,7 @@ const { app } = require('electron')
 
 const { preparingGetSales } = require('./preparingRequests.js')
 const { returnValueFromJson } = require('./manageInfoUser.js')
-const { getActualDatetime, updateDatetimeOfLastRequest, returnCustomerIdHostFromIdPed, returnProductIdHostFromIdPed, succesHandlingRequests } = require('./auxFunctions.js')
+const { getActualDatetime, updateDatetimeOfLastRequest, returnCustomerIdHostFromIdPed, returnProductIdHostFromIdPed, succesHandlingRequests, gravarLog } = require('./auxFunctions.js')
 const { insertOrcamento, insertItemOrcamento } = require('./insertsHostFDB.js');
 const { Console } = require('console');
 
@@ -51,63 +51,57 @@ async function managementRequestsSales(config){
 
 
 async function readingAllRecordsSales(sales, config) {
-    return new Promise(async (resolve, reject) => {
-        const now = new Date();
-        const salesDB = JSON.parse(fs.readFileSync(pathSales));
+  const salesDB = JSON.parse(fs.readFileSync(pathSales));
+  
+  for (const saleRead of sales) {
+    const idSalePedOk = saleRead.id;
+    if (salesDB[idSalePedOk]) continue;
 
-        for (let i = 0; i < sales.length; i++) {
-            let saleRead = sales[i];
-            let idSalePedOk = saleRead.id;
-            let products = saleRead.itens;
+    const [year, month, day] = saleRead.emissao.split("-");
+    const dateSaleFormated = `${day}.${month}.${year}`;
+    const now = new Date();
+    const horaVenda = `${String(now.getHours()).padStart(2, "0")}.${String(now.getMinutes()).padStart(2, "0")}.${String(now.getSeconds()).padStart(2, "0")}`;
 
-            // Se já processou antes, ignora
-            if (salesDB[idSalePedOk]) continue;
+    const dadosSale = {
+      ID_USUARIO: 1,
+      DATA_VENDA: dateSaleFormated,
+      HORA_VENDA: horaVenda,
+      DESCONTO: 0,
+      ACRESCIMO: 0,
+      VALOR_FINAL: "",
+      TOTAL_PRODUTOS: "",
+      ACRESCIMO_ITENS: 0,
+      DESCONTO_ITENS: 0,
+      STATUS_VENDA: "A",
+      CANCELADO: "N",
+      SITUACAO: "PENDENTE",
+      OBS: "PEDIDOOK"
+    };
 
-            const [yearSale, monthSale, daySale] = (saleRead.emissao).split("-");
-            let dateSaleFormated = `${daySale}.${monthSale}.${yearSale}`;
+    const customer = await returnCustomerInfos(saleRead.id_cliente, config);
+    if (!customer) {
+      console.log(`Cliente ${saleRead.id_cliente} não encontrado. Ignorando venda ${idSalePedOk}.`);
+      continue;
+    }
 
-            let actualTime =
-                String(now.getHours()).padStart(2, '0') + "." +
-                String(now.getMinutes()).padStart(2, '0') + "." +
-                String(now.getSeconds()).padStart(2, '0');
+    const totalValue = await getTotalValueOfSale(saleRead.itens);
+    dadosSale.VALOR_FINAL = totalValue;
+    dadosSale.TOTAL_PRODUTOS = totalValue;
 
-            let dadosSale = {
-                'ID_USUARIO': 1,
-                'DATA_VENDA': dateSaleFormated,
-                'HORA_VENDA': actualTime,
-                'DESCONTO': 0,
-                'ACRESCIMO': 0,
-                'VALOR_FINAL': '',
-                'TOTAL_PRODUTOS': '',
-                'ACRESCIMO_ITENS': 0,
-                'DESCONTO_ITENS': 0,
-                'STATUS_VENDA': 'A',
-                'CANCELADO': 'N',
-                'SITUACAO': 'PENDENTE',
-                'OBS': 'PEDIDOOK'
-            };
+    try {
+      await insertOrcamento(dadosSale, customer, config);
+      const idOrcamentoHost = await returnIdLastOrcamento(config);
+      console.log(`[idOrcamentoHost]: ${idOrcamentoHost} para venda ${idSalePedOk}`);
 
-            const customer = await returnCustomerInfos(saleRead.id_cliente);
+      await succesHandlingRequests("sale", null, idOrcamentoHost, idSalePedOk);
+      await readingAllRecordsItensOfSale(saleRead.itens, idOrcamentoHost, config);
 
-            if (!customer) {
-                console.log(`Cliente ${saleRead.id_cliente} não encontrado. Ignorando venda ${idSalePedOk}.`);
-                continue; 
-            }
-
-            const totalValue = await getTotalValueOfSale(saleRead.itens);
-            dadosSale.VALOR_FINAL = totalValue;
-            dadosSale.TOTAL_PRODUTOS = totalValue;
-
-            const idOrcamentoHost = await insertOrcamento(dadosSale, customer, config)
-                .then(() => returnIdLastOrcamento(config));
-
-            await succesHandlingRequests('sale', null, idOrcamentoHost, idSalePedOk);
-            await readingAllRecordsItensOfSale(products, idOrcamentoHost, config);
-        }
-
-        resolve();
-    });
+    } catch (error) {
+      gravarLog(`[error insertOrcamento]: ${JSON.stringify(error)}`);
+    }
+  }
 }
+
 
 
 
@@ -169,51 +163,40 @@ async function managementParameterLastRequest(){
 }
 
 
-async function returnCustomerInfos(customerIdPedOk){
-    return new Promise(async (resolve, reject) => {
-        await returnCustomerIdHostFromIdPed(customerIdPedOk)
-        .then(async (response) => {
-            conexao.attach(config, function (err, db){
-                if (err)
-                    throw err;
-    
-                let codigoSQL = `SELECT id_cliente, cliente, logradouro, numero, cep, fone, cpf_cnpj, municipio, uf FROM CLIENTES WHERE ID_CLIENTE=${response}`;
-    
-                db.query(codigoSQL, async function (err, result){
-                    if (err)
-                        reject({code: 500, msg:'ERRO AO CONSULTAR CLIENTE NA TABELA DE CLIENTES, CONTATAR SUPORTE TECNICO'});
-                    
-                    if(result==undefined){
-                        resolve(null)
-                    }
+async function returnCustomerInfos(customerIdPedOk, config) {
+  return new Promise((resolve) => {
+    returnCustomerIdHostFromIdPed(customerIdPedOk)
+      .then((response) => {
+        conexao.attach(config, (err, db) => {
+          if (err) return resolve(null);
+          if (!/^\d+$/.test(String(response).trim())) {
+            db.detach();
+            return resolve(null);
+          }
 
-                    let customer = result[0];
+          const sql = `SELECT id_cliente, cliente, logradouro, numero, cep, fone, cpf_cnpj, municipio, uf
+                       FROM CLIENTES WHERE ID_CLIENTE=${response}`;
+          db.query(sql, (err, result) => {
+            if (err || !result?.length) {
+              db.detach();
+              return resolve(null);
+            }
 
-                    if(customer.LOGRADOURO==null){
-                        customer.LOGRADOURO = "";
-                    }
-
-                    if(customer.NUMERO==null){
-                        customer.NUMERO = "";
-                    }
-
-                    if(customer.CEP==null){
-                        customer.CEP = "";
-                    }
-
-                    customer.ENDERECO = customer.LOGRADOURO + ', ' + customer.NUMERO + ' - ' + customer.CEP;
-                    delete customer.LOGRADOURO;
-                    delete customer.NUMERO;
-                    delete customer.CEP;
-
-                    resolve(customer)
-                });
-              
-                db.detach();
-            })
-        })
-    })
+            const c = result[0];
+            const endereco = `${c.LOGRADOURO || ""}, ${c.NUMERO || ""} - ${c.CEP || ""}`;
+            const customer = { ...c, ENDERECO: endereco };
+            delete customer.LOGRADOURO;
+            delete customer.NUMERO;
+            delete customer.CEP;
+            db.detach();
+            resolve(customer);
+          });
+        });
+      })
+      .catch(() => resolve(null));
+  });
 }
+
 
 
 async function returnIdLastOrcamento(config){
