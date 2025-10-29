@@ -50,7 +50,6 @@ async function startSync(){
 
 
 async function startSyncNewRegisters(){
-    alert('ola')
     await loadingPage(true)
     await window.api.syncNewRegisters()
     .then(async () => {
